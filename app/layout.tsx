@@ -1,6 +1,7 @@
 import { GeistSans } from "geist/font/sans"
 import "./globals.css"
 import { siteurl } from "@/utils/siteurl"
+import { ThemeProvider } from "@/components/ThemeProvider"
 
 export const metadata = {
 	metadataBase: new URL(siteurl),
@@ -16,8 +17,15 @@ export default function RootLayout({
 	return (
 		<html lang="en" className={GeistSans.className}>
 			<body className="bg-background text-foreground">
-				<main className="min-h-screen flex flex-col items-center">
-					{children}
+				<main className="flex flex-col items-center min-h-screen">
+					<ThemeProvider
+						attribute="class"
+						defaultTheme="system"
+						enableSystem
+						disableTransitionOnChange
+					>
+						{children}
+					</ThemeProvider>
 				</main>
 			</body>
 		</html>
