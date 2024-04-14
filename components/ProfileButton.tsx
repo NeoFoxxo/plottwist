@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
-import { Button } from "./ui/button";
 import { redirect } from "next/navigation";
+import { Button } from "./ui/button";
 
 export default async function ProfileButton() {
     const supabase = createClient();
@@ -14,7 +14,7 @@ export default async function ProfileButton() {
         .from("profiles")
         .select("*")
         .eq("user_id", user?.id);
-    if (error) return redirect("/login");
+    if (error) return redirect("/");
 
     return user ? (
         <Button variant="secondary" className="gap-2">
