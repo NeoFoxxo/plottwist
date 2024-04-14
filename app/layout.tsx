@@ -2,6 +2,8 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { siteurl } from "@/utils/siteurl";
 import { GeistSans } from "geist/font/sans";
 import "./globals.css";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 export const metadata = {
     metadataBase: new URL(siteurl),
@@ -24,7 +26,9 @@ export default function RootLayout({
                         enableSystem
                         disableTransitionOnChange
                     >
+                        <Header />
                         {children}
+                        <Footer />
                     </ThemeProvider>
                 </main>
             </body>

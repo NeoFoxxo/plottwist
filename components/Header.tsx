@@ -1,9 +1,16 @@
+import AuthButton from "@/components/AuthButton";
+import { ModeToggle } from "@/components/ModeToggle";
+
 export default function Header() {
 	return (
-		<div className="flex flex-col items-center gap-16">
-			<p className="text-3xl lg:text-4xl !leading-tight mx-auto max-w-xl text-center">
-				Plot Twist
-			</p>
-		</div>
+		<nav className="flex justify-around items-center w-full h-16 border-b border-b-foreground/10">
+			<div>
+				logo here
+			</div>
+			<div className="flex gap-5">
+				<AuthButton />
+				<ModeToggle />
+			</div>
+		</nav>
 	)
 }
