@@ -1,7 +1,8 @@
-import { ModeToggle } from "@/components/ModeToggle";
 import Link from "next/link";
-import AuthButton from "./AuthButton";
-import ProfileDropdown from "./ProfileDropdown";
+
+import { ModeToggle } from "@/components/ModeToggle";
+import AuthButton from "@/components/AuthButton";
+import ProfileDropdown from "@/components/ProfileDropdown";
 
 export default function Header({ email }: { email: string | undefined }) {
     return (
