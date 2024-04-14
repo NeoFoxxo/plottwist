@@ -13,6 +13,7 @@
     "autoprefixer": "10.4.17",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
+    "framer-motion": "^11.0.28",
     "geist": "^1.2.1",
     "lucide-react": "^0.368.0",
     "next": "latest",
