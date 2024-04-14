@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 const createProfile = async (
     supabase: SupabaseClient,
     user_id: string,
-    email: string
+    email: string,
 ) => {
     const { data: existingUser, error: existingError } = await supabase
         .from("profiles")
@@ -42,5 +42,5 @@ export async function GET(request: Request) {
     }
 
     // URL to redirect to after sign up process completes
-    return NextResponse.redirect(`${origin}/protected`);
+    return NextResponse.redirect(`${origin}/dashboard`);
 }
