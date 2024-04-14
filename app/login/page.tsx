@@ -1,8 +1,7 @@
-import Link from "next/link";
+import { siteurl } from "@/utils/siteurl";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { SubmitButton } from "./submit-button";
-import { siteurl } from "@/utils/siteurl";
 
 export default function Login({
     searchParams,
@@ -25,12 +24,12 @@ export default function Login({
         if (error) {
             console.log(error.message);
             return redirect(
-                `/login?message=Could not authenticate user: ${error.message}`,
+                `/login?message=Could not authenticate user: ${error.message}`
             );
         }
 
         return redirect(
-            "/login?message=Check your email to sign in to Plot Twist!",
+            "/login?message=Check your email to sign in to Plot Twist!"
         );
     }
 

@@ -1,8 +1,7 @@
+import { buttonVariants } from "@/components/ui/button";
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { ModeToggle } from "@/components/ModeToggle";
-import { Button, buttonVariants } from "@/components/ui/button";
 
 export default async function AuthButton() {
     const supabase = createClient();
@@ -20,15 +19,14 @@ export default async function AuthButton() {
     };
 
     return user ? (
-        <div className="flex items-center justify-between gap-4">
-            <ModeToggle />
-            <form action={signOut}>
-                <Button variant={"ghost"}>
-                    Logout
-                </Button>
-            </form>
-        </div>
+        <form action={signOut}>
+            <div className="px-2 py-[6px] text-sm hover:bg-gray-800 rounded-sm cursor-pointer">
+                Logout
+            </div>
+        </form>
     ) : (
-        <Link href="/login" className={buttonVariants({ variant: "outline" })}>Login</Link>
+        <Link href="/login" className={buttonVariants({ variant: "outline" })}>
+            Login
+        </Link>
     );
 }
