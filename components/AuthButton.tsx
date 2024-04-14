@@ -19,10 +19,16 @@ export default async function AuthButton() {
     };
 
     return user ? (
-        <form action={signOut}>
-            <div className="px-2 py-[6px] text-sm hover:bg-gray-800 rounded-sm cursor-pointer">
+        <form
+            action={signOut}
+            className="w-full text-sm rounded-sm flex items-center justify-start hover:bg-gray-800"
+        >
+            <button
+                type="submit"
+                className="w-full px-2 py-[6px] flex justify-start items-center"
+            >
                 Logout
-            </div>
+            </button>
         </form>
     ) : (
         <Link href="/login" className={buttonVariants({ variant: "outline" })}>

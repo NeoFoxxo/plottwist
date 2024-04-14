@@ -18,15 +18,15 @@ export default function ProfileDropdown({ email }: { email: string }) {
             <DropdownMenuContent>
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                    <Link href="/profile">Profile</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                    <Link href="/dashboard">Dashboard</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                    <Link href="/dashboard/create">Create +</Link>
-                </DropdownMenuItem>
+                <Link href="/profile">
+                    <DropdownMenuItem>Profile</DropdownMenuItem>
+                </Link>
+                <Link href="/dashboard">
+                    <DropdownMenuItem>Dashboard</DropdownMenuItem>
+                </Link>
+                <Link href="/dashboard/create">
+                    <DropdownMenuItem>Create +</DropdownMenuItem>
+                </Link>
                 <AuthButton />
             </DropdownMenuContent>
         </DropdownMenu>

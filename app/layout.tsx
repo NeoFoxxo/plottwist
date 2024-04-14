@@ -4,7 +4,6 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { siteurl } from "@/utils/siteurl";
 import { createClient } from "@/utils/supabase/server";
 import { GeistSans } from "geist/font/sans";
-import { redirect } from "next/navigation";
 import "./globals.css";
 
 export const metadata = {
@@ -24,10 +23,6 @@ export default async function RootLayout({
         data: { user },
     } = await supabase.auth.getUser();
 
-    if (!user) {
-        return redirect("/login");
-    }
-
     return (
         <html lang="en" className={GeistSans.className}>
             <body className="bg-background text-foreground">
@@ -38,7 +33,7 @@ export default async function RootLayout({
                         enableSystem
                         disableTransitionOnChange
                     >
-                        <Header email={user.email} />
+                        <Header email={user?.email} />
                         {children}
                         <Footer />
                     </ThemeProvider>
