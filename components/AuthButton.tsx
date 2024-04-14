@@ -2,6 +2,7 @@ import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Button } from "./ui/button";
+import { ModeToggle } from "./ModeToggle";
 
 export default async function AuthButton() {
     const supabase = createClient();
@@ -20,6 +21,7 @@ export default async function AuthButton() {
 
     return user ? (
         <div className="flex items-center justify-between gap-4">
+            <ModeToggle />
             <form action={signOut}>
                 <Button variant="outline">Logout</Button>
             </form>
