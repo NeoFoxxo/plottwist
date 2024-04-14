@@ -1,7 +1,7 @@
-import AuthButton from "../../components/AuthButton";
+import ProfileButton from "@/components/ProfileButton";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import ProfileButton from "@/components/ProfileButton";
+import AuthButton from "../../components/AuthButton";
 
 export default async function ProtectedPage() {
     const supabase = createClient();
@@ -22,7 +22,9 @@ export default async function ProtectedPage() {
                     <AuthButton />
                 </div>
             </nav>
-            <div className="m-4 text-xl text-slate-300">DASHBOARD PLACEHOLDER</div>
+            <div className="m-4 text-xl text-slate-300">
+                PROFILE PAGE PLACEHOLDER
+            </div>
         </div>
     );
 }

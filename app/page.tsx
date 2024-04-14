@@ -1,22 +1,39 @@
-import Footer from "@/components/Footer"
-import AuthButton from "../components/AuthButton"
-import Header from "@/components/Header"
-import { ModeToggle } from "@/components/ModeToggle"
+import { LandingPage } from "@/components/LandingPage";
+import { ModeToggle } from "@/components/ModeToggle";
+import ProfileButton from "@/components/ProfileButton";
+import { createClient } from "@/utils/supabase/server";
+import AuthButton from "../components/AuthButton";
 
 export default async function Index() {
-	return (
-		<div className="flex flex-col items-center flex-1 w-full gap-20">
-			<nav className="flex justify-center w-full h-16 border-b border-b-foreground/10">
-				<div className="flex items-center justify-between w-full max-w-4xl p-3 text-sm">
-					<AuthButton />
-					<ModeToggle />
-				</div>
-			</nav>
+    const supabase = createClient();
 
-			<div className="flex flex-col flex-1 max-w-4xl gap-20 px-3">
-				<Header />
-			</div>
-			<Footer />
-		</div>
-	)
+    const {
+        data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+        return (
+            <div className="flex flex-col items-center flex-1 w-full gap-20">
+                <nav className="flex justify-center w-full h-16 border-b border-b-foreground/10">
+                    <div className="flex items-center justify-between w-full max-w-4xl p-3 text-sm">
+                        <AuthButton />
+                        <ModeToggle />
+                    </div>
+                </nav>
+                <LandingPage />
+            </div>
+        );
+    }
+
+    return (
+        <div className="flex flex-col items-center flex-1 w-full gap-20">
+            <nav className="flex justify-center w-full h-16 border-b border-b-foreground/10">
+                <div className="flex items-center justify-between w-full max-w-4xl p-3 text-sm">
+                    <ProfileButton />
+                    <AuthButton />
+                </div>
+            </nav>
+            <LandingPage />
+        </div>
+    );
 }
