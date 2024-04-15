@@ -1,6 +1,6 @@
 export default function Footer() {
 	return (
-		<footer className="w-full border-t border-t-foreground/10 p-8 flex justify-center text-center text-xs">
+		<footer className="bottom-0 flex justify-center w-full p-8 text-xs text-center border-t border-t-foreground/10">
 			<p>
 				Powered by{" "}
 				<a
