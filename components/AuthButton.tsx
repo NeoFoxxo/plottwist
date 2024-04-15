@@ -1,4 +1,4 @@
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -31,8 +31,16 @@ export default async function AuthButton() {
             </button>
         </form>
     ) : (
-        <Link href="/login" className={buttonVariants({ variant: "outline" })}>
-            Login
-        </Link>
+        <>
+            <Link
+                href="/login"
+                className={buttonVariants({ variant: "outline" })}
+            >
+                Login
+            </Link>
+            <Link href="/app">
+                <Button>Dashboard</Button>
+            </Link>
+        </>
     );
 }
