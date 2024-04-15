@@ -9,7 +9,12 @@ export default function Header({ email }: { email: string | undefined }) {
             <div className="w-full max-w-7xl flex p-3 items-center justify-between text-sm">
                 <Link href="/">
                     <div className="text-md font-semibold">
-                        <p style={{ fontFamily: '"Cabin", sans-serif;' }} className="italic text-xl">plottwist.</p>
+                        <p
+                            style={{ fontFamily: '"Cabin", sans-serif;' }}
+                            className="italic text-xl"
+                        >
+                            plottwist.
+                        </p>
                     </div>
                 </Link>
                 <div className="flex gap-5">
