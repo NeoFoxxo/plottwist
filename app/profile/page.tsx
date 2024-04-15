@@ -15,10 +15,12 @@ export default async function ProtectedPage() {
         .from("profiles")
         .select("*")
         .eq("user_id", user_id);
+    if (error) throw new Error("Profile details fetch failed!");
+    const profileData = data[0];
 
     return (
         <div className="m-4 text-2xl flex-1 w-full flex flex-col items-center">
-            <UserProfile />
+            <UserProfile profileData={profileData} />
         </div>
     );
 }

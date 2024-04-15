@@ -6,14 +6,18 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ChevronDown } from "lucide-react";
 import Link from "next/link";
 import AuthButton from "./AuthButton";
+import { Button } from "./ui/button";
 
 export default function ProfileDropdown({ email }: { email: string }) {
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger className="px-4 py-2 dark:bg-secondary dark:hover:bg-neutral-900 bg-gray-100 hover:bg-gray-200 rounded-md">
-                {email}
+            <DropdownMenuTrigger>
+                <Button className="gap-2 text-md">
+                    {email} <ChevronDown className="w-4 h-4 -mr-1" />
+                </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
