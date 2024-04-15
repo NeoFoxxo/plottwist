@@ -1,14 +1,22 @@
 "use client";
 import { Textarea } from "@/components/ui/textarea";
 import { submitPrompt } from "@/utils/actions/submitPrompt";
-import { Loader2 } from "lucide-react";
+import { Bot, Loader2 } from "lucide-react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "./ui/button";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form";
+import {
+    Form,
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "./ui/form";
 
 const createSchema = z.object({
     prompt: z
@@ -41,22 +49,33 @@ export default function CreatePrompt() {
         <Form {...form}>
             <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="w-fit gap-4 text-center flex flex-col justify-center"
+                className="w-full p-4 sm:px-0 sm:py-4 sm:w-2/3 md:p-0 space-y-6"
             >
+                <h1 className="text-4xl font-bold">
+                    Create your own interactive story
+                </h1>
                 <FormField
                     control={form.control}
                     name="prompt"
                     render={({ field }) => (
                         <FormItem>
+                            <FormLabel className="text-lg font-normal">
+                                Write about a scenario and make different
+                                choices to affect the stories outcome.
+                            </FormLabel>
                             <FormControl>
                                 <Textarea
-                                    style={{ resize: "none", margin: "0 auto" }}
+                                    className="text-start"
                                     minLength={15}
                                     maxLength={60}
                                     placeholder="What is your story about?"
                                     {...field}
                                 />
                             </FormControl>
+                            <FormDescription>
+                                Please enter a prompt regarding the story you
+                                want to generate.
+                            </FormDescription>
                             <FormMessage />
                         </FormItem>
                     )}
@@ -67,12 +86,15 @@ export default function CreatePrompt() {
                     disabled={pending}
                 >
                     {pending ? (
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center justify-center gap-2">
                             <Loader2 className="animate-spin" />
                             Creating your story
                         </div>
                     ) : (
-                        "Create your story"
+                        <div className="flex items-center justify-center gap-2">
+                            <Bot />
+                            Create your story
+                        </div>
                     )}
                 </Button>
             </form>

@@ -1,12 +1,14 @@
 import { buttonVariants } from "@/components/ui/button";
+
 import { cn } from "@/lib/utils";
+import Link from "next/link";
+
 import {
     BarChartBig,
     Bookmark,
     LayoutDashboard,
     SquarePen,
 } from "lucide-react";
-import Link from "next/link";
 
 export function Sidebar() {
     const links = [
@@ -33,14 +35,7 @@ export function Sidebar() {
     ];
 
     return (
-        <div
-            style={{
-                height: "calc(100vh - 128px)",
-                overflowY: "auto",
-                borderRight: "solid 1px rgba(255,255,255,0.150)",
-            }}
-            className="sidebar flex flex-col justify-between min-h-20 px-3 bg-black/30 w-80 max-lg:hidden"
-        >
+        <div className="sidebar flex-col justify-between min-h-[84vh] max-w-64 md:px-3 bg-black/30 w-80 border-r border-secondary hidden md:flex">
             <nav className="flex flex-col gap-4 mt-4">
                 {links.map((link) => (
                     <Link

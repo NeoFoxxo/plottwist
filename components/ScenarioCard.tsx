@@ -26,11 +26,11 @@ type SCENARIO_TYPES = {
 export function ScenarioCard({ scenario }: SCENARIO_TYPES) {
     const { title, prompt, story } = scenario;
     return (
-        <Card className="max-w-[400px] border border-secondary">
+        <Card className="max-w-[400px] max-h-[340px] border border-secondary">
             <CardHeader>
                 <CardTitle>{title}</CardTitle>
                 <CardDescription className="text-sm">
-                    Prompt: {prompt}
+                    <b>Prompt:</b> {prompt}
                 </CardDescription>
             </CardHeader>
             <CardContent>
