@@ -25,7 +25,7 @@ export default async function RootLayout({
 
     return (
         <html lang="en" className={GeistSans.className}>
-            <body className="bg-background text-foreground">
+            <body className="bg-[url('/gif4.gif')] bg-background bg-cover bg-fixed bg-no-repeat bg-center text-foreground">
                 <main className="flex flex-col items-center min-h-screen">
                     <ThemeProvider
                         attribute="class"

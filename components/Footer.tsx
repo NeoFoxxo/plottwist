@@ -1,6 +1,6 @@
 export default function Footer() {
 	return (
-		<footer className="bottom-0 flex justify-center w-full p-8 text-xs text-center border-t border-t-foreground/10">
+		<footer className="fixed bottom-0 bg-black/25 h-16 flex justify-center w-full p-8 text-xs text-center border-t border-t-foreground/10">
 			<p>
 				Powered by{" "}
 				<a
@@ -10,6 +10,15 @@ export default function Footer() {
 					rel="noreferrer"
 				>
 					Supabase
+				</a>
+				{" & "}
+				<a
+					href="https://smythos.com"
+					target="_blank"
+					className="font-bold hover:underline"
+					rel="noreferrer"
+				>
+					SmythOS
 				</a>
 			</p>
 		</footer>
