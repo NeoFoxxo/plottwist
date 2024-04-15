@@ -1,20 +1,12 @@
-import { Button, buttonVariants } from "@/components/ui/button";
-import {
-    Card,
-    CardContent,
-    CardFooter,
-    CardHeader,
-} from "@/components/ui/card";
-
+import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
-
 import {
     BarChartBig,
     Bookmark,
     LayoutDashboard,
     SquarePen,
 } from "lucide-react";
+import Link from "next/link";
 
 export function Sidebar() {
     const links = [
@@ -47,7 +39,7 @@ export function Sidebar() {
                 overflowY: "auto",
                 borderRight: "solid 1px rgba(255,255,255,0.150)",
             }}
-            className="sidebar flex flex-col justify-between min-h-20 px-3 bg-black/30 max-w-[320px] max-lg:hidden"
+            className="sidebar flex flex-col justify-between min-h-20 px-3 bg-black/30 w-80 max-lg:hidden"
         >
             <nav className="flex flex-col gap-4 mt-4">
                 {links.map((link) => (
@@ -63,20 +55,6 @@ export function Sidebar() {
                     </Link>
                 ))}
             </nav>
-            <Card className="mb-4 border border-secondary bg-card w-fit">
-                <CardHeader className="text-2xl font-bold">
-                    Upgrade to Pro plan
-                </CardHeader>
-                <CardContent>
-                    Unlock all features and get unlimited access to our support
-                    team.
-                </CardContent>
-                <CardFooter>
-                    <Button variant="default" className="w-full">
-                        Upgrade
-                    </Button>
-                </CardFooter>
-            </Card>
         </div>
     );
 }
