@@ -5,11 +5,13 @@ import { siteurl } from "@/utils/siteurl";
 import { createClient } from "@/utils/supabase/server";
 import { GeistSans } from "geist/font/sans";
 import "./globals.css";
+import { headers } from 'next/headers';
+import Head from "next/head";
 
 export const metadata = {
     metadataBase: new URL(siteurl),
-    title: "Plot Twist",
-    description: "Choose your own adventure story generator",
+    title: "plottwist",
+    description: "Generate your own story.",
 };
 
 export default async function RootLayout({
@@ -23,13 +25,17 @@ export default async function RootLayout({
         data: { user },
     } = await supabase.auth.getUser();
 
+    const headersList = headers();
+    const fullUrl = headersList.get('referer')
+    const lastIndex = fullUrl?.split('/')?.pop()
+
     return (
         <html lang="en" className={GeistSans.className}>
-            <head>
+            <Head>
                 <link rel="preconnect" href="https://fonts.googleapis.com"></link>
                 <link rel="preconnect" href="https://fonts.gstatic.com"></link>
                 <link href="https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet"></link>
-            </head>
+            </Head>
             <body className="bg-[url('/gif4.gif')] bg-background bg-cover bg-fixed bg-no-repeat bg-center text-foreground">
                 <main className="flex flex-col items-center min-h-screen">
                     <ThemeProvider
@@ -40,7 +46,7 @@ export default async function RootLayout({
                     >
                         <Header email={user?.email} />
                         {children}
-                        <Footer />
+                        <Footer isLandPage={lastIndex == ''} />
                     </ThemeProvider>
                 </main>
             </body>
