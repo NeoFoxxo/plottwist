@@ -37,7 +37,7 @@ export function Sidebar() {
 	]
 
 	return (
-		<div style={{ height: 'calc(100vh - 128px)', overflowY: 'auto', borderRight: 'solid 1px rgba(255,255,255,0.150)' }} className="sidebar flex flex-col justify-between min-h-20 px-3 bg-black/30 w-80 max-lg:hidden">
+		<div style={{ height: 'calc(100vh - 112px)', overflowY: 'auto', borderRight: 'solid 1px rgba(255,255,255,0.150)' }} className="sidebar flex flex-col justify-between min-h-20 px-3 bg-black/30 w-80 max-lg:hidden">
 			<nav className="flex flex-col gap-4 mt-4">
 				{links.map((link) => (
 					<Link href={link.href} className={cn(buttonVariants({ variant: "ghost" }), "flex justify-start items-center gap-3 px-3 py-2 text-base hover:bg-white/20")}>
