@@ -17,10 +17,11 @@ export default async function ProtectedPage() {
         .eq("user_id", user_id);
     if (error) throw new Error("Profile details fetch failed!");
     const profileData = data[0];
+    const date = new Date(profileData.created_at).toLocaleDateString();
 
     return (
         <div className="m-4 text-2xl flex-1 w-full flex flex-col items-center">
-            <UserProfile profileData={profileData} />
+            <UserProfile profileData={profileData} date={date} />
         </div>
     );
 }
