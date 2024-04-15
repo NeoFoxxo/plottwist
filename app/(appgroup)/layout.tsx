@@ -1,3 +1,4 @@
+import Footer from "@/components/Footer";
 import { Sidebar } from "@/components/Sidebar";
 import { Button } from "@/components/ui/button";
 import { AlignJustify } from "lucide-react";
@@ -11,6 +12,7 @@ const DashboardLayout = ({
         <div className="flex justify-center w-full min-h-[84vh]">
             <Sidebar />
             {children}
+            <Footer></Footer>
         </div>
     )
 }

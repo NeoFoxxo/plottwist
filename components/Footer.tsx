@@ -1,6 +1,6 @@
-export default function Footer({ isLandPage }: { isLandPage: boolean }) {
+export default function Footer() {
 	return (
-		<footer style={{ position: isLandPage ? 'inherit' : 'fixed' }} className="bottom-0 bg-black/25 h-16 flex justify-center w-full p-8 text-xs text-center border-t border-t-foreground/10">
+		<footer className="fixed bottom-0 bg-black/25 h-16 flex justify-center w-full p-8 text-xs text-center border-t border-t-foreground/10">
 			<p>
 				Powered by{" "}
 				<a

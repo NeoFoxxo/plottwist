@@ -1,17 +1,16 @@
-import Footer from "@/components/Footer";
+import LandingFooter from "@/components/LandingFooter";
 import Header from "@/components/Header";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { siteurl } from "@/utils/siteurl";
 import { createClient } from "@/utils/supabase/server";
 import { GeistSans } from "geist/font/sans";
 import "./globals.css";
-import { headers } from 'next/headers';
 import Head from "next/head";
 
 export const metadata = {
     metadataBase: new URL(siteurl),
-    title: "plottwist",
-    description: "Generate your own story.",
+    title: "plottwist.",
+    description: "Choose your story.",
 };
 
 export default async function RootLayout({
@@ -24,10 +23,6 @@ export default async function RootLayout({
     const {
         data: { user },
     } = await supabase.auth.getUser();
-
-    const headersList = headers();
-    const fullUrl = headersList.get('referer')
-    const lastIndex = fullUrl?.split('/')?.pop()
 
     return (
         <html lang="en" className={GeistSans.className}>
@@ -46,7 +41,6 @@ export default async function RootLayout({
                     >
                         <Header email={user?.email} />
                         {children}
-                        <Footer isLandPage={lastIndex == ''} />
                     </ThemeProvider>
                 </main>
             </body>
