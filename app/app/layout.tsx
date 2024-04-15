@@ -1,18 +1,12 @@
-import { Sidebar } from "@/components/Sidebar";
-import { Button } from "@/components/ui/button";
-import { AlignJustify } from "lucide-react";
+import { Sidebar } from "@/components/Sidebar"
 
-const DashboardLayout = ({
-    children
-}: {
-    children: React.ReactNode
-}) => {
-    return (
-        <div className="flex justify-center w-full min-h-[84vh]">
-            <Sidebar />
-            {children}
-        </div>
-    )
+const AppLayout = ({ children }: { children: React.ReactNode }) => {
+	return (
+		<div className="flex justify-center w-full min-h-[84vh]">
+			<Sidebar />
+			{children}
+		</div>
+	)
 }
 
-export default DashboardLayout;
+export default AppLayout

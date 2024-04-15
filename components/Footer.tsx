@@ -1,6 +1,25 @@
-export default function Footer({ isLandPage }: { isLandPage: boolean }) {
+"use client"
+
+import { usePathname } from "next/navigation"
+import { CSSProperties } from "react"
+
+export default function Footer() {
+	const pathname = usePathname()
+
+	let footerStyle: CSSProperties = {
+		position: "fixed",
+	}
+
+	// if we are on the landing page do not make the footer fixed
+	if (pathname === "/") {
+		footerStyle = {}
+	}
+
 	return (
-		<footer style={{ position: isLandPage ? 'inherit' : 'fixed' }} className="bottom-0 bg-black/25 h-16 flex justify-center w-full p-8 text-xs text-center border-t border-t-foreground/10">
+		<footer
+			style={footerStyle}
+			className="bottom-0 bg-black/25 h-16 flex justify-center w-full p-8 text-xs text-center border-t border-t-foreground/10"
+		>
 			<p>
 				Powered by{" "}
 				<a
