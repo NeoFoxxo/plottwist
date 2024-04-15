@@ -21,7 +21,7 @@ export default async function AuthButton() {
     return user ? (
         <form
             action={signOut}
-            className="w-full text-sm rounded-sm flex items-center justify-start hover:bg-gray-800"
+            className="w-full text-sm rounded-sm flex items-center justify-center hover:bg-secondary"
         >
             <button
                 type="submit"
