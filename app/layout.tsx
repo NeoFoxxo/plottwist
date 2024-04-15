@@ -1,4 +1,3 @@
-import LandingFooter from "@/components/LandingFooter"
 import Header from "@/components/Header"
 import { ThemeProvider } from "@/components/ThemeProvider"
 import { siteurl } from "@/utils/siteurl"
