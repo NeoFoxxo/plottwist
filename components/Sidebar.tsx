@@ -45,6 +45,7 @@ export function Sidebar() {
             <nav className="flex flex-col gap-4 mt-4">
                 {links.map((link) => (
                     <Link
+                        key={link.text}
                         href={link.href}
                         className={cn(
                             buttonVariants({ variant: "ghost" }),
@@ -52,7 +53,7 @@ export function Sidebar() {
                         )}
                     >
                         {link.icon}
-                        {link.text}
+                        <span>{link.text}</span>
                     </Link>
                 ))}
             </nav>
