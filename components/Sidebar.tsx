@@ -6,6 +6,7 @@ import Link from "next/link";
 import {
     BarChartBig,
     Bookmark,
+    CircleUserRound,
     LayoutDashboard,
     SquarePen,
 } from "lucide-react";
@@ -31,6 +32,11 @@ export function Sidebar() {
             text: "Create",
             href: "/app/create",
             icon: <SquarePen className="w-5 h-5" />,
+        },
+        {
+            text: "Profile",
+            href: "/profile",
+            icon: <CircleUserRound className="w-5 h-5" />,
         },
     ];
 
