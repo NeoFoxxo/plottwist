@@ -48,3 +48,12 @@
         --ring: 240 4.9% 83.9%;
     }
 }
+
+.container::-webkit-scrollbar {
+    background-color: rgba(0, 0, 0, 0.000);
+    width: 4px;
+}
+
+.container::-webkit-scrollbar-thumb {
+    background-color: rgba(16, 75, 64, 0.251);
+}
