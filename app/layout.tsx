@@ -25,11 +25,16 @@ export default async function RootLayout({
 
     return (
         <html lang="en" className={GeistSans.className}>
-            <body className="bg-background text-foreground">
+            <head>
+                <link rel="preconnect" href="https://fonts.googleapis.com"></link>
+                <link rel="preconnect" href="https://fonts.gstatic.com"></link>
+                <link href="https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet"></link>
+            </head>
+            <body className="bg-[url('/gif4.gif')] bg-background bg-cover bg-fixed bg-no-repeat bg-center text-foreground">
                 <main className="flex flex-col items-center min-h-screen">
                     <ThemeProvider
                         attribute="class"
-                        defaultTheme="system"
+                        defaultTheme="dark"
                         enableSystem
                         disableTransitionOnChange
                     >

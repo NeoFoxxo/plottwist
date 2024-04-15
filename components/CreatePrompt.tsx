@@ -38,22 +38,21 @@ export default function CreatePrompt() {
 
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-4 text-left">
+			<form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-4 text-center flex flex-col justify-center">
 				<FormField
 					control={form.control}
 					name="prompt"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Enter your prompt</FormLabel>
 							<FormControl>
-								<Textarea placeholder="What is your story about?" {...field} />
+								<Textarea style={{ resize: 'none', margin: '0 auto', }} minLength={15} maxLength={60} placeholder="What is your story about?" {...field} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>
 					)}
 				>
 				</FormField>
-				<Button type="submit" disabled={pending}>
+				<Button className="mx-auto pl-10 pr-10" style={{ border: 'solid 1px rgba(255,255,255,0.150)' }} variant={"ghost"} type="submit" disabled={pending}>
 					{pending ?
 						<div className="flex items-center gap-2">
 							<Loader2 className="animate-spin" />
