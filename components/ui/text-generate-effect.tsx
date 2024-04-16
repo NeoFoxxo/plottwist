@@ -19,11 +19,11 @@ export const TextGenerateEffect = ({
                 opacity: 1,
             },
             {
-                duration: 2,
-                delay: stagger(0.2),
+                duration: 1,
+                delay: stagger(0.1),
             }
         );
-    }, [scope.current]);
+    }, [scope.current, words]);
 
     const renderWords = () => {
         return (
@@ -43,7 +43,7 @@ export const TextGenerateEffect = ({
     };
 
     return (
-        <div className={cn("font-bold", className)}>
+        <div className={cn(className)}>
             <div>
                 <div className=" dark:text-white text-black leading-snug tracking-wide">
                     {renderWords()}
