@@ -10,6 +10,7 @@ import { z } from "zod"
 import { Button } from "./ui/button"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form"
 import { TextGenerateEffect } from "./ui/text-generate-effect"
+import { regenerateStory } from "@/utils/actions/regenerateStory"
 
 const createSchema = z.object({
 	prompt: z
@@ -61,7 +62,7 @@ export default function CreatePrompt() {
 		}
 	}
 
-	async function regenerateStory() {
+	async function regenerate() {
 		setPending(true)
 		setRegenerateCount((regenerateCount) => regenerateCount + 1)
 		if (regenerateCount >= 3) {
@@ -69,10 +70,9 @@ export default function CreatePrompt() {
 			setPending(false)
 			return
 		}
-		const scenarioData = await submitPrompt({
+		const scenarioData = await regenerateStory({
 			prompt: prompt,
-			isRegenerate: true,
-			previousStoryId: scenario?.id,
+			previousStoryId: scenario?.id!!,
 		})
 		setPending(false)
 		setScenario(scenarioData)
@@ -141,7 +141,7 @@ export default function CreatePrompt() {
 						/>
 					</article>
 					<Button
-						onClick={regenerateStory}
+						onClick={regenerate}
 						className="font-semibold flex justify-center items-center gap-2"
 					>
 						{pending ? <Loader2 className="animate-spin" /> : <Bot />}
