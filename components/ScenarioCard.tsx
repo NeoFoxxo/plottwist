@@ -67,7 +67,7 @@ export function ScenarioCard({ scenario }: SCENARIO_TYPES) {
         <CardContainer className="inter-var h-[10rem] p-4 my-7">
             <CardBody className={`transition-all bg-gray-50 relative group/card shadow-2xl dark:bg-black/50 ${bordercolor[r]} ${shadowcolor[r]} hover:border-white w-auto h-auto max-md:h-auto my-auto sm:w-[25rem] max-w-[25rem] rounded-xl p-7 m-10 border flex flex-col`}>
                 <CardItem
-                    href="/a"
+                    href={`/story/${scenario.id}`}
                     style={{ cursor: 'pointer' }}
                     translateZ="50"
                     className="text-xl font-bold text-neutral-600 dark:text-white"
@@ -98,7 +98,7 @@ export function ScenarioCard({ scenario }: SCENARIO_TYPES) {
                     <CardItem
                         translateZ={70}
                         as={Link}
-                        href={`/app/story/${scenario.id}`}
+                        href={`/story/${scenario.id}`}
                         style={{ borderRadius: '1em' }}
                         className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white bg-transparent hover:bg-white/20 "
                     >

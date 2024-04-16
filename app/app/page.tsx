@@ -1,11 +1,10 @@
 import { ScenarioCard } from "@/components/ScenarioCard";
-import { getScenarios } from "@/utils/actions/getScenarios";
 import {
     Carousel,
     CarouselContent,
     CarouselItem
-} from "@/components/ui/carousel"
-import { Card, CardContent } from "@/components/ui/card";
+} from "@/components/ui/carousel";
+import { getScenarios } from "@/utils/actions/getScenarios";
 
 export default async function Dashboard() {
     const scenarios = await getScenarios();
