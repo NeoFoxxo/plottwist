@@ -42,7 +42,6 @@ export default async function RootLayout({
 					>
 						<Header email={user?.email} />
 						{children}
-						<Footer />
 					</ThemeProvider>
 				</main>
 			</body>
