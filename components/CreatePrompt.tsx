@@ -4,7 +4,6 @@ import { StoryReturnTypes } from "@/utils/actions/insertStory";
 import { submitPrompt } from "@/utils/actions/submitPrompt";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Bot, Loader2 } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -25,14 +24,16 @@ export default function CreatePrompt() {
     const [isDisabled, setIsDisabled] = useState(false);
     const [isFormOpen, setIsFormOpen] = useState(true);
     const [scenario, setScenario] = useState<StoryReturnTypes | null>(null);
-    const router = useRouter();
+    const [prompt, setPrompt] = useState("");
+
+    // const router = useRouter();
     let attempts = 0;
     let submitErr = "";
 
     const form = useForm<z.infer<typeof createSchema>>({
         resolver: zodResolver(createSchema),
         defaultValues: {
-            prompt: "",
+            prompt: prompt,
         },
     });
 
@@ -52,6 +53,7 @@ export default function CreatePrompt() {
             setIsDisabled(true);
             setIsFormOpen(false);
             setScenario(scenarioData);
+            setPrompt(scenarioData.prompt ? scenarioData.prompt : "");
             // router.push(`/story/${storyId}`)
         } catch (err) {
             attempts++;
@@ -59,6 +61,16 @@ export default function CreatePrompt() {
             onSubmit(values);
         }
     }
+
+    const regenerateStory = async () => {
+        setPending(true);
+        const scenarioData = await submitPrompt({
+            prompt: prompt,
+        });
+        setPending(false);
+        setScenario(scenarioData);
+        setPrompt(scenarioData.prompt ? scenarioData.prompt : "");
+    };
 
     return (
         <>
@@ -115,7 +127,7 @@ export default function CreatePrompt() {
                 </Form>
             )}
             {scenario && (
-                <section className="mt-10 p-4 flex flex-col flex-wrap justify-center items-start gap-4">
+                <section className="p-4 flex flex-col flex-wrap justify-center items-start gap-4">
                     <h4 className="text-[1.15rem]">
                         <b>Prompt:</b> {scenario.prompt}
                     </h4>
@@ -123,6 +135,7 @@ export default function CreatePrompt() {
                         <h4 className="font-semibold text-[1.05rem]">
                             Your story:
                         </h4>
+                        {/* <div>{scenario.story}</div> */}
                         <TextGenerateEffect
                             className="font-normal text-[1.05rem]"
                             words={
@@ -131,13 +144,15 @@ export default function CreatePrompt() {
                         />
                     </article>
                     <Button
-                        onClick={() => {
-                            if (!scenario.prompt) return;
-                            return submitPrompt({ prompt: scenario.prompt });
-                        }}
+                        onClick={regenerateStory}
                         className="font-semibold flex justify-center items-center gap-2"
                     >
-                        <Bot /> Regenerate
+                        {pending ? (
+                            <Loader2 className="animate-spin" />
+                        ) : (
+                            <Bot />
+                        )}
+                        Regenerate
                     </Button>
                     <div className="flex flex-col flex-wrap gap-2">
                         <h4 className="font-semibold">Make your choice:</h4>
