@@ -5,8 +5,7 @@ export default function NotFound() {
 		<section>
 			<div
 				style={{
-					fontFamily:
-						'system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"',
+					fontFamily: 'system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"',
 					height: "60vh",
 					textAlign: "center",
 					display: "flex",

@@ -4,16 +4,15 @@ import Image from "next/image";
 import React from "react";
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
 import Link from "next/link";
-import { Bookmark, Check } from "lucide-react";
-import { Button } from "./ui/button";
+import { Bookmark, Check, MessageSquareText } from "lucide-react";
+
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "./ui/card";
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip"
+import { transform } from "typescript";
 
 type SCENARIO_TYPES = {
     scenario: {
@@ -43,13 +42,36 @@ function truncateString(str: string, maxl: number) {
     }
 }
 
+const shadowcolor = [
+    'hover:shadow-emerald-500/[0.4]',
+    'hover:shadow-orange-400/[0.6]',
+    'hover:shadow-blue-600/[0.6]',
+    'hover:shadow-cyan-400/[0.6]',
+    'hover:shadow-violet-500/[0.4]',
+    'hover:shadow-red-300/[0.4]'
+]
+
+const bordercolor = [
+    'border-emerald-500/[0.6]',
+    'border-orange-500/[0.6]',
+    'border-blue-500/[0.6]',
+    'border-cyan-500/[0.6]',
+    'border-violet-500/[0.6]',
+    'border-red-300/[0.6]'
+]
+
 export function ScenarioCard({ scenario }: SCENARIO_TYPES) {
+
+    const r = Math.floor(Math.random() * shadowcolor.length)
+
     const { title, prompt, story } = scenario;
 
     return (
-        <CardContainer className="inter-var">
-            <CardBody className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black/50 dark:border-white/[0.2] border-black/[0.1] w-auto sm:w-[25rem] max-w-[25rem] max-h-[23rem] rounded-xl p-7 m-3 border flex flex-col">
+        <CardContainer className="inter-var h-[10rem] p-4 my-7">
+            <CardBody className={`transition-all bg-gray-50 relative group/card shadow-2xl dark:bg-black/50 ${bordercolor[r]} ${shadowcolor[r]} hover:border-white w-auto h-auto max-md:h-auto my-auto sm:w-[25rem] max-w-[25rem] rounded-xl p-7 m-10 border flex flex-col`}>
                 <CardItem
+                    href="/a"
+                    style={{ cursor: 'pointer' }}
                     translateZ="50"
                     className="text-xl font-bold text-neutral-600 dark:text-white"
                 >
@@ -64,38 +86,215 @@ export function ScenarioCard({ scenario }: SCENARIO_TYPES) {
                 </CardItem>
                 <CardItem
                     as="p"
-                    translateZ="60"
+                    translateZ={60}
                     style={{
                         backgroundColor: 'rgba(0,0,0,0.700)',
                         borderRadius: '1em',
-                        fontSize: '0.60rem',
                         lineHeight: '1rem',
                         overflowWrap: 'break-word',
                     }}
-                    className="text-neutral-600 p-2 font-mono text-xs w-[100%] my-4 dark:text-neutral-500 hover:dark:text-neutral-300"
+                    className="text-neutral-600 p-2 transition-all duration-1000 ease-in-out font-mono text-[0.4em] hover:text-[0.5em] w-[100%] my-4 dark:text-neutral-500 hover:dark:text-neutral-300"
                 >
-                    Prompt: ``{prompt}``
+                    Prompt: {prompt}
                 </CardItem>
                 <div className="flex justify-between items-center mt-auto">
-
                     <CardItem
-                        translateZ={20}
+                        translateZ={70}
                         as={Link}
-                        href=""
-                        target="_blank"
+                        href="/b"
                         style={{ borderRadius: '1em' }}
                         className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white bg-transparent hover:bg-white/20 "
                     >
                         Remix →
                     </CardItem>
+                    <div className="flex justify-end mt-auto">
+                        <CardItem
+                            translateZ={70}
+                            as="a"
+                            href="/b"
+                            style={{ borderRadius: '1em' }}
+                            className="mr-2 rounded-x bg-transparent hover:bg-white/20 text-xs font-bold"
+                        >
+                            <TooltipProvider delayDuration={300} >
+                                <Tooltip>
+                                    <TooltipTrigger >
+                                        <MessageSquareText className="size-4 mx-4 my-2"></MessageSquareText>
+                                    </TooltipTrigger>
+                                    <TooltipContent className='p-0 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight' side='bottom'>
+                                        <p>Add a review</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                        </CardItem>
+                        <CardItem
+                            translateZ={70}
+                            as="a"
+                            href="/b"
+                            style={{ borderRadius: '1em' }}
+                            className=" rounded-x bg-transparent hover:bg-white/20 text-xs font-bold"
+                        >
+                            <TooltipProvider delayDuration={300} >
+                                <Tooltip>
+                                    <TooltipTrigger >
+                                        <Bookmark className="size-4 mx-4 my-2"></Bookmark>
+                                    </TooltipTrigger>
+                                    <TooltipContent className='p-0 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight' side='bottom'>
+                                        <p>Add to library</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                        </CardItem>
+                    </div>
+                </div>
+            </CardBody>
+        </CardContainer>
+    );
+}
+
+/*
+
+"use client";
+
+import Image from "next/image";
+import React from "react";
+import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
+import Link from "next/link";
+import { Bookmark, Check, MessageSquareText } from "lucide-react";
+
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip"
+import { transform } from "typescript";
+
+type SCENARIO_TYPES = {
+    scenario: {
+        created_at: string;
+        follow_count: number;
+        id: number;
+        prompt: string | null;
+        story: string | null;
+        title: string;
+        user_id: string;
+    };
+};
+
+function truncateString(str: string, maxl: number) {
+    // Trim any leading or trailing spaces
+    str?.trim();
+
+    if (str?.length > maxl) {
+        // Find the index of the last space before the 120th character
+        let lastSpaceIndex = str.lastIndexOf(' ', maxl);
+        // If no space is found, truncate at 120th character
+        let endIndex = lastSpaceIndex === -1 ? maxl : lastSpaceIndex;
+
+        return str.substring(0, endIndex).trim() + " ...";
+    } else {
+        return str;
+    }
+}
+
+let shadowcolor = [
+    'shadow-emerald-500/[0.4]',
+    'shadow-orange-400/[0.4]',
+    'shadow-blue-400/[0.4]',
+    'shadow-cyan-400/[0.5]',
+]
+
+let bordercolor = [
+    'border-emerald-500/[0.6]',
+    'border-orange-500/[0.6]',
+    'border-blue-500/[0.6]',
+    'border-cyan-500/[0.6]',
+]
+
+export function ScenarioCard({ scenario }: SCENARIO_TYPES) {
+    let r = Math.floor(Math.random() * shadowcolor.length)
+
+    const { title, prompt, story } = scenario;
+
+    return (
+        <CardContainer className="inter-var h-[10rem] p-0 my-7">
+            <CardBody className={`transition-all bg-gray-50 relative group/card shadow-2xl dark:hover:${shadowcolor[r]} dark:bg-black/50 ${bordercolor[r]} hover:border-white w-auto h-auto max-md:h-auto my-auto sm:w-[25rem] max-w-[25rem] rounded-xl p-7 m-10 border flex flex-col`}>
+                <CardItem
+                    href="/a"
+                    style={{ cursor: 'pointer' }}
+                    translateZ="50"
+                    className="text-xl font-bold text-neutral-600 dark:text-white"
+                >
+                    {title}
+                </CardItem>
+                <CardItem
+                    as="p"
+                    translateZ="60"
+                    className="text-neutral-400 text-xs max-w-sm mt-2 dark:text-neutral-400/80 hover:dark:text-neutral-400/100"
+                >
+                    {truncateString(story!!, 180)}
+                </CardItem>
+                <CardItem
+                    as="p"
+                    translateZ={60}
+                    style={{
+                        backgroundColor: 'rgba(0,0,0,0.700)',
+                        borderRadius: '1em',
+                        lineHeight: '1rem',
+                        overflowWrap: 'break-word',
+                    }}
+                    className="z-5 text-neutral-600 p-2 transition-all duration-1000 ease-in-out font-mono text-[0.4em] hover:text-[0.5em] w-[100%] my-4 dark:text-neutral-500 hover:dark:text-neutral-300"
+                >
+                    Prompt: {prompt}
+                </CardItem>
+                <div className="flex justify-between items-center mt-auto">
                     <CardItem
-                        translateZ={20}
-                        as="button"
-                        style={{ borderRadius: '1em' }}
-                        className="px-4 py-2 rounded-x bg-transparent hover:bg-white/20 text-xs font-bold"
+                        translateZ={70}
+                        as={Link}
+                        href="/b"
+                        style={{ borderRadius: '1em', zIndex: 0 }}
+                        className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white bg-transparent hover:bg-white/20 "
                     >
-                        <Bookmark className="size-4"></Bookmark>
+                        Remix →
                     </CardItem>
+                    <div className="flex justify-end mt-auto z-10">
+                        <CardItem
+                            translateZ={70}
+                            as="a"
+                            href="/b"
+                            style={{ borderRadius: '1em' }}
+                            className="mr-2 rounded-x bg-transparent hover:bg-white/20 text-xs font-bold"
+                        >
+                            <TooltipProvider delayDuration={300} >
+                                <Tooltip>
+                                    <TooltipTrigger >
+                                        <MessageSquareText className="size-4 mx-4 my-2"></MessageSquareText>
+                                    </TooltipTrigger>
+                                    <TooltipContent className='p-0 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight' side='bottom'>
+                                        <p>Add a review</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                        </CardItem>
+                        <CardItem
+                            translateZ={70}
+                            as="a"
+                            href="/b"
+                            style={{ borderRadius: '1em' }}
+                            className=" rounded-x bg-transparent hover:bg-white/20 text-xs font-bold"
+                        >
+                            <TooltipProvider delayDuration={300} >
+                                <Tooltip>
+                                    <TooltipTrigger >
+                                        <Bookmark className="size-4 mx-4 my-2"></Bookmark>
+                                    </TooltipTrigger>
+                                    <TooltipContent className='p-0 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight' side='bottom'>
+                                        <p>Add to library</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                        </CardItem>
+                    </div>
                 </div>
             </CardBody>
         </CardContainer>
@@ -103,14 +302,4 @@ export function ScenarioCard({ scenario }: SCENARIO_TYPES) {
 }
 
 
-/*
-<CardItem translateZ="100" className="w-full mt-4">
-                    <Image
-                        src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2560&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                        height="1000"
-                        width="1000"
-                        className="h-60 w-full object-cover rounded-xl group-hover/card:shadow-xl"
-                        alt="thumbnail"
-                    />
-                </CardItem>
 */
