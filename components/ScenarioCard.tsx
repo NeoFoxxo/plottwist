@@ -1,18 +1,15 @@
 "use client";
 
-import Image from "next/image";
-import React from "react";
-import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
+import { Bookmark, MessageSquareText } from "lucide-react";
 import Link from "next/link";
-import { Bookmark, Check, MessageSquareText } from "lucide-react";
+import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
 
 import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
-} from "@/components/ui/tooltip"
-import { transform } from "typescript";
+} from "@/components/ui/tooltip";
 
 type SCENARIO_TYPES = {
     scenario: {
@@ -101,7 +98,7 @@ export function ScenarioCard({ scenario }: SCENARIO_TYPES) {
                     <CardItem
                         translateZ={70}
                         as={Link}
-                        href="/b"
+                        href={`/app/story/${scenario.id}`}
                         style={{ borderRadius: '1em' }}
                         className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white bg-transparent hover:bg-white/20 "
                     >
