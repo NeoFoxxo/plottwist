@@ -1,6 +1,11 @@
+import { Button, buttonVariants } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { TracingBeam } from "@/components/ui/tracing-beam";
 import { getStory } from "@/utils/actions/getStory";
+import { Bookmark, BotIcon, MessageSquareText } from "lucide-react";
+import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 import Image from "next/image";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export default async function StoryDetails({ params }: { params: { id: string } }) {
@@ -10,27 +15,119 @@ export default async function StoryDetails({ params }: { params: { id: string } 
         redirect("/app");
     }
 
-    return (
-        <main className="flex flex-col w-full gap-8 py-8 mb-8">
-            <TracingBeam className="pt-6 pb-10">
-                <div className="flex flex-col w-full gap-4 px-4">
-                    <h1 className="text-3xl font-bold">{story.title}</h1>
-                    <div className="max-w-4xl">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Soluta maxime voluptatum itaque autem id quidem distinctio tenetur ut pariatur nemo magnam ab, laboriosam quo nesciunt sit? Laboriosam dolorum est voluptas quisquam voluptatem aliquam doloribus itaque et. Harum quia sunt totam repellat laborum ratione iste asperiores autem inventore ipsam nulla placeat dolores neque cum, ab, sed labore at odit officiis laudantium. Harum rerum totam ipsam iste at vitae aliquid, repudiandae minus, aliquam id quae? Omnis eos ex autem commodi nemo corporis explicabo reiciendis eum, incidunt ullam, ea illum eveniet ipsam atque molestias eligendi nostrum, a dolore dignissimos. Provident neque, minus mollitia quidem ducimus est cupiditate rerum, hic dolorum ut tempore necessitatibus facilis odit rem. Autem esse praesentium assumenda accusantium aspernatur quis fugit, cupiditate a modi doloribus tempora iste laborum corporis voluptate! Quaerat sint, unde assumenda quam odio iusto repellat. Itaque placeat atque minus. Delectus, aut minima, cupiditate qui ab maiores quas dolorum modi eligendi quidem nam voluptatum? Maiores quaerat error, iure totam voluptas autem a repellendus cumque tenetur suscipit quidem nihil quas natus est. Magnam, sit ad? Harum optio totam vitae natus necessitatibus, alias dolorem praesentium maxime excepturi, soluta id aspernatur esse deleniti corrupti quod dolorum eaque saepe. Totam nisi necessitatibus fuga vel eaque ea. Repellat natus animi ratione, recusandae amet id tempora laborum rem inventore quos atque. Reiciendis atque, consectetur ipsa sed tenetur, qui, nobis quia quibusdam autem doloremque architecto porro quae facere! Et totam corrupti aspernatur laudantium, ratione reiciendis cumque sint? Assumenda eaque odio ipsum sequi dolores impedit quod cum, quidem quasi consectetur exercitationem distinctio quos, porro asperiores illo earum dolor natus eius alias accusamus? Soluta ducimus laboriosam autem aperiam quas exercitationem possimus perspiciatis maxime sed corporis itaque commodi, suscipit, obcaecati dolore! Cum ab consequatur hic ad dolores accusantium voluptatum nobis, mollitia doloremque perferendis necessitatibus ipsa a? Magni illum autem, voluptates laudantium voluptas quidem debitis iste facere aut. Error, aut debitis voluptas adipisci inventore, labore facere autem qui sapiente non consequatur perferendis, voluptatum veniam iste aspernatur eaque sit voluptates mollitia nesciunt saepe dolorum quisquam? Eius in ab facilis reiciendis ullam porro fugit ad enim. Non, nesciunt laudantium optio cupiditate consectetur est deleniti iste cum eos placeat libero aut aperiam similique enim dolore repellat alias magnam aliquam culpa illum ea possimus fugiat. Placeat sapiente repudiandae nobis doloremque, labore excepturi amet natus et beatae veritatis illum voluptates! Illo repellat similique fuga consequatur non quibusdam libero voluptas, distinctio ab modi quos tempora sit numquam. Ipsa reprehenderit ipsam eius alias vero voluptatibus necessitatibus, doloribus cupiditate, asperiores quis doloremque, ipsum id corrupti consequatur? Nisi, similique commodi necessitatibus omnis rerum veniam voluptate, error enim et expedita a est libero dolorem saepe earum iste. Ipsa totam esse dignissimos nobis deserunt vitae impedit aliquid adipisci blanditiis animi dolorum recusandae fugiat laborum fuga, eligendi quis molestias a rem minus repellat! Et, praesentium illum. Nobis sapiente dolore nostrum ducimus fugit pariatur fugiat? Esse quis dolorum, et ipsum cum corporis! Id tenetur ex iste nesciunt deserunt tempora et, officiis eligendi unde ad laudantium. Totam nisi consequuntur quas! Nihil culpa, incidunt provident placeat suscipit illo commodi quaerat possimus sint blanditiis necessitatibus dolore, consectetur voluptatum dignissimos totam libero. Officia obcaecati aliquam sequi, soluta ullam ratione quas iste quia dolorem non consequuntur? Id eos sequi ipsam aliquam porro, libero repudiandae qui repellat laborum? Voluptatem, recusandae exercitationem expedita laborum nulla eius. Et sit sequi saepe repudiandae id in tempore doloremque cum tempora aperiam cupiditate quasi voluptatibus reprehenderit eius rem, culpa fugit non corrupti at error distinctio quidem maiores! Officiis ab odit quia numquam asperiores eveniet expedita saepe error hic aliquid, sunt vel laboriosam sed repudiandae doloribus aut accusantium eos vitae facere temporibus illum dolorum. Adipisci praesentium animi incidunt doloribus asperiores molestias voluptates totam consequuntur illo, sapiente est dolores delectus quia iure. Veritatis, accusamus officiis. Iure aspernatur quia dolorem quod ea sunt odio. Nihil minima ducimus rerum fugiat necessitatibus repellat numquam repellendus alias amet laudantium nam corporis provident aperiam iste similique sint voluptatum perferendis, et dicta nisi nostrum modi expedita. Laborum vel asperiores incidunt assumenda. Est delectus impedit ab labore incidunt. Quasi, perferendis dignissimos odio corporis ea et dolorem minus ullam, nisi quidem quisquam doloribus laboriosam atque debitis neque aliquid qui minima totam quaerat? Unde officia natus dolorum fugit, temporibus sequi rerum autem exercitationem nemo molestiae esse quis cupiditate repudiandae, porro minima eius cumque? Delectus aut nulla quos autem vitae quia est ut ducimus? Aperiam veritatis molestiae rerum neque incidunt architecto dolor iure ullam? Totam repellat voluptatibus, cupiditate fugiat harum a maxime. Commodi eligendi laudantium cum, porro architecto fuga necessitatibus! Cumque aliquid consectetur ipsam at possimus mollitia quos officiis omnis esse culpa placeat alias pariatur, accusamus dolores vel voluptas corrupti quae quaerat sequi ab atque dicta recusandae? Commodi vitae nobis temporibus, nesciunt possimus doloremque eos amet quibusdam quidem velit quaerat dolores dicta quae est nam. Maxime non quod odio, minus adipisci obcaecati? Eius blanditiis laboriosam iusto reprehenderit soluta recusandae ad nihil suscipit placeat quia! Est aliquam ipsam ad modi accusamus autem, impedit tenetur? Deleniti, voluptatem consequatur laboriosam temporibus delectus sed dolorem eum quae nulla atque magnam id in omnis? Nisi est, fugit perspiciatis necessitatibus magni architecto, debitis consequuntur officiis molestias eum dolorum reprehenderit. Voluptatibus quia laborum odit? Dolorem, aliquam fugiat? Fugit, tempore rem quos iste, tempora eaque quaerat nobis, nesciunt sint excepturi reprehenderit. Saepe accusamus ipsam autem mollitia voluptas vel harum, laudantium eligendi tenetur vero, ipsa sed numquam temporibus atque quibusdam repellat corporis voluptatum! Dignissimos similique amet cupiditate quo rem est recusandae illo voluptatibus alias doloremque, repellendus, dolorem minima iusto molestiae aut dicta magni officia! Qui, enim odio dicta totam veritatis cumque officiis aspernatur iste mollitia vero laboriosam earum? Assumenda temporibus eum nobis vero corporis non? Excepturi deserunt minus eveniet voluptas exercitationem illum, eligendi sequi voluptatibus magnam? Ea dolorum commodi reprehenderit reiciendis repellendus numquam hic soluta, suscipit explicabo voluptas impedit ut sapiente illo vero maiores aspernatur odit nobis natus neque quos veritatis? Obcaecati necessitatibus deserunt totam dolor rem, reprehenderit consequatur itaque sunt debitis! Esse, adipisci! Dolores repellendus architecto libero distinctio perspiciatis, dignissimos maiores error consectetur sint ea perferendis repellat inventore quas vero optio nam. Doloremque.</div>
-                </div>
-            </TracingBeam>
+    const accountInfo = [70, 20, 570];
+    const icons = ["/icons/follower.png", "/icons/book.png", "/icons/bookmark.png"];
 
-            <div className="flex items-center gap-6 mx-auto">
-                <Image
-                    src={"https://ik.imagekit.io/fabric01/linkx/default.png?updatedAt=1708353019749"}
-                    width={150}
-                    height={150}
-                    alt="Author"
-                    className="w-24 h-24 rounded-full" />
-                <div className="flex flex-col gap-1">
-                    <h2 className="text-lg font-bold">Some name here</h2>
-                    <p>lorem1000000000000000000000000000000000000000000000000000000000000000</p>
+    const reviews = [
+        {
+            author: "bonndubz",
+            content: "you suck lol"
+        }, {
+            author: "neofox",
+            content: "naaa shudafug up"
+        }, {
+            author: "slaviik",
+            content: "e"
+        }, {
+            author: "peppermint",
+            content: "i think i need to go to school"
+        }
+    ]
+
+    return (
+        <main className="flex flex-col w-full mx-auto gap-2 py-8 mb-8">
+            <div className="flex flex-col w-full mx-auto">
+                <TracingBeam className="pt-6 pb-10">
+                    <h1 style={{ textShadow: '0em 0em 0.3em rgba(255,255,255,0.6)' }} className="text-4xl font-bold mb-5">{story.title}</h1>
+                    <TextGenerateEffect className="max-w-4xl tracking-wider" words={story!!.story!!} />
+                </TracingBeam>
+                <div className="flex flex-col w-full mx-auto max-w-5xl">
+                    <p className="font-mono text-sm mb-2 text-white/35">Generated by</p>
+                    <div className="flex items-center gap-3 w-full">
+                        <a href="" className="w-[fit-content]">
+                            <Image
+                                src={"https://ik.imagekit.io/fabric01/linkx/default.png?updatedAt=1708353019749"}
+                                width={150}
+                                height={150}
+                                alt="Author"
+                                className="cursor-pointer w-9 h-9 rounded-full" />
+                        </a>
+                        <div className="flex flex-col gap-1">
+                            <a href="" className="w-[fit-content]">
+                                <h2 style={{ textShadow: '0em 0em 0.3em white' }} className="text-base font-bold cursor-pointer hover:underline w-full">{'username'}</h2>
+                            </a>
+                            <div className="flex flex-row text-start">
+                                {accountInfo.map((info: any, index) => (
+                                    <div className="flex items-start gap-0">
+                                        <img className="h-[0.8rem] w-[0.8rem] mr-1 invert" src={icons[index]}></img>
+                                        <span style={{ textShadow: '0em 0em 0.4em white' }} className="text-xs font-bold mr-2">{info}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="flex items-center gap-3 w-full pt-4 mb-7">
+                        <TooltipProvider delayDuration={300} >
+                            <Tooltip>
+                                <TooltipTrigger >
+                                    <Link className={buttonVariants({ variant: "outline" })} href={""}>
+                                        <BotIcon className="size-5 mx-4 my-2"></BotIcon>
+                                    </Link>
+                                </TooltipTrigger>
+                                <TooltipContent className='p-0 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight' side='bottom'>
+                                    <p style={{ textShadow: '0em 0em 0.3em white' }} >Remix generation</p>
+                                </TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
+                        <TooltipProvider delayDuration={300} >
+                            <Tooltip>
+                                <TooltipTrigger >
+                                    <Link className={buttonVariants({ variant: "outline" })} href={""}>
+                                        <MessageSquareText className="size-4 mx-4 my-2"></MessageSquareText>
+                                    </Link>
+                                </TooltipTrigger>
+                                <TooltipContent className='p-0 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight' side='bottom'>
+                                    <p style={{ textShadow: '0em 0em 0.3em white' }} >Add a review</p>
+                                </TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
+                        <TooltipProvider delayDuration={300} >
+                            <Tooltip>
+                                <TooltipTrigger >
+                                    <Link className={buttonVariants({ variant: "outline" })} href={""}>
+                                        <Bookmark className="size-4 mx-4 my-2"></Bookmark>
+                                    </Link>
+                                </TooltipTrigger>
+                                <TooltipContent className='p-0 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight' side='bottom'>
+                                    <p style={{ textShadow: '0em 0em 0.3em white' }} >Add to library</p>
+                                </TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
+                    </div>
+                    <p className="font-mono text-sm mb-2 text-white/60">Reviews</p>
+                    <div className="container h-[30vh] overflow-y-auto overflow-x-hidden border border-white/15 bg-black/10 border-solid rounded-lg p-5 flex flex-col items-start gap-3 w-full pt-4">
+                        {
+                            reviews.map((rev, index) => (
+                                <div className="flex flex-col gap-2 mx-auto w-[60rem]">
+                                    <div className="my-2">
+                                        <div className="flex flex-row gap-2">
+                                            <a href="" className="w-[fit-content]">
+                                                <img className="w-6 h-6 rounded-full" src="/icons/pfp1.png"></img>
+                                            </a>
+                                            <a href="" className="w-[fit-content] h-[fit-content]">
+                                                <h2 style={{ textShadow: '0em 0em 0.3em white' }} className="text-sm cursor-pointer hover:underline w-full">{rev.author}</h2>
+                                            </a>
+                                        </div>
+                                        <p className="text-[14px] p-[0.1rem] mt-1 font-mono text-white/50">{rev.content}</p>
+                                    </div>
+                                    <div className="mx-auto w-full h-[0.01rem] bg-white/5"></div>
+                                </div>
+                            ))
+                        }
+                    </div>
                 </div>
             </div>
+
         </main>
     )
 }
