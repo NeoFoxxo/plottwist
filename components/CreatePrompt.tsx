@@ -2,21 +2,12 @@
 import { Textarea } from "@/components/ui/textarea"
 import { submitPrompt } from "@/utils/actions/submitPrompt"
 import { Bot, Loader2 } from "lucide-react"
-
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Button } from "./ui/button"
-import {
-	Form,
-	FormControl,
-	FormDescription,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from "./ui/form"
+import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form"
 import { useRouter } from "next/navigation"
 
 const createSchema = z.object({
@@ -30,6 +21,8 @@ export default function CreatePrompt() {
 	const [pending, setPending] = useState(false)
 	const [errorMessage, setErrorMessage] = useState("")
 	const router = useRouter()
+	let attempts = 0
+	let submitErr = ""
 
 	const form = useForm<z.infer<typeof createSchema>>({
 		resolver: zodResolver(createSchema),
@@ -40,12 +33,21 @@ export default function CreatePrompt() {
 
 	async function onSubmit(values: z.infer<typeof createSchema>) {
 		setPending(true)
+		setErrorMessage("")
+
+		if (attempts >= 3) {
+			setErrorMessage(`Could not create story: ${submitErr}`)
+			setPending(false)
+			return
+		}
+
 		try {
 			const storyId = await submitPrompt(values)
-			router.push('/story/' + storyId)
+			router.push(`/story/${storyId}`)
 		} catch (err) {
-			setErrorMessage(`Could not create story: ${err}`)
-			setPending(false)
+			attempts++
+			submitErr = String(err)
+			onSubmit(values)
 		}
 	}
 
@@ -55,16 +57,15 @@ export default function CreatePrompt() {
 				onSubmit={form.handleSubmit(onSubmit)}
 				className="w-full p-4 sm:py-4 md:p-0 space-y-6 text-center"
 			>
-				<h1 className="text-4xl font-bold">
-					Create a story.
-				</h1>
+				<h1 className="text-4xl font-bold">Create a story.</h1>
 				<FormField
 					control={form.control}
 					name="prompt"
 					render={({ field }) => (
 						<FormItem>
 							<p className="mb-5">
-								Write your own story and make different choices to affect the outcome.
+								Write your own story and make different choices to affect the
+								outcome.
 							</p>
 							<FormControl>
 								<Textarea
@@ -79,7 +80,12 @@ export default function CreatePrompt() {
 						</FormItem>
 					)}
 				></FormField>
-				<Button variant={"outline"} className="w-fit mx-auto" type="submit" disabled={pending}>
+				<Button
+					variant={"outline"}
+					className="w-fit mx-auto"
+					type="submit"
+					disabled={pending}
+				>
 					{pending ? (
 						<div className="flex items-center justify-center gap-2">
 							<Loader2 className="animate-spin" />
@@ -92,7 +98,9 @@ export default function CreatePrompt() {
 						</div>
 					)}
 				</Button>
-				{errorMessage && <p style={{ color: 'rgba(255,50,105,0.600)' }}>{errorMessage}</p>}
+				{errorMessage && (
+					<p style={{ color: "rgba(255,50,105,0.600)" }}>{errorMessage}</p>
+				)}
 			</form>
 		</Form>
 	)
