@@ -1,5 +1,6 @@
 "use client";
 import { Textarea } from "@/components/ui/textarea";
+import { continueStory } from "@/utils/actions/continueStory";
 import { StoryReturnTypes } from "@/utils/actions/insertStory";
 import { regenerateStory } from "@/utils/actions/regenerateStory";
 import { submitPrompt } from "@/utils/actions/submitPrompt";
@@ -72,6 +73,18 @@ export default function CreatePrompt() {
         }
         const scenarioData = await regenerateStory({
             prompt: prompt,
+            previousStoryId: scenario?.id!!,
+        });
+        setPending(false);
+        setScenario(scenarioData);
+        setPrompt(scenarioData.prompt ? scenarioData.prompt : "");
+    }
+
+    async function generateFromChoice(choice: string) {
+        setPending(true);
+        const scenarioData = await continueStory({
+            title: scenario?.title!,
+            prompt: prompt + " " + choice,
             previousStoryId: scenario?.id!!,
         });
         setPending(false);
@@ -167,6 +180,9 @@ export default function CreatePrompt() {
                             return (
                                 <div
                                     key={index}
+                                    onClick={async () =>
+                                        await generateFromChoice(choice)
+                                    }
                                     className="py-2 px-4 cursor-pointer bg-neutral-800 hover:bg-neutral-900 w-fit rounded-md"
                                 >
                                     {choice}
