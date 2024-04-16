@@ -1,5 +1,5 @@
 "use server";
-import { AIContinueResponse } from "../supabase/types/AIResponse";
+import { AIResponse } from "../supabase/types/AIResponse";
 import updateStory from "./updateStory";
 
 export async function continueStory({
@@ -25,10 +25,10 @@ export async function continueStory({
     }
 
     const data = await res.json();
-    const aiResponse: AIContinueResponse = data.result.Output;
+    const aiResponse: AIResponse = data.result.Output;
 
     console.log(aiResponse);
-    const story = prompt + " " + aiResponse.response.response;
+    const story = prompt + " " + aiResponse.response.story;
     const choices = aiResponse.choices.choices;
 
     try {
