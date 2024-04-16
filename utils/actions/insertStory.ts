@@ -4,12 +4,14 @@ export interface InsertStoryProps {
 	story: string
 	choices: string[]
 	prompt: string
+	title: string
 }
 
 export default async function insertStory({
 	story,
 	choices,
 	prompt,
+	title,
 }: InsertStoryProps): Promise<number> {
 	const supabase = createClient()
 
@@ -19,7 +21,13 @@ export default async function insertStory({
 	const { data: insertedStory, error } = await supabase
 		.from("scenarios")
 		.insert([
-			{ story: story, choices: choices, user_id: user_id, prompt: prompt },
+			{
+				story: story,
+				choices: choices,
+				user_id: user_id,
+				prompt: prompt,
+				title: title,
+			},
 		])
 		.select()
 

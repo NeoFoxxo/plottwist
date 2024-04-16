@@ -27,15 +27,19 @@ export async function submitPrompt({ prompt }: { prompt: string }) {
 	}
 
 	let choices: string[]
-
 	try {
 		choices = aiResponse.choices.choices.map((singleChoice) => singleChoice)
 	} catch (error) {
 		throw new Error("Choice data is undefined, please try again")
 	}
 
+	const title = aiResponse.title.title
+	if (!title) {
+		throw new Error("Title is undefined, please try again")
+	}
+
 	try {
-		const storyId = insertStory({ story, choices, prompt })
+		const storyId = insertStory({ title, story, choices, prompt })
 		return storyId
 	} catch (error) {
 		throw new Error(String(error))
