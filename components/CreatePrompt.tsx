@@ -1,5 +1,6 @@
 "use client";
 import { Textarea } from "@/components/ui/textarea";
+import { continueStory } from "@/utils/actions/continueStory";
 import { StoryReturnTypes } from "@/utils/actions/insertStory";
 import { regenerateStory } from "@/utils/actions/regenerateStory";
 import { submitPrompt } from "@/utils/actions/submitPrompt";
@@ -76,7 +77,17 @@ export default function CreatePrompt() {
         });
         setPending(false);
         setScenario(scenarioData);
-        setPrompt(scenarioData.prompt ? scenarioData.prompt : "");
+    }
+
+    async function generateFromChoice(choice: string) {
+        setPending(true);
+        const scenarioData = await continueStory({
+            title: scenario?.title!,
+            prompt: `${prompt} ${choice}`,
+            previousStoryId: scenario?.id!!,
+        });
+        setPending(false);
+        setScenario(scenarioData);
     }
 
     return (
@@ -134,15 +145,14 @@ export default function CreatePrompt() {
                 </Form>
             )}
             {scenario && (
-                <section className="p-4 flex flex-col flex-wrap justify-center items-start gap-4">
+                <section className="p-4 flex flex-col flex-wrap justify-center items-start gap-4 max-w-[800px]">
                     <h4 className="text-[1.15rem]">
                         <b>Prompt:</b> {scenario.prompt}
                     </h4>
-                    <article className="max-w-[800px] flex flex-col gap-2">
+                    <article className="flex flex-col gap-2">
                         <h4 className="font-semibold text-[1.05rem]">
                             Your story:
                         </h4>
-                        {/* <div>{scenario.story}</div> */}
                         <TextGenerateEffect
                             className="font-normal text-[1.05rem]"
                             words={
@@ -167,6 +177,9 @@ export default function CreatePrompt() {
                             return (
                                 <div
                                     key={index}
+                                    onClick={async () =>
+                                        await generateFromChoice(choice)
+                                    }
                                     className="py-2 px-4 cursor-pointer bg-neutral-800 hover:bg-neutral-900 w-fit rounded-md"
                                 >
                                     {choice}
