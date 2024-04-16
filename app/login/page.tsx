@@ -14,6 +14,17 @@ export default function Login({
         const email = formData.get("email") as string;
         const supabase = createClient();
 
+        const response = await fetch('https://cluyaim7y39pv7mvbkmxlhcbh.agent.a.smyth.ai/api/create-user', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+        });
+
+        const data_ = await response.json();
+        const userName = JSON.parse(data_.result.Output.generatedUsername).username
+
         const { data, error } = await supabase.auth.signInWithOtp({
             email: email,
             options: {
@@ -27,6 +38,8 @@ export default function Login({
                 `/login?message=Could not authenticate user: ${error.message}`
             );
         }
+
+        //here we should insert the username (userName)
 
         return redirect(
             "/login?message=Check your email to sign in to Plot Twist!"
