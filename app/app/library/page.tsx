@@ -1,4 +1,4 @@
-import { ScenarioCard } from "@/components/ScenarioCard"
+import { LibraryCard } from "@/components/LibraryCard"
 import getUsersStories from "@/utils/actions/getUsersStories"
 import { createClient } from "@/utils/supabase/server"
 import { redirect } from "next/navigation"
@@ -28,7 +28,7 @@ export default async function Library() {
 			<div className="flex flex-row flex-wrap md:ml-[5rem]">
 				{userStories?.map((story) => (
 					<div className="!max-w-[26rem] md:!h-80">
-						<ScenarioCard key={story.id} scenario={story} />
+						<LibraryCard key={story.id} scenario={story} />
 					</div>
 				))}
 			</div>
