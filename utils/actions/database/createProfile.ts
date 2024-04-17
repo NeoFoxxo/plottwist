@@ -1,5 +1,5 @@
 import { createClient } from "@/utils/supabase/server";
-import { generateRandomUsername } from "./generateUsername";
+import { generateRandomUsername } from "../api/generateUsername";
 
 export async function createProfile() {
     const supabase = createClient();
