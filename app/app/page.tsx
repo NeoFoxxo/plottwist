@@ -19,15 +19,7 @@ export default async function Dashboard() {
     return (
         <div className="container h-[90vh] overflow-hidden p-4 flex flex-row max-lg:flex-col mx-auto text-2xl">
             <div className="flex flex-col w-full mx-auto">
-                <p
-                    style={{
-                        fontFamily: '"Poppins", sans-serif',
-                        textShadow: "0em 0em 0.3em rgba(100,240,230,1)",
-                    }}
-                    className="text-4xl font-bold text-center"
-                >
-                    Most popular
-                </p>
+                <h2 style={{ textShadow: '0em 0em 0.6em white' }} className="text-2xl font-bold text-center">Most popular</h2>
                 <Carousel
                     opts={{ align: "start" }}
                     orientation={"vertical"}
@@ -47,15 +39,7 @@ export default async function Dashboard() {
                 </Carousel>
             </div>
             <div className="flex flex-col w-full mx-auto">
-                <p
-                    style={{
-                        fontFamily: '"Poppins", sans-serif',
-                        textShadow: "0em 0em 0.3em rgba(100,240,230,1)",
-                    }}
-                    className="text-4xl font-bold text-center max-md:mt-10"
-                >
-                    New stories
-                </p>
+                <h2 style={{ textShadow: '0em 0em 0.6em white' }} className="text-2xl font-bold text-center">New stories</h2>
                 <Carousel
                     opts={{
                         align: "start",

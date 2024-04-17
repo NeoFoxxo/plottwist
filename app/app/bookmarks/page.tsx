@@ -17,7 +17,7 @@ export default async function Bookmarks() {
 
     return (
         <div className="w-full flex flex-col gap-10 justify-center items-center">
-            <h2 className="text-2xl font-bold">Bookmarks</h2>
+            <h2 style={{ textShadow: '0em 0em 0.6em white' }} className="text-2xl font-bold">Bookmarks</h2>
             <section className="w-full flex flex-wrap gap-10 justify-start">
                 {scenarios.map(async (scenario) => (
                     <BookmarksCard data={await getUserInfo(scenario.user_id)} scenario={scenario} />
