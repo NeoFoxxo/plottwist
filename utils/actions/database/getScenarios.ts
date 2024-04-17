@@ -1,20 +1,22 @@
-import { createClient } from "@/utils/supabase/server"
+import { createClient } from "@/utils/supabase/server";
 
 export async function getScenarios() {
-	const supabase = createClient()
+    const supabase = createClient();
 
-	const { data: mostPopular, error } = await supabase
-		.from("scenarios")
-		.select("*")
-		.eq("published", "true")
+    const { data: mostPopular, error } = await supabase
+        .from("scenarios")
+        .select("*")
+        .eq("published", "true")
+        .limit(20);
 
-	const { data: recentStories, error: recentStoriesError } = await supabase
-		.from("scenarios")
-		.select("*")
-		.order("created_at", { ascending: false })
-		.eq("published", "true")
+    const { data: recentStories, error: recentStoriesError } = await supabase
+        .from("scenarios")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .eq("published", "true")
+        .limit(20);
 
-	if (error) throw new Error("Get scenarios failed!")
+    if (error || recentStoriesError) throw new Error("Get scenarios failed!");
 
-	return { mostPopular, recentStories }
+    return { mostPopular, recentStories };
 }
