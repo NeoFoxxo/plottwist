@@ -20,6 +20,8 @@ export async function createProfile() {
     if (existingError) throw new Error("Existing profile check failed!");
 
     if (existingUser.length === 0) {
+        if (!email) throw new Error("Email not found for user!");
+
         const { error } = await supabase
             .from("profiles")
             .insert([{ user_id: user_id, email: email, name: username }]);
