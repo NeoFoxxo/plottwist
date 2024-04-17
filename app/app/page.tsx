@@ -17,7 +17,7 @@ export default async function Dashboard() {
     const { mostPopular, recentStories } = await getScenarios()
 
     return (
-        <div className="container p-4 flex flex-row max-lg:flex-col mx-auto text-2xl">
+        <div className="container h-[90vh] overflow-hidden p-4 flex flex-row max-lg:flex-col mx-auto text-2xl">
             <div className="flex flex-col w-full mx-auto">
                 <p
                     style={{
@@ -31,13 +31,13 @@ export default async function Dashboard() {
                 <Carousel
                     opts={{ align: "start" }}
                     orientation={"vertical"}
-                    className="w-full mt-10"
+                    className="w-full mt-2"
                 >
-                    <CarouselContent className="top-0">
+                    <CarouselContent className="py-5 top-0 h-[80vh]">
                         {mostPopular?.map(async (scenario, index) => (
                             <CarouselItem
                                 key={index}
-                                className="pt-0 md:basis-1/3"
+                                className="py-5 md:basis-1/3"
                             >
                                 <ScenarioCard key={scenario.id} currentUser={data} data={await getUserInfo(scenario.user_id)} scenario={scenario} />
                             </CarouselItem>
@@ -61,13 +61,13 @@ export default async function Dashboard() {
                         align: "start",
                     }}
                     orientation="vertical"
-                    className="w-full mt-10"
+                    className="w-full mt-2"
                 >
-                    <CarouselContent className="top-0">
+                    <CarouselContent className=" py-5 top-0 h-[80vh]">
                         {recentStories?.map(async (scenario, index) => (
                             <CarouselItem
                                 key={index}
-                                className="p-0 md:basis-1/3"
+                                className="py-5 md:basis-1/3"
                             >
                                 <ScenarioCard currentUser={data} data={await getUserInfo(scenario.user_id)} key={scenario.id} scenario={scenario} />
                             </CarouselItem>

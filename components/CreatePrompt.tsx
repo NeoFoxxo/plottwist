@@ -204,7 +204,7 @@ export default function CreatePrompt() {
 						) : (
 							<>
 								<h4 className="font-semibold">Make your choice:</h4>
-								{scenario.choices.map((choice, index) => {
+								{scenario!!.choices!!.map((choice, index) => {
 									return (
 										<div
 											key={index}

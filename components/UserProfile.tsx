@@ -5,14 +5,15 @@ import { CardBody, CardContainer, CardItem } from "./ui/3d-card"
 
 type PROFILE_DATA_TYPES = {
 	profileData: {
-		bio: string
-		links?: string[]
-		created_at: string
-		email: string
-		id: number
-		image: string | null
-		name: string | null
-		user_id: string
+		admin?: boolean;
+		bio?: string | null;
+		created_at?: string;
+		email?: string;
+		id?: number;
+		image?: string | null;
+		links?: string[] | null;
+		name?: string | null;
+		user_id?: string;
 	}
 	date: string
 	stories: number
@@ -76,7 +77,7 @@ export default function UserProfile({
 						<CardItem translateZ={"60"}>
 							<Textarea
 								onKeyDown={() => {
-									;("")
+									; ("")
 								}}
 								className="h-30 w-[27.47rem] text-left resize-none"
 								placeholder="Bio"

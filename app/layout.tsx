@@ -46,7 +46,9 @@ export default async function RootLayout({
 						disableTransitionOnChange
 					>
 						<Header email={user?.email} />
-						{children}
+						<div className="my-15">
+							{children}
+						</div>
 					</ThemeProvider>
 				</main>
 			</body>
