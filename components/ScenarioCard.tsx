@@ -6,9 +6,11 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip";
+
 import { Bookmark, MessageSquareText, Trash } from "lucide-react";
 import Link from "next/link";
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
+import getUserInfo from "@/utils/actions/getUserinfo";
 
 export type SCENARIO_TYPES = {
     scenario: {
@@ -19,8 +21,21 @@ export type SCENARIO_TYPES = {
         story: string | null;
         title: string;
         user_id: string;
-    };
-    bookmark?: boolean;
+    },
+    bookmark?: boolean,
+    },
+    data: {
+        data: {
+            bio: string;
+            links?: string[] | undefined;
+            created_at: string;
+            email: string;
+            id: number;
+            image: string | null;
+            name: string | null;
+            user_id: string;
+        }
+    }
 };
 
 function truncateString(str: string, maxl: number) {
@@ -57,7 +72,7 @@ const bordercolor = [
     "border-red-300/[0.6]",
 ];
 
-export function ScenarioCard({ scenario, bookmark }: SCENARIO_TYPES) {
+export function ScenarioCard({ scenario, data, bookmark }: SCENARIO_TYPES) {
     const r = Math.floor(Math.random() * shadowcolor.length);
     const { title, prompt, story } = scenario;
     const bookmarkFlag = bookmark ? bookmark : false;
