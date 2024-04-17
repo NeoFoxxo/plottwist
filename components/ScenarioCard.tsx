@@ -1,6 +1,5 @@
 "use client";
-
-import { Bookmark, MessageSquareText } from "lucide-react";
+import { Bookmark, Loader2, MessageSquareText, Lock, Globe } from "lucide-react";
 import Link from "next/link";
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
 import {
@@ -10,6 +9,10 @@ import {
     TooltipTrigger,
 } from "@/components/ui/tooltip";
 import getUserInfo from "@/utils/actions/getUserinfo";
+import { useRouter } from "next//navigation";
+import { useState } from "react";
+import publish from "@/utils/actions/database/publishStory";
+import unPublish from "@/utils/actions/database/privateStory";
 
 type SCENARIO_TYPES = {
     scenario: {
@@ -20,6 +23,8 @@ type SCENARIO_TYPES = {
         story: string | null;
         title: string;
         user_id: string;
+        published: boolean;
+        finished: boolean;
     },
     data: {
         data: {
@@ -32,6 +37,11 @@ type SCENARIO_TYPES = {
             name: string | null;
             user_id: string;
         }
+    },
+    currentUser: {
+        user: any;
+    } | {
+        user: null;
     }
 };
 
@@ -69,25 +79,38 @@ const bordercolor = [
     'border-red-300/[0.6]'
 ]
 
-export function ScenarioCard({ scenario, data }: SCENARIO_TYPES) {
+export function ScenarioCard({ scenario, data, currentUser }: SCENARIO_TYPES) {
 
     const r = Math.floor(Math.random() * shadowcolor.length)
 
-    const { title, prompt, story } = scenario;
+    const [pending, setPending] = useState(false)
+
+    const { title, prompt, story, finished, published } = scenario;
+
+    const router = useRouter()
 
     return (
         <CardContainer className="inter-var h-[10rem] p-4 my-7">
             <CardBody className={`transition-all bg-gray-50 relative group/card shadow-2xl dark:bg-black/50 ${bordercolor[r]} ${shadowcolor[r]} hover:border-white w-auto h-auto max-md:h-auto my-auto sm:w-[25rem] max-w-[25rem] rounded-xl p-7 m-10 border flex flex-col`}>
-                <CardItem translateZ="30">
-                    <div className="flex flex-row mb-2">
-                        <a href="" className="h-[fit-content] w-[fit-content] m-auto p-0">
-                            <img className="rounded-full w-7 h-7" src={data.data!!.image!!}></img>
-                        </a>
-                        <a href="" className="h-auto w-[fit-content] m-auto p-0">
-                            <p className="text-sm ml-2 hover:underline">{data.data.name}</p>
-                        </a>
-                    </div>
-                </CardItem>
+                <div className="flex justify-between items-center">
+                    <CardItem translateZ="30">
+                        <div className="flex flex-row mb-2">
+                            <a href="" className="h-[fit-content] w-[fit-content] m-auto p-0">
+                                <img className="rounded-full w-7 h-7" src={data.data!!.image!!}></img>
+                            </a>
+                            <a href="" className="h-auto w-[fit-content] m-auto p-0">
+                                <p className="text-sm ml-2 hover:underline">{data.data.name}</p>
+                            </a>
+                        </div>
+                    </CardItem>
+                    {
+                        data.data.user_id == currentUser.user.id && (
+                            <CardItem>
+                                <p className="text-sm px-1 rounded-sm bg-green-400/40">Yours</p>
+                            </CardItem>
+                        )
+                    }
+                </div>
                 <CardItem
                     href={`/story/${scenario.id}`}
                     as="a"
@@ -127,46 +150,98 @@ export function ScenarioCard({ scenario, data }: SCENARIO_TYPES) {
                     >
                         Remix →
                     </CardItem>
-                    <CardItem
-                        translateZ={70}
-                    >
-                        <div className="flex justify-end mt-auto">
+                    {
+                        data.data.user_id != currentUser.user.id ? (
                             <CardItem
-                                as="a"
-                                href="/b"
-                                style={{ borderRadius: '1em' }}
-                                className="mr-2 rounded-x bg-transparent hover:bg-white/20 text-xs font-bold"
+                                translateZ={70}
                             >
-                                <TooltipProvider delayDuration={300} >
-                                    <Tooltip>
-                                        <TooltipTrigger >
-                                            <MessageSquareText className="size-4 mx-4 my-2"></MessageSquareText>
-                                        </TooltipTrigger>
-                                        <TooltipContent className='p-0 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight' side='bottom'>
-                                            <p>Add a review</p>
-                                        </TooltipContent>
-                                    </Tooltip>
-                                </TooltipProvider>
+                                <div className="flex justify-end mt-auto">
+                                    <CardItem
+                                        as="a"
+                                        href="/b"
+                                        style={{ borderRadius: '1em' }}
+                                        className="mr-2 rounded-x bg-transparent hover:bg-white/20 text-xs font-bold"
+                                    >
+                                        <TooltipProvider delayDuration={300} >
+                                            <Tooltip>
+                                                <TooltipTrigger >
+                                                    <MessageSquareText className="size-4 mx-4 my-2"></MessageSquareText>
+                                                </TooltipTrigger>
+                                                <TooltipContent className='p-0 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight' side='bottom'>
+                                                    <p>Add a review</p>
+                                                </TooltipContent>
+                                            </Tooltip>
+                                        </TooltipProvider>
+                                    </CardItem>
+                                    <CardItem
+                                        as="a"
+                                        href="/b"
+                                        style={{ borderRadius: '1em' }}
+                                        className=" rounded-x bg-transparent hover:bg-white/20 text-xs font-bold"
+                                    >
+                                        <TooltipProvider delayDuration={300} >
+                                            <Tooltip>
+                                                <TooltipTrigger >
+                                                    <Bookmark className="size-4 mx-4 my-2"></Bookmark>
+                                                </TooltipTrigger>
+                                                <TooltipContent className='p-0 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight' side='bottom'>
+                                                    <p>Add to bookmarks</p>
+                                                </TooltipContent>
+                                            </Tooltip>
+                                        </TooltipProvider>
+                                    </CardItem>
+                                </div>
                             </CardItem>
-                            <CardItem
-                                as="a"
-                                href="/b"
-                                style={{ borderRadius: '1em' }}
-                                className=" rounded-x bg-transparent hover:bg-white/20 text-xs font-bold"
-                            >
-                                <TooltipProvider delayDuration={300} >
-                                    <Tooltip>
-                                        <TooltipTrigger >
-                                            <Bookmark className="size-4 mx-4 my-2"></Bookmark>
-                                        </TooltipTrigger>
-                                        <TooltipContent className='p-0 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight' side='bottom'>
-                                            <p>Add to bookmarks</p>
-                                        </TooltipContent>
-                                    </Tooltip>
-                                </TooltipProvider>
-                            </CardItem>
-                        </div>
-                    </CardItem>
+                        ) : (
+                            scenario.published ? (
+                                <CardItem
+                                    translateZ={70}
+                                    onClick={async () => { setPending(true); await unPublish(scenario.id); router.refresh(); setPending(false); }}
+                                    style={{ borderRadius: "1em" }}
+                                    className="mr-2 rounded-x bg-transparent hover:bg-white/20 text-xs p-2 font-bold"
+                                >
+                                    <TooltipProvider delayDuration={300}>
+                                        <Tooltip>
+                                            <TooltipTrigger>
+                                                {
+                                                    pending ? <Loader2 className="animate-spin h-4 w-4"></Loader2> : <Lock className="h-4 w-4" />
+                                                }
+                                            </TooltipTrigger>
+                                            <TooltipContent
+                                                className="p-0 pt-1 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight"
+                                                side="bottom"
+                                            >
+                                                <p>Make Private</p>
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TooltipProvider>
+                                </CardItem>
+                            ) : (
+                                <CardItem
+                                    translateZ={70}
+                                    onClick={async () => { setPending(true); await publish(scenario.id); router.refresh(); setPending(false); }}
+                                    style={{ borderRadius: "1em" }}
+                                    className="mr-2 rounded-x bg-transparent hover:bg-white/20 text-xs p-2 font-bold"
+                                >
+                                    <TooltipProvider delayDuration={300}>
+                                        <Tooltip>
+                                            <TooltipTrigger>
+                                                {
+                                                    pending ? <Loader2 className="animate-spin h-4 w-4"></Loader2> : <Globe className="h-4 w-4" />
+                                                }
+                                            </TooltipTrigger>
+                                            <TooltipContent
+                                                className="p-0 pt-1 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight"
+                                                side="bottom"
+                                            >
+                                                <p>Publish</p>
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TooltipProvider>
+                                </CardItem>
+                            )
+                        )
+                    }
                 </div>
             </CardBody>
         </CardContainer>
