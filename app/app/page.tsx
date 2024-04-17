@@ -1,6 +1,5 @@
-
-import { ScenarioCard } from "@/components/ScenarioCard";
-import { getScenarios } from "@/utils/actions/getScenarios";
+import { ScenarioCard } from "@/components/ScenarioCard"
+import { getScenarios } from "@/utils/actions/getScenarios"
 import {
 	Carousel,
 	CarouselContent,
@@ -8,7 +7,7 @@ import {
 } from "@/components/ui/carousel"
 
 export default async function Dashboard() {
-	const scenarios = await getScenarios()
+	const { mostPopular, recentStories } = await getScenarios()
 
 	return (
 		<div className="container p-4 flex flex-row max-md:flex-col mx-auto text-2xl w-[100vw] max-h-[80vh] overflow-hidden max-md:overflow-y-scroll">
@@ -28,7 +27,7 @@ export default async function Dashboard() {
 					className="w-full mt-10"
 				>
 					<CarouselContent className="top-0 max-h-[80vh]">
-						{scenarios?.map((scenario, index) => (
+						{mostPopular?.map((scenario, index) => (
 							<CarouselItem key={index} className="pt-0 md:basis-1/3">
 								<ScenarioCard key={scenario.id} scenario={scenario} />
 							</CarouselItem>
@@ -55,7 +54,7 @@ export default async function Dashboard() {
 					className="w-full mt-10"
 				>
 					<CarouselContent className="top-0 max-h-[80vh] ">
-						{scenarios?.map((scenario, index) => (
+						{recentStories?.map((scenario, index) => (
 							<CarouselItem key={index} className="p-0 md:basis-1/3">
 								<ScenarioCard key={scenario.id} scenario={scenario} />
 							</CarouselItem>
