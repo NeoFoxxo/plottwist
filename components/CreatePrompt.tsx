@@ -12,6 +12,8 @@ import { z } from "zod"
 import { Button } from "./ui/button"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form"
 import { TextGenerateEffect } from "./ui/text-generate-effect"
+import { finishStory } from "@/utils/actions/finishStory"
+import Link from "next/link"
 
 const createSchema = z.object({
 	prompt: z
@@ -83,12 +85,25 @@ export default function CreatePrompt() {
 	async function generateFromChoice(choice: string) {
 		setPending(true)
 		setStoryPartCount((storyPartCount) => storyPartCount + 1)
-		const scenarioData = await continueStory({
-			title: scenario?.title!,
-			prompt: `${scenario?.story!!} ${choice}`,
-			previousStoryId: scenario?.id!!,
-			currentStory: scenario?.story!!,
-		})
+
+		let scenarioData: StoryReturnTypes
+
+		if (storyPartCount >= 8) {
+			scenarioData = await finishStory({
+				title: scenario?.title!,
+				prompt: `${scenario?.story!!} ${choice}`,
+				previousStoryId: scenario?.id!!,
+				currentStory: scenario?.story!!,
+			})
+		} else {
+			scenarioData = await continueStory({
+				title: scenario?.title!,
+				prompt: `${scenario?.story!!} ${choice}`,
+				previousStoryId: scenario?.id!!,
+				currentStory: scenario?.story!!,
+			})
+		}
+
 		setPending(false)
 		setScenario(scenarioData)
 	}
@@ -170,20 +185,38 @@ export default function CreatePrompt() {
 							</h5>
 						)
 					)}
-
 					<div className="flex flex-col flex-wrap gap-2">
-						<h4 className="font-semibold">Make your choice:</h4>
-						{scenario.choices.map((choice, index) => {
-							return (
-								<div
-									key={index}
-									onClick={async () => await generateFromChoice(choice)}
-									className="py-2 px-4 cursor-pointer bg-neutral-800 hover:bg-neutral-900 w-fit rounded-md"
-								>
-									{choice}
-								</div>
-							)
-						})}
+						{storyPartCount >= 9 ? (
+							<>
+								{!pending && (
+									<>
+										<h4 className="text-lg font-bold">
+											Your story is finished!
+										</h4>
+										<Link href={"/app/library"}>
+											<Button className="font-semibold flex justify-center items-center gap-2">
+												Go to Library
+											</Button>
+										</Link>
+									</>
+								)}
+							</>
+						) : (
+							<>
+								<h4 className="font-semibold">Make your choice:</h4>
+								{scenario.choices.map((choice, index) => {
+									return (
+										<div
+											key={index}
+											onClick={async () => await generateFromChoice(choice)}
+											className="py-2 px-4 cursor-pointer bg-neutral-800 hover:bg-neutral-900 w-fit rounded-md"
+										>
+											{choice}
+										</div>
+									)
+								})}
+							</>
+						)}
 						{errorMessage && (
 							<p style={{ color: "rgba(255,50,105,0.600)" }}>{errorMessage}</p>
 						)}
