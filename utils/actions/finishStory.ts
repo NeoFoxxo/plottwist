@@ -1,10 +1,20 @@
 "use server"
 import { extractStoryFromAI } from "../extractStoryFromAI"
 import { AIResponse } from "../supabase/types/AIResponse"
-import insertStory from "./insertStory"
+import updateStory from "./updateStory"
 
-export async function submitPrompt({ prompt }: { prompt: string }) {
-	const res = await fetch(`${process.env.AI_API_URL}/start`, {
+export async function finishStory({
+	title,
+	prompt,
+	previousStoryId,
+	currentStory,
+}: {
+	title: string
+	prompt: string
+	previousStoryId: number
+	currentStory: string
+}) {
+	const res = await fetch(`${process.env.AI_API_URL}/finish`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
@@ -20,17 +30,20 @@ export async function submitPrompt({ prompt }: { prompt: string }) {
 	const data = await res.json()
 	const aiResponse: AIResponse = data.result.Output
 
-	const { title, story, choices } = extractStoryFromAI({
+	const { story, choices } = extractStoryFromAI({
 		aiResponse,
-		stage: "start",
+		stage: "finish",
 	})
 
+	const fullStory = currentStory + " " + story
+
 	try {
-		const scenario = insertStory({
-			title: title!!,
-			story,
+		const scenario = await updateStory({
+			title,
+			story: fullStory,
 			choices: choices!!,
-			prompt,
+			previousStoryId,
+			isFinished: true,
 		})
 		return scenario
 	} catch (error) {

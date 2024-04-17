@@ -28,13 +28,13 @@ export async function regenerateStory({
 
 	const { title, story, choices } = extractStoryFromAI({
 		aiResponse,
-		isContinue: false,
+		stage: "start",
 	})
 
 	try {
 		const scenario = await updateStory({
 			story,
-			choices,
+			choices: choices!!,
 			title: title!!,
 			previousStoryId,
 		})

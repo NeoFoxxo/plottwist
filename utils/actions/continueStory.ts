@@ -32,7 +32,7 @@ export async function continueStory({
 
 	const { story, choices } = extractStoryFromAI({
 		aiResponse,
-		isContinue: true,
+		stage: "continue",
 	})
 
 	const fullStory = currentStory + " " + story
@@ -41,7 +41,7 @@ export async function continueStory({
 		const scenario = await updateStory({
 			title,
 			story: fullStory,
-			choices,
+			choices: choices!!,
 			previousStoryId,
 		})
 		return scenario

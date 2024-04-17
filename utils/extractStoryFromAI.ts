@@ -2,16 +2,17 @@ import { AIResponse } from "./supabase/types/AIResponse"
 
 export interface ExtractStoryProps {
 	aiResponse: AIResponse
-	isContinue: boolean
+	stage: "start" | "continue" | "finish"
 }
 
-export function extractStoryFromAI({
-	aiResponse,
-	isContinue,
-}: ExtractStoryProps) {
+export function extractStoryFromAI({ aiResponse, stage }: ExtractStoryProps) {
 	const story = aiResponse.response.story
 	if (!story) {
 		throw new Error("Story data is undefined, please try again" + aiResponse)
+	}
+
+	if (stage === "finish") {
+		return { story }
 	}
 
 	let choices: string[]
@@ -21,7 +22,7 @@ export function extractStoryFromAI({
 		throw new Error("Choice data is undefined, please try again")
 	}
 
-	if (!isContinue) {
+	if (stage === "start") {
 		let title = aiResponse.title.title
 		if (!title) {
 			// @ts-expect-error
@@ -30,7 +31,8 @@ export function extractStoryFromAI({
 			throw new Error("Title is undefined, please try again")
 		}
 		return { story, choices, title }
-	} else {
-		return { story, choices }
 	}
+
+	// else its continue so return em
+	return { story, choices }
 }
