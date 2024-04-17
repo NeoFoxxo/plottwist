@@ -9,6 +9,7 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip";
+import getUserInfo from "@/utils/actions/getUserinfo";
 
 type SCENARIO_TYPES = {
     scenario: {
@@ -19,7 +20,19 @@ type SCENARIO_TYPES = {
         story: string | null;
         title: string;
         user_id: string;
-    };
+    },
+    data: {
+        data: {
+            bio: string;
+            links?: string[] | undefined;
+            created_at: string;
+            email: string;
+            id: number;
+            image: string | null;
+            name: string | null;
+            user_id: string;
+        }
+    }
 };
 
 function truncateString(str: string, maxl: number) {
@@ -56,7 +69,7 @@ const bordercolor = [
     'border-red-300/[0.6]'
 ]
 
-export function ScenarioCard({ scenario }: SCENARIO_TYPES) {
+export function ScenarioCard({ scenario, data }: SCENARIO_TYPES) {
 
     const r = Math.floor(Math.random() * shadowcolor.length)
 
@@ -65,6 +78,16 @@ export function ScenarioCard({ scenario }: SCENARIO_TYPES) {
     return (
         <CardContainer className="inter-var h-[10rem] p-4 my-7">
             <CardBody className={`transition-all bg-gray-50 relative group/card shadow-2xl dark:bg-black/50 ${bordercolor[r]} ${shadowcolor[r]} hover:border-white w-auto h-auto max-md:h-auto my-auto sm:w-[25rem] max-w-[25rem] rounded-xl p-7 m-10 border flex flex-col`}>
+                <CardItem translateZ="30">
+                    <div className="flex flex-row mb-2">
+                        <a href="" className="h-[fit-content] w-[fit-content] m-auto p-0">
+                            <img className="rounded-full w-7 h-7" src={data.data!!.image!!}></img>
+                        </a>
+                        <a href="" className="h-auto w-[fit-content] m-auto p-0">
+                            <p className="text-sm ml-2 hover:underline">{data.data.name}</p>
+                        </a>
+                    </div>
+                </CardItem>
                 <CardItem
                     href={`/story/${scenario.id}`}
                     as="a"
