@@ -10,7 +10,7 @@ import { Bookmark, MessageSquareText, Trash } from "lucide-react";
 import Link from "next/link";
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
 
-type SCENARIO_TYPES = {
+export type SCENARIO_TYPES = {
     scenario: {
         created_at: string;
         follow_count: number;

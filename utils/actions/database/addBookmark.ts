@@ -1,6 +1,6 @@
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/utils/supabase/client";
 
-export async function addBookmark({ scenario_id }: { scenario_id: number }) {
+export async function addBookmark(scenario_id: number) {
     const supabase = createClient();
 
     // Create profile if user authenticated
