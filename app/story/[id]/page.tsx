@@ -12,6 +12,7 @@ import { TextGenerateEffect } from "@/components/ui/text-generate-effect"
 import Image from "next/image"
 import Link from "next/link"
 import { redirect } from "next/navigation"
+import getUserInfo from "@/utils/actions/getUserinfo"
 
 export default async function StoryDetails({
 	params,
@@ -20,16 +21,15 @@ export default async function StoryDetails({
 }) {
 	const story = await getStory(params.id)
 
-	if (!story) {
+	let user = await getUserInfo(story?.user_id!!)
+
+	if (!user) {
 		redirect("/app")
 	}
 
-	const accountInfo = [70, 20, 570]
-	const icons = [
-		"/icons/follower.png",
-		"/icons/book.png",
-		"/icons/bookmark.png",
-	]
+	const accountInfo = [user.stories!!, 20, 570]
+
+	const icons = ["/icons/book.png", "/icons/star.png", "/icons/bookmark.png"]
 
 	const reviews = [
 		{
@@ -58,7 +58,7 @@ export default async function StoryDetails({
 						style={{ textShadow: "0em 0em 0.3em rgba(255,255,255,0.6)" }}
 						className="text-4xl font-bold mb-5"
 					>
-						{story.title}
+						{story?.title!!}
 					</h1>
 					<TextGenerateEffect
 						className="max-w-4xl tracking-wider"
@@ -70,9 +70,7 @@ export default async function StoryDetails({
 					<div className="flex items-center gap-3 w-full">
 						<a href="" className="w-[fit-content]">
 							<Image
-								src={
-									"https://ik.imagekit.io/fabric01/linkx/default.png?updatedAt=1708353019749"
-								}
+								src={user.data.image || "/icons/pfp1.png"}
 								width={150}
 								height={150}
 								alt="Author"
@@ -85,7 +83,7 @@ export default async function StoryDetails({
 									style={{ textShadow: "0em 0em 0.3em white" }}
 									className="text-base font-bold cursor-pointer hover:underline w-full"
 								>
-									{"username"}
+									{user.data.name!!}
 								</h2>
 							</a>
 							<div className="flex flex-row text-start">
