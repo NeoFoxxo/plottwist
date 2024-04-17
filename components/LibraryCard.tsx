@@ -1,6 +1,6 @@
 "use client";
 
-import { Bookmark, MessageSquareText } from "lucide-react";
+import { Bookmark, MessageSquareText, Lock, Globe } from "lucide-react";
 import Link from "next/link";
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
 import {
@@ -19,6 +19,8 @@ type SCENARIO_TYPES = {
         story: string | null;
         title: string;
         user_id: string;
+        finished: boolean;
+        published: boolean;
     };
 };
 
@@ -56,11 +58,13 @@ const bordercolor = [
     'border-red-300/[0.6]'
 ]
 
-export function ScenarioCard({ scenario }: SCENARIO_TYPES) {
+export function LibraryCard({ scenario }: SCENARIO_TYPES) {
 
     const r = Math.floor(Math.random() * shadowcolor.length)
 
-    const { title, prompt, story } = scenario;
+    const { title, prompt, story, finished, published } = scenario;
+
+    console.log('s: ' + finished)
 
     return (
         <CardContainer className="inter-var h-[10rem] p-4 my-7">
@@ -95,53 +99,50 @@ export function ScenarioCard({ scenario }: SCENARIO_TYPES) {
                     Prompt: {prompt}
                 </CardItem>
                 <div className="flex justify-between items-center mt-auto">
-                    <CardItem
-                        translateZ={74}
-                        as={Link}
-                        href={`/story/${scenario.id}`}
-                        style={{ borderRadius: '1em' }}
-                        className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white bg-transparent hover:bg-white/20 "
-                    >
-                        Remix →
-                    </CardItem>
+                    {
+                        finished == false && (
+                            <CardItem
+                                translateZ={74}
+                                as={Link}
+                                href={`/story/${scenario.id}`}
+                                style={{ borderRadius: '1em' }}
+                                className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white bg-transparent hover:bg-white/20 "
+                            >
+                                Continue →
+                            </CardItem>
+                        )
+                    }
                     <CardItem
                         translateZ={70}
                     >
                         <div className="flex justify-end mt-auto">
-                            <CardItem
-                                as="a"
-                                href="/b"
-                                style={{ borderRadius: '1em' }}
-                                className="mr-2 rounded-x bg-transparent hover:bg-white/20 text-xs font-bold"
-                            >
-                                <TooltipProvider delayDuration={300} >
-                                    <Tooltip>
-                                        <TooltipTrigger >
-                                            <MessageSquareText className="size-4 mx-4 my-2"></MessageSquareText>
-                                        </TooltipTrigger>
-                                        <TooltipContent className='p-0 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight' side='bottom'>
-                                            <p>Add a review</p>
-                                        </TooltipContent>
-                                    </Tooltip>
-                                </TooltipProvider>
-                            </CardItem>
-                            <CardItem
-                                as="a"
-                                href="/b"
-                                style={{ borderRadius: '1em' }}
-                                className=" rounded-x bg-transparent hover:bg-white/20 text-xs font-bold"
-                            >
-                                <TooltipProvider delayDuration={300} >
-                                    <Tooltip>
-                                        <TooltipTrigger >
-                                            <Bookmark className="size-4 mx-4 my-2"></Bookmark>
-                                        </TooltipTrigger>
-                                        <TooltipContent className='p-0 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight' side='bottom'>
-                                            <p>Add to bookmarks</p>
-                                        </TooltipContent>
-                                    </Tooltip>
-                                </TooltipProvider>
-                            </CardItem>
+                            {
+                                finished == true && (
+                                    <CardItem
+                                        as="a"
+                                        href="/b"
+                                        style={{ borderRadius: '1em' }}
+                                        className="mr-2 rounded-x bg-transparent hover:bg-white/20 text-xs p-2 font-bold"
+                                    >
+                                        <TooltipProvider delayDuration={300} >
+                                            <Tooltip>
+                                                <TooltipTrigger >
+                                                    {
+                                                        published == true ? (
+                                                            <Lock className="h-4 w-4" />
+                                                        ) : (
+                                                            <Globe className="h-4 w-4" />
+                                                        )
+                                                    }
+                                                </TooltipTrigger>
+                                                <TooltipContent className='p-0 pt-1 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight' side='bottom'>
+                                                    <p>{published == true ? 'Make Private' : 'Publish'}</p>
+                                                </TooltipContent>
+                                            </Tooltip>
+                                        </TooltipProvider>
+                                    </CardItem>
+                                )
+                            }
                         </div>
                     </CardItem>
                 </div>
