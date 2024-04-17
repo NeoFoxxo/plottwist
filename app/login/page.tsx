@@ -28,6 +28,8 @@ export default function Login({
             );
         }
 
+        //here we should insert the username (userName)
+
         return redirect(
             "/login?message=Check your email to sign in to Plot Twist!"
         );
@@ -52,7 +54,8 @@ export default function Login({
                 />
                 <SubmitButton
                     formAction={signIn}
-                    className="bg-green-700 rounded-md px-4 py-2 text-foreground mb-2"
+                    style={{ border: 'solid 1px rgba(255,255,255,0.300)' }}
+                    className="bg-black/30 hover:bg-gray-400/30 transition-all rounded-md px-4 py-2 text-foreground mb-2"
                     pendingText="Signing In..."
                 >
                     Sign In

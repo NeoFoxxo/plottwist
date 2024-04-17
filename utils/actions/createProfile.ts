@@ -1,4 +1,5 @@
 import { createClient } from "@/utils/supabase/server";
+import { generateRandomUsername } from "./generateUsername";
 
 export async function createProfile() {
     const supabase = createClient();
@@ -9,6 +10,7 @@ export async function createProfile() {
 
     const user_id = data.user?.id;
     const email = data.user?.email;
+    const username = await generateRandomUsername()
 
     // User exist check
     const { data: existingUser, error: existingError } = await supabase
@@ -20,7 +22,7 @@ export async function createProfile() {
     if (existingUser.length === 0) {
         const { error } = await supabase
             .from("profiles")
-            .insert([{ user_id: user_id, email: email }]);
+            .insert([{ user_id: user_id, email: email, name: username }]);
         if (error) throw new Error("Profile creation failed!");
     }
 }
