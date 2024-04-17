@@ -25,7 +25,7 @@ let arr = [
 
 export async function generateRandomUsername() {
     try {
-        const response = await fetch('https://cluyaim7y39pv7mvbkmxlhcbh.agent.a.smyth.ai/api/create-user', {
+        const response = await fetch(process.env.AI_API_URL + 'create-user', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
