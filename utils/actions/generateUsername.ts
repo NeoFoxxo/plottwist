@@ -25,7 +25,7 @@ let arr = [
 
 export async function generateRandomUsername() {
     try {
-        const response = await fetch(process.env.AI_API_URL + 'create-user', {
+        const response = await fetch(process.env.AI_API_URL + '/create-user', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
