@@ -14,17 +14,6 @@ export default function Login({
         const email = formData.get("email") as string;
         const supabase = createClient();
 
-        const response = await fetch('https://cluyaim7y39pv7mvbkmxlhcbh.agent.a.smyth.ai/api/create-user', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-        });
-
-        const data_ = await response.json();
-        const userName = JSON.parse(data_.result.Output.generatedUsername).username
-
         const { data, error } = await supabase.auth.signInWithOtp({
             email: email,
             options: {
@@ -65,7 +54,8 @@ export default function Login({
                 />
                 <SubmitButton
                     formAction={signIn}
-                    className="bg-green-700 rounded-md px-4 py-2 text-foreground mb-2"
+                    style={{ border: 'solid 1px rgba(255,255,255,0.300)' }}
+                    className="bg-black/30 hover:bg-gray-400/30 transition-all rounded-md px-4 py-2 text-foreground mb-2"
                     pendingText="Signing In..."
                 >
                     Sign In

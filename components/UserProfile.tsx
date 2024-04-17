@@ -21,12 +21,11 @@ type PROFILE_DATA_TYPES = {
 
 export default function UserProfile({ profileData, date }: PROFILE_DATA_TYPES) {
     const { name, image, email, created_at } = profileData;
-    const defaultImage =
-        "https://ik.imagekit.io/fabric01/linkx/default.png?updatedAt=1708353019749";
 
     const bio = "";
     const accountInfo = [70, 20, 570];
     const texts = ["Followers", "Stories", "Bookmarks"];
+    const defaultImage = `/icons/pfp${Math.floor(Math.random() * 5) + 1}.png`;
 
     return (
         <div className="overflow-hidden">
