@@ -5,10 +5,10 @@ import {
 	CarouselContent,
 	CarouselItem,
 } from "@/components/ui/carousel"
+import getUserInfo from "@/utils/actions/getUserinfo"
 
 export default async function Dashboard() {
 	const { mostPopular, recentStories } = await getScenarios()
-
 	return (
 		<div className="container p-4 flex flex-row max-md:flex-col mx-auto text-2xl w-[100vw] max-h-[80vh] overflow-hidden max-md:overflow-y-scroll">
 			<div className="flex flex-col w-full mx-auto">
@@ -27,9 +27,9 @@ export default async function Dashboard() {
 					className="w-full mt-10"
 				>
 					<CarouselContent className="top-0 max-h-[80vh]">
-						{mostPopular?.map((scenario, index) => (
+						{mostPopular?.map(async (scenario, index) => (
 							<CarouselItem key={index} className="pt-0 md:basis-1/3">
-								<ScenarioCard key={scenario.id} scenario={scenario} />
+								<ScenarioCard key={scenario.id} data={await getUserInfo(scenario.user_id)} scenario={scenario} />
 							</CarouselItem>
 						))}
 						<div className="pb-20"></div>
@@ -54,9 +54,9 @@ export default async function Dashboard() {
 					className="w-full mt-10"
 				>
 					<CarouselContent className="top-0 max-h-[80vh] ">
-						{recentStories?.map((scenario, index) => (
+						{recentStories?.map(async (scenario, index) => (
 							<CarouselItem key={index} className="p-0 md:basis-1/3">
-								<ScenarioCard key={scenario.id} scenario={scenario} />
+								<ScenarioCard data={await getUserInfo(scenario.user_id)} key={scenario.id} scenario={scenario} />
 							</CarouselItem>
 						))}
 						<div className="pb-20"></div>
