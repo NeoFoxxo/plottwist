@@ -12,6 +12,7 @@ import publish from "@/utils/actions/database/publishStory"
 import unPublish from "@/utils/actions/database/privateStory"
 import { useRouter } from "next/navigation";
 import { useState } from "react"
+import { continueStory } from "@/utils/actions/api/continueStory"
 
 type SCENARIO_TYPES = {
 	scenario: {
@@ -108,6 +109,8 @@ export function LibraryCard({ scenario }: SCENARIO_TYPES) {
 				<div className="flex justify-between items-center mt-auto">
 					{finished == false && (
 						<CardItem
+							as={'a'}
+							href={`/app/continue/${scenario.id}`}
 							translateZ={74}
 							style={{ borderRadius: "1em" }}
 							className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white bg-transparent hover:bg-white/20 "
