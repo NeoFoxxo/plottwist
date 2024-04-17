@@ -28,6 +28,7 @@ export default function CreatePrompt() {
 	const [scenario, setScenario] = useState<StoryReturnTypes | null>(null)
 	const [prompt, setPrompt] = useState("")
 	const [regenerateCount, setRegenerateCount] = useState(0)
+	const [storyPartCount, setStoryPartCount] = useState(0)
 
 	let attempts = 0
 	let submitErr = ""
@@ -42,7 +43,7 @@ export default function CreatePrompt() {
 	async function onSubmit(values: z.infer<typeof createSchema>) {
 		setPending(true)
 		setErrorMessage("")
-
+		setStoryPartCount((storyPartCount) => storyPartCount + 1)
 		if (attempts >= 3) {
 			setErrorMessage(`Could not create story: ${submitErr}`)
 			setPending(false)
@@ -81,6 +82,7 @@ export default function CreatePrompt() {
 
 	async function generateFromChoice(choice: string) {
 		setPending(true)
+		setStoryPartCount((storyPartCount) => storyPartCount + 1)
 		const scenarioData = await continueStory({
 			title: scenario?.title!,
 			prompt: `${scenario?.story!!} ${choice}`,
@@ -141,6 +143,7 @@ export default function CreatePrompt() {
 			)}
 			{scenario && (
 				<section className="p-4 flex flex-col flex-wrap justify-center items-start gap-4 max-w-[800px]">
+					<h1 className="text-4xl font-bold pb-10">{scenario.title}</h1>
 					<h4 className="text-[1.15rem]">
 						<b>Prompt:</b> {scenario.prompt}
 					</h4>
@@ -151,13 +154,23 @@ export default function CreatePrompt() {
 							words={scenario.story ? scenario.story : "Loading..."}
 						/>
 					</article>
-					<Button
-						onClick={regenerate}
-						className="font-semibold flex justify-center items-center gap-2"
-					>
-						{pending ? <Loader2 className="animate-spin" /> : <Bot />}
-						Regenerate
-					</Button>
+
+					{storyPartCount === 1 ? (
+						<Button
+							onClick={regenerate}
+							className="font-semibold flex justify-center items-center gap-2"
+						>
+							{pending ? <Loader2 className="animate-spin" /> : <Bot />}
+							Regenerate
+						</Button>
+					) : (
+						pending && (
+							<h5 className="font-semibold flex justify-center items-center gap-2">
+								Selecting Choice <Loader2 className="animate-spin" />
+							</h5>
+						)
+					)}
+
 					<div className="flex flex-col flex-wrap gap-2">
 						<h4 className="font-semibold">Make your choice:</h4>
 						{scenario.choices.map((choice, index) => {
