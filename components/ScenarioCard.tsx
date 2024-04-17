@@ -23,19 +23,6 @@ type SCENARIO_TYPES = {
         user_id: string;
     },
     bookmark?: boolean,
-    },
-    data: {
-        data: {
-            bio: string;
-            links?: string[] | undefined;
-            created_at: string;
-            email: string;
-            id: number;
-            image: string | null;
-            name: string | null;
-            user_id: string;
-        }
-    }
 };
 
 function truncateString(str: string, maxl: number) {
@@ -72,7 +59,7 @@ const bordercolor = [
     "border-red-300/[0.6]",
 ];
 
-export function ScenarioCard({ scenario, data, bookmark }: SCENARIO_TYPES) {
+export function ScenarioCard({ scenario, bookmark }: SCENARIO_TYPES) {
     const r = Math.floor(Math.random() * shadowcolor.length);
     const { title, prompt, story } = scenario;
     const bookmarkFlag = bookmark ? bookmark : false;
