@@ -12,7 +12,7 @@ import Link from "next/link";
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
 import getUserInfo from "@/utils/actions/getUserinfo";
 
-type SCENARIO_TYPES = {
+export type SCENARIO_TYPES = {
     scenario: {
         created_at: string;
         follow_count: number;
