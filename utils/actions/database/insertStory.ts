@@ -38,6 +38,8 @@ export default async function insertStory({
 				user_id: user_id,
 				prompt: prompt,
 				title: title,
+				//published: false,
+				//finished: false
 			},
 		])
 		.select()
