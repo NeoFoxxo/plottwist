@@ -11,6 +11,8 @@ export type Database = {
 		Tables: {
 			profiles: {
 				Row: {
+					bio: string
+					links?: string[]
 					created_at: string
 					email: string
 					id: number
@@ -19,6 +21,8 @@ export type Database = {
 					user_id: string
 				}
 				Insert: {
+					bio: string
+					links?: string[]
 					created_at?: string
 					email: string
 					id?: number
@@ -27,6 +31,8 @@ export type Database = {
 					user_id?: string
 				}
 				Update: {
+					bio: string
+					links?: string[]
 					created_at?: string
 					email?: string
 					id?: number
