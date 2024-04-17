@@ -1,5 +1,5 @@
 import { createClient } from "@/utils/supabase/server"
-import { StoryReturnTypes } from "./insertStory"
+import { StoryReturnTypes } from "../database/insertStory"
 
 export interface UpdateStoryProps {
 	story: string

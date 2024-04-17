@@ -1,5 +1,5 @@
 import { ScenarioCard } from "@/components/ScenarioCard"
-import getUsersStories from "@/utils/actions/getUsersStories"
+import getUsersStories from "@/utils/actions/database/getUsersStories"
 import { createClient } from "@/utils/supabase/server"
 import { redirect } from "next/navigation"
 

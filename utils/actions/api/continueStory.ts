@@ -1,9 +1,9 @@
 "use server"
-import { extractStoryFromAI } from "../extractStoryFromAI"
-import { AIResponse } from "../supabase/types/AIResponse"
-import updateStory from "./updateStory"
+import { extractStoryFromAI } from "../../extractStoryFromAI"
+import { AIResponse } from "../../supabase/types/AIResponse"
+import updateStory from "../database/updateStory"
 
-export async function finishStory({
+export async function continueStory({
 	title,
 	prompt,
 	previousStoryId,
@@ -14,10 +14,11 @@ export async function finishStory({
 	previousStoryId: number
 	currentStory: string
 }) {
-	const res = await fetch(`${process.env.AI_API_URL}/finish`, {
+	const res = await fetch(`${process.env.AI_API_URL}/continue`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
+			Authorization: `Bearer ${process.env.AI_API_KEY}`,
 		},
 		body: JSON.stringify({ prompt }),
 	})
@@ -32,7 +33,7 @@ export async function finishStory({
 
 	const { story, choices } = extractStoryFromAI({
 		aiResponse,
-		stage: "finish",
+		stage: "continue",
 	})
 
 	const fullStory = currentStory + " " + story
@@ -43,7 +44,6 @@ export async function finishStory({
 			story: fullStory,
 			choices: choices!!,
 			previousStoryId,
-			isFinished: true,
 		})
 		return scenario
 	} catch (error) {

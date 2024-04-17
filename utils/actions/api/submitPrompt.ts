@@ -1,19 +1,14 @@
 "use server"
-import { extractStoryFromAI } from "../extractStoryFromAI"
-import { AIResponse } from "../supabase/types/AIResponse"
-import updateStory from "./updateStory"
+import { extractStoryFromAI } from "../../extractStoryFromAI"
+import { AIResponse } from "../../supabase/types/AIResponse"
+import insertStory from "../database/insertStory"
 
-export async function regenerateStory({
-	prompt,
-	previousStoryId,
-}: {
-	prompt: string
-	previousStoryId: number
-}) {
+export async function submitPrompt({ prompt }: { prompt: string }) {
 	const res = await fetch(`${process.env.AI_API_URL}/start`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
+			Authorization: `Bearer ${process.env.AI_API_KEY}`,
 		},
 		body: JSON.stringify({ prompt }),
 	})
@@ -32,11 +27,11 @@ export async function regenerateStory({
 	})
 
 	try {
-		const scenario = await updateStory({
+		const scenario = insertStory({
+			title: title!!,
 			story,
 			choices: choices!!,
-			title: title!!,
-			previousStoryId,
+			prompt,
 		})
 		return scenario
 	} catch (error) {
