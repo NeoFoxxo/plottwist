@@ -17,25 +17,27 @@ import unPublish from "@/utils/actions/database/privateStory";
 
 type SCENARIO_TYPES = {
     scenario: {
+        choices: string[] | null;
         created_at: string;
+        finished: boolean | null;
         follow_count: number;
         id: number;
         prompt: string | null;
+        published: boolean | null;
         story: string | null;
         title: string;
         user_id: string;
-        published: boolean;
-        finished: boolean;
     },
     bookmark?: boolean,
     data: {
         data: {
-            bio: string;
-            links?: string[] | undefined;
+            admin: boolean;
+            bio: string | null;
             created_at: string;
             email: string;
             id: number;
             image: string | null;
+            links: string[] | null;
             name: string | null;
             user_id: string;
         }
