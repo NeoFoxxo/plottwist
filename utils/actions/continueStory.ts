@@ -1,46 +1,51 @@
-"use server";
-import { AIResponse } from "../supabase/types/AIResponse";
-import updateStory from "./updateStory";
+"use server"
+import { extractStoryFromAI } from "../extractStoryFromAI"
+import { AIResponse } from "../supabase/types/AIResponse"
+import updateStory from "./updateStory"
 
 export async function continueStory({
-    title,
-    prompt,
-    previousStoryId,
+	title,
+	prompt,
+	previousStoryId,
+	currentStory,
 }: {
-    title: string;
-    prompt: string;
-    previousStoryId: number;
+	title: string
+	prompt: string
+	previousStoryId: number
+	currentStory: string
 }) {
-    const res = await fetch(`${process.env.AI_API_URL}/continue`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ prompt }),
-    });
+	const res = await fetch(`${process.env.AI_API_URL}/continue`, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({ prompt }),
+	})
 
-    if (!res.ok) {
-        const errorMessage = await res.json();
-        throw new Error(errorMessage);
-    }
+	if (!res.ok) {
+		const errorMessage = await res.json()
+		throw new Error(errorMessage)
+	}
 
-    const data = await res.json();
-    const aiResponse: AIResponse = data.result.Output;
+	const data = await res.json()
+	const aiResponse: AIResponse = data.result.Output
 
-    console.log(aiResponse);
-    const story = prompt + " " + aiResponse.response.story;
-    const choices = aiResponse.choices.choices;
+	const { story, choices } = extractStoryFromAI({
+		aiResponse,
+		isContinue: true,
+	})
 
-    try {
-        const scenario = await updateStory({
-            title,
-            story,
-            choices,
-            prompt,
-            previousStoryId,
-        });
-        return scenario;
-    } catch (error) {
-        throw new Error(String(error));
-    }
+	const fullStory = currentStory + " " + story
+
+	try {
+		const scenario = await updateStory({
+			title,
+			story: fullStory,
+			choices,
+			previousStoryId,
+		})
+		return scenario
+	} catch (error) {
+		throw new Error(String(error))
+	}
 }

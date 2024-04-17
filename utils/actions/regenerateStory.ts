@@ -26,14 +26,16 @@ export async function regenerateStory({
 	const data = await res.json()
 	const aiResponse: AIResponse = data.result.Output
 
-	const { title, story, choices } = extractStoryFromAI(aiResponse)
+	const { title, story, choices } = extractStoryFromAI({
+		aiResponse,
+		isContinue: false,
+	})
 
 	try {
 		const scenario = await updateStory({
-			title,
 			story,
 			choices,
-			prompt,
+			title: title!!,
 			previousStoryId,
 		})
 		return scenario

@@ -20,10 +20,13 @@ export async function submitPrompt({ prompt }: { prompt: string }) {
 	const data = await res.json()
 	const aiResponse: AIResponse = data.result.Output
 
-	const { title, story, choices } = extractStoryFromAI(aiResponse)
+	const { title, story, choices } = extractStoryFromAI({
+		aiResponse,
+		isContinue: false,
+	})
 
 	try {
-		const scenario = insertStory({ title, story, choices, prompt })
+		const scenario = insertStory({ title: title!!, story, choices, prompt })
 		return scenario
 	} catch (error) {
 		throw new Error(String(error))
