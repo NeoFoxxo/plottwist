@@ -114,7 +114,7 @@ export default function CreatePrompt() {
 				<Form {...form}>
 					<form
 						onSubmit={form.handleSubmit(onSubmit)}
-						className="w-full p-4 sm:py-4 md:p-0 space-y-6 text-center"
+						className="w-full p-4 space-y-6 text-center sm:py-4 md:p-0"
 					>
 						<h1 className="text-4xl font-bold">Create a story.</h1>
 						<FormField
@@ -141,7 +141,7 @@ export default function CreatePrompt() {
 						></FormField>
 						<Button
 							variant="default"
-							className="w-fit mx-auto"
+							className="mx-auto w-fit"
 							type="submit"
 							disabled={isDisabled}
 						>
@@ -158,7 +158,7 @@ export default function CreatePrompt() {
 			)}
 			{scenario && (
 				<section className="p-4 flex flex-col flex-wrap justify-center items-start gap-4 max-w-[800px]">
-					<h1 className="text-4xl font-bold pb-10">{scenario.title}</h1>
+					<h1 className="pb-10 text-4xl font-bold">{scenario.title}</h1>
 					<h4 className="text-[1.15rem]">
 						<b>Prompt:</b> {scenario.prompt}
 					</h4>
@@ -173,14 +173,14 @@ export default function CreatePrompt() {
 					{storyPartCount === 1 ? (
 						<Button
 							onClick={regenerate}
-							className="font-semibold flex justify-center items-center gap-2"
+							className="flex items-center justify-center gap-2 font-semibold"
 						>
 							{pending ? <Loader2 className="animate-spin" /> : <Bot />}
 							Regenerate
 						</Button>
 					) : (
 						pending && (
-							<h5 className="font-semibold flex justify-center items-center gap-2">
+							<h5 className="flex items-center justify-center gap-2 font-semibold">
 								Selecting Choice <Loader2 className="animate-spin" />
 							</h5>
 						)
@@ -194,7 +194,7 @@ export default function CreatePrompt() {
 											Your story is finished!
 										</h4>
 										<Link href={"/app/library"}>
-											<Button className="font-semibold flex justify-center items-center gap-2">
+											<Button className="flex items-center justify-center gap-2 font-semibold">
 												Go to Library
 											</Button>
 										</Link>
@@ -209,7 +209,7 @@ export default function CreatePrompt() {
 										<div
 											key={index}
 											onClick={async () => await generateFromChoice(choice)}
-											className="py-2 px-4 cursor-pointer bg-neutral-800 hover:bg-neutral-900 w-fit rounded-md"
+											className="px-4 py-2 rounded-md cursor-pointer bg-neutral-800 hover:bg-neutral-900 w-fit"
 										>
 											{choice}
 										</div>

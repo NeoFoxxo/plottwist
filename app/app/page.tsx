@@ -10,7 +10,7 @@ export default async function Dashboard() {
 	const { mostPopular, recentStories } = await getScenarios()
 
 	return (
-		<div className="container p-4 flex flex-row max-md:flex-col mx-auto text-2xl w-[100vw] max-h-[80vh] overflow-hidden max-md:overflow-y-scroll">
+		<div className="container p-4 py-20 flex flex-row max-md:flex-col mx-auto text-2xl w-[100vw] max-h-[80vh] overflow-hidden max-md:overflow-y-scroll">
 			<div className="flex flex-col w-full mx-auto">
 				<p
 					style={{

@@ -1,13 +1,12 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import Image from "next/image";
 import React, {
     createContext,
-    useState,
     useContext,
-    useRef,
     useEffect,
+    useRef,
+    useState,
 } from "react";
 
 const MouseEnterContext = createContext<

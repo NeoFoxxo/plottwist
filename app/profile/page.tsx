@@ -24,7 +24,7 @@ export default async function ProtectedPage() {
     const date = new Date(profileData.created_at).toLocaleDateString();
 
     return (
-        <div className="m-4 text-2xl flex-1 w-full flex flex-col items-center">
+        <div className="flex flex-col items-center flex-1 w-full m-4 text-2xl">
             <UserProfile stories={stories} profileData={profileData} date={date} />
         </div>
     );

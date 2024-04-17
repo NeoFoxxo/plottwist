@@ -12,7 +12,7 @@ export default async function Create() {
 	if (!user_id) redirect("/login")
 
 	return (
-		<main className="flex flex-col flex-1 my-4 md:p-10 justify-start items-center w-full md:w-fit">
+		<main className="flex flex-col items-center justify-start flex-1 w-full my-4 md:p-10 md:w-fit">
 			<CreatePrompt />
 		</main>
 	)
