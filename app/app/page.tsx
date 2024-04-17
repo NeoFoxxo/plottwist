@@ -1,5 +1,6 @@
-import { ScenarioCard } from "@/components/ScenarioCard"
-import { getScenarios } from "@/utils/actions/getScenarios"
+
+import { ScenarioCard } from "@/components/ScenarioCard";
+import { getScenarios } from "@/utils/actions/getScenarios";
 import {
 	Carousel,
 	CarouselContent,
