@@ -1,14 +1,14 @@
 "use client";
 
-import { Bookmark, MessageSquareText } from "lucide-react";
-import Link from "next/link";
-import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
 import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Bookmark, MessageSquareText, Trash } from "lucide-react";
+import Link from "next/link";
+import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
 
 type SCENARIO_TYPES = {
     scenario: {
@@ -20,6 +20,7 @@ type SCENARIO_TYPES = {
         title: string;
         user_id: string;
     };
+    bookmark?: boolean;
 };
 
 function truncateString(str: string, maxl: number) {
@@ -28,7 +29,7 @@ function truncateString(str: string, maxl: number) {
 
     if (str?.length > maxl) {
         // Find the index of the last space before the 120th character
-        let lastSpaceIndex = str.lastIndexOf(' ', maxl);
+        let lastSpaceIndex = str.lastIndexOf(" ", maxl);
         // If no space is found, truncate at 120th character
         let endIndex = lastSpaceIndex === -1 ? maxl : lastSpaceIndex;
 
@@ -39,36 +40,37 @@ function truncateString(str: string, maxl: number) {
 }
 
 const shadowcolor = [
-    'hover:shadow-emerald-500/[0.4]',
-    'hover:shadow-orange-400/[0.6]',
-    'hover:shadow-blue-600/[0.6]',
-    'hover:shadow-cyan-400/[0.6]',
-    'hover:shadow-violet-500/[0.4]',
-    'hover:shadow-red-300/[0.4]'
-]
+    "hover:shadow-emerald-500/[0.4]",
+    "hover:shadow-orange-400/[0.6]",
+    "hover:shadow-blue-600/[0.6]",
+    "hover:shadow-cyan-400/[0.6]",
+    "hover:shadow-violet-500/[0.4]",
+    "hover:shadow-red-300/[0.4]",
+];
 
 const bordercolor = [
-    'border-emerald-500/[0.6]',
-    'border-orange-500/[0.6]',
-    'border-blue-500/[0.6]',
-    'border-cyan-500/[0.6]',
-    'border-violet-500/[0.6]',
-    'border-red-300/[0.6]'
-]
+    "border-emerald-500/[0.6]",
+    "border-orange-500/[0.6]",
+    "border-blue-500/[0.6]",
+    "border-cyan-500/[0.6]",
+    "border-violet-500/[0.6]",
+    "border-red-300/[0.6]",
+];
 
-export function ScenarioCard({ scenario }: SCENARIO_TYPES) {
-
-    const r = Math.floor(Math.random() * shadowcolor.length)
-
+export function ScenarioCard({ scenario, bookmark }: SCENARIO_TYPES) {
+    const r = Math.floor(Math.random() * shadowcolor.length);
     const { title, prompt, story } = scenario;
+    const bookmarkFlag = bookmark ? bookmark : false;
 
     return (
         <CardContainer className="inter-var h-[10rem] p-4 my-7">
-            <CardBody className={`transition-all bg-gray-50 relative group/card shadow-2xl dark:bg-black/50 ${bordercolor[r]} ${shadowcolor[r]} hover:border-white w-auto h-auto max-md:h-auto my-auto sm:w-[25rem] max-w-[25rem] rounded-xl p-7 m-10 border flex flex-col`}>
+            <CardBody
+                className={`transition-all bg-gray-50 relative group/card shadow-2xl dark:bg-black/50 ${bordercolor[r]} ${shadowcolor[r]} hover:border-white w-auto h-auto max-md:h-auto my-auto sm:w-[25rem] max-w-[25rem] rounded-xl p-7 m-10 border flex flex-col`}
+            >
                 <CardItem
                     href={`/story/${scenario.id}`}
                     as="a"
-                    style={{ cursor: 'pointer' }}
+                    style={{ cursor: "pointer" }}
                     translateZ="50"
                     className="text-xl font-bold text-neutral-600 dark:text-white"
                 >
@@ -85,10 +87,10 @@ export function ScenarioCard({ scenario }: SCENARIO_TYPES) {
                     as="p"
                     translateZ={60}
                     style={{
-                        backgroundColor: 'rgba(0,0,0,0.700)',
-                        borderRadius: '1em',
-                        lineHeight: '1rem',
-                        overflowWrap: 'break-word',
+                        backgroundColor: "rgba(0,0,0,0.700)",
+                        borderRadius: "1em",
+                        lineHeight: "1rem",
+                        overflowWrap: "break-word",
                     }}
                     className="text-neutral-600 p-2 transition-all duration-1000 ease-in-out font-mono text-[0.6rem] hover:text-[0.8rem] w-[100%] my-4 dark:text-neutral-500 hover:dark:text-neutral-300"
                 >
@@ -99,27 +101,28 @@ export function ScenarioCard({ scenario }: SCENARIO_TYPES) {
                         translateZ={74}
                         as={Link}
                         href={`/story/${scenario.id}`}
-                        style={{ borderRadius: '1em' }}
+                        style={{ borderRadius: "1em" }}
                         className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white bg-transparent hover:bg-white/20 "
                     >
                         Remix →
                     </CardItem>
-                    <CardItem
-                        translateZ={70}
-                    >
+                    <CardItem translateZ={70}>
                         <div className="flex justify-end mt-auto">
                             <CardItem
                                 as="a"
                                 href="/b"
-                                style={{ borderRadius: '1em' }}
+                                style={{ borderRadius: "1em" }}
                                 className="mr-2 rounded-x bg-transparent hover:bg-white/20 text-xs font-bold"
                             >
-                                <TooltipProvider delayDuration={300} >
+                                <TooltipProvider delayDuration={300}>
                                     <Tooltip>
-                                        <TooltipTrigger >
+                                        <TooltipTrigger>
                                             <MessageSquareText className="size-4 mx-4 my-2"></MessageSquareText>
                                         </TooltipTrigger>
-                                        <TooltipContent className='p-0 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight' side='bottom'>
+                                        <TooltipContent
+                                            className="p-0 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight"
+                                            side="bottom"
+                                        >
                                             <p>Add a review</p>
                                         </TooltipContent>
                                     </Tooltip>
@@ -128,16 +131,27 @@ export function ScenarioCard({ scenario }: SCENARIO_TYPES) {
                             <CardItem
                                 as="a"
                                 href="/b"
-                                style={{ borderRadius: '1em' }}
+                                style={{ borderRadius: "1em" }}
                                 className=" rounded-x bg-transparent hover:bg-white/20 text-xs font-bold"
                             >
-                                <TooltipProvider delayDuration={300} >
+                                <TooltipProvider delayDuration={300}>
                                     <Tooltip>
-                                        <TooltipTrigger >
-                                            <Bookmark className="size-4 mx-4 my-2"></Bookmark>
+                                        <TooltipTrigger>
+                                            {bookmark ? (
+                                                <Trash className="size-4 mx-4 my-2" />
+                                            ) : (
+                                                <Bookmark className="size-4 mx-4 my-2"></Bookmark>
+                                            )}
                                         </TooltipTrigger>
-                                        <TooltipContent className='p-0 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight' side='bottom'>
-                                            <p>Add to bookmarks</p>
+                                        <TooltipContent
+                                            className="p-0 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight"
+                                            side="bottom"
+                                        >
+                                            {bookmark ? (
+                                                <p>Remove from bookmarks</p>
+                                            ) : (
+                                                <p>Add to bookmarks</p>
+                                            )}
                                         </TooltipContent>
                                     </Tooltip>
                                 </TooltipProvider>
