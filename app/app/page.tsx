@@ -1,13 +1,20 @@
-import { ScenarioCard } from "@/components/ScenarioCard";
+import { createClient } from "@/utils/supabase/server"
+import { ScenarioCard } from "@/components/ScenarioCard"
+import { getScenarios } from "@/utils/actions/database/getScenarios"
 import {
     Carousel,
     CarouselContent,
     CarouselItem,
-} from "@/components/ui/carousel";
-import { getScenarios } from "@/utils/actions/database/getScenarios";
+} from "@/components/ui/carousel"
+import getUserInfo from "@/utils/actions/getUserinfo"
 
 export default async function Dashboard() {
-    const { mostPopular, recentStories } = await getScenarios();
+
+    const supabase = createClient()
+
+    const { data, error: authError } = await supabase.auth.getUser();
+
+    const { mostPopular, recentStories } = await getScenarios()
 
     return (
         <div className="container p-4 flex flex-row max-lg:flex-col mx-auto text-2xl">
@@ -27,15 +34,12 @@ export default async function Dashboard() {
                     className="w-full mt-10"
                 >
                     <CarouselContent className="top-0">
-                        {mostPopular?.map((scenario, index) => (
+                        {mostPopular?.map(async (scenario, index) => (
                             <CarouselItem
                                 key={index}
                                 className="pt-0 md:basis-1/3"
                             >
-                                <ScenarioCard
-                                    key={scenario.id}
-                                    scenario={scenario}
-                                />
+                                <ScenarioCard key={scenario.id} currentUser={data} data={await getUserInfo(scenario.user_id)} scenario={scenario} />
                             </CarouselItem>
                         ))}
                         <div className="pb-20"></div>
@@ -60,15 +64,12 @@ export default async function Dashboard() {
                     className="w-full mt-10"
                 >
                     <CarouselContent className="top-0">
-                        {recentStories?.map((scenario, index) => (
+                        {recentStories?.map(async (scenario, index) => (
                             <CarouselItem
                                 key={index}
                                 className="p-0 md:basis-1/3"
                             >
-                                <ScenarioCard
-                                    key={scenario.id}
-                                    scenario={scenario}
-                                />
+                                <ScenarioCard currentUser={data} data={await getUserInfo(scenario.user_id)} key={scenario.id} scenario={scenario} />
                             </CarouselItem>
                         ))}
                         <div className="pb-20"></div>
