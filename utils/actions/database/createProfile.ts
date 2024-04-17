@@ -24,7 +24,7 @@ export async function createProfile() {
 
         const { error } = await supabase
             .from("profiles")
-            .insert([{ user_id: user_id, email: email, name: username, bio: `We don't have a description for ${username} yet.\nBut we're pretty sure that they're really cool!` }]);
+            .insert([{ user_id: user_id, email: email, name: username, bio: `We don't have a description for ${username} yet.\nBut we're pretty sure that they're really cool!`, links: ["", "", "", ""] }]);
         if (error) throw new Error("Profile creation failed!");
     }
 }
