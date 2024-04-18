@@ -12,7 +12,7 @@ import { TextGenerateEffect } from "@/components/ui/text-generate-effect"
 import Image from "next/image"
 import Link from "next/link"
 import { redirect } from "next/navigation"
-import getUserInfo from "@/utils/actions/getUserinfo"
+import getUserInfo from "@/utils/actions/database/getUserinfo"
 
 export default async function StoryDetails({
 	params,
