@@ -1,30 +1,31 @@
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/utils/supabase/client"
 
-export async function updateProfile(newProfile: any) {
-    const supabase = createClient();
+export interface UpdateProfileProps {
+	profileData: {
+		name: string
+		bio: string
+		links: string[]
+	}
+	user_id: string
+}
 
-    // Authenticate the user
-    const { data, error: authError } = await supabase.auth.getUser();
-    if (!data?.user?.aud || data.user.aud !== "authenticated") {
-        throw new Error(authError?.message || "User authentication failed!");
-    }
+export async function updateProfile({
+	profileData,
+	user_id,
+}: UpdateProfileProps) {
+	console.log(profileData)
+	console.log(user_id)
 
-    const userId = data.user.id;
+	const supabase = createClient()
 
-    try {
-        // Update the authenticated user's profile
-        const { error } = await supabase
-            .from("profiles")
-            .update(newProfile)
-            .eq("id", userId);
+	const { error } = await supabase
+		.from("profiles")
+		.update(profileData)
+		.eq("user_id", user_id)
 
-        if (error) {
-            throw new Error(`Profile update failed: ${error.message}`);
-        }
+	if (error) {
+		throw new Error(`Profile update failed: ${error.message}`)
+	}
 
-        return { message: "Profile updated successfully!" };
-    } catch (error) {
-        console.error("Error updating profile:", error);
-        throw error;
-    }
+	return { message: "Profile updated successfully!" }
 }
