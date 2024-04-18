@@ -1,5 +1,5 @@
 "use client"
-import { Lock, Globe, Loader2, Trash } from "lucide-react"
+import { Lock, Globe, Loader2, Trash, Pin, PinOff } from "lucide-react"
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card"
 import {
 	Tooltip,
@@ -14,6 +14,7 @@ import { useState } from "react"
 import { Button } from "./ui/button"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./ui/alert-dialog"
 import deleteStory from "@/utils/actions/database/deleteStory"
+import { pinStory } from "@/utils/actions/database/pinStory"
 
 type SCENARIO_TYPES = {
 	scenario: {
@@ -26,6 +27,7 @@ type SCENARIO_TYPES = {
 		user_id: string
 		finished: boolean | null
 		published: boolean | null
+		pinned: boolean | null
 	}
 }
 
@@ -71,11 +73,18 @@ export function LibraryCard({ scenario }: SCENARIO_TYPES) {
 
 	const r = Math.floor(Math.random() * shadowcolor.length)
 
-	const { title, prompt, story, finished, published } = scenario
+	const { title, prompt, story, finished, published, pinned } = scenario
 
 	const handleDeleteStory = async () => {
 		setIsLoading(true);
 		await deleteStory(scenario.id);
+		router.refresh();
+		setIsLoading(false);
+	}
+
+	const handlePinStory = async () => {
+		setIsLoading(true);
+		await pinStory(scenario.id, pinned);
 		router.refresh();
 		setIsLoading(false);
 	}
@@ -190,10 +199,17 @@ export function LibraryCard({ scenario }: SCENARIO_TYPES) {
 								</>
 							)}
 						</div>
+						<Button variant={"ghost"} className="px-2.5 mr-2" onClick={handlePinStory}>
+							{isLoading ? <Loader2 className="animate-spin h-4 w-4" /> : (
+								<>
+									{pinned ? <PinOff size={18} /> : <Pin size={18} />}
+								</>
+							)}
+						</Button>
 						<AlertDialog>
 							<AlertDialogTrigger asChild>
-								<Button variant={"ghost"} className="w-12">
-									<Trash />
+								<Button variant={"ghost"} className="px-2.5">
+									<Trash size={18} />
 								</Button>
 							</AlertDialogTrigger>
 							<AlertDialogContent>
