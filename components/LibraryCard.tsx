@@ -1,5 +1,5 @@
 "use client"
-import { Lock, Globe, Loader2 } from "lucide-react"
+import { Lock, Globe, Loader2, Trash } from "lucide-react"
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card"
 import {
 	Tooltip,
@@ -11,6 +11,9 @@ import publish from "@/utils/actions/database/publishStory"
 import unPublish from "@/utils/actions/database/privateStory"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+import { Button } from "./ui/button"
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./ui/alert-dialog"
+import deleteStory from "@/utils/actions/database/deleteStory"
 
 type SCENARIO_TYPES = {
 	scenario: {
@@ -61,6 +64,7 @@ const bordercolor = [
 ]
 
 export function LibraryCard({ scenario }: SCENARIO_TYPES) {
+	const [isLoading, setIsLoading] = useState(false);
 	const router = useRouter()
 
 	const [pending, setPending] = useState(false)
@@ -68,6 +72,13 @@ export function LibraryCard({ scenario }: SCENARIO_TYPES) {
 	const r = Math.floor(Math.random() * shadowcolor.length)
 
 	const { title, prompt, story, finished, published } = scenario
+
+	const handleDeleteStory = async () => {
+		setIsLoading(true);
+		await deleteStory(scenario.id);
+		router.refresh();
+		setIsLoading(false);
+	}
 
 	return (
 		<CardContainer className="inter-var h-[10rem] p-0 my-7">
@@ -179,6 +190,32 @@ export function LibraryCard({ scenario }: SCENARIO_TYPES) {
 								</>
 							)}
 						</div>
+						<AlertDialog>
+							<AlertDialogTrigger asChild>
+								<Button variant={"ghost"} className="w-12">
+									<Trash />
+								</Button>
+							</AlertDialogTrigger>
+							<AlertDialogContent>
+								<AlertDialogHeader>
+									<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+									<AlertDialogDescription>
+										This action cannot be undone. This will permanently delete your
+										story.
+									</AlertDialogDescription>
+								</AlertDialogHeader>
+								<AlertDialogFooter>
+									<AlertDialogCancel>Cancel</AlertDialogCancel>
+									<AlertDialogAction onClick={handleDeleteStory}>
+										{isLoading ? (
+											<Loader2 className="animate-spin mx-4 my-2 h-4 w-4" />
+										) : (
+											"Continue"
+										)}
+									</AlertDialogAction>
+								</AlertDialogFooter>
+							</AlertDialogContent>
+						</AlertDialog>
 					</CardItem>
 				</div>
 			</CardBody>
