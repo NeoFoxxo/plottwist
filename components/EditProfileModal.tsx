@@ -12,23 +12,23 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Button } from "./ui/button"
 import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
 } from "./ui/dialog"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form"
 
 const profileSchema = z.object({
-	name: z.string().min(2, "Username should be at least 2 characters"),
-	bio: z.string().max(80, "Max length of bio is 80").optional(),
-	link1: z.string().max(40, "Max length of link is 40").optional(),
-	link2: z.string().max(40, "Max length of link is 40").optional(),
-	link3: z.string().max(40, "Max length of link is 40").optional(),
-	link4: z.string().max(40, "Max length of link is 40").optional(),
+    name: z.string().min(2, "Username should be at least 2 characters"),
+    bio: z.string().max(80, "Max length of bio is 80").optional(),
+    link1: z.string().max(40, "Max length of link is 40").optional(),
+    link2: z.string().max(40, "Max length of link is 40").optional(),
+    link3: z.string().max(40, "Max length of link is 40").optional(),
+    link4: z.string().max(40, "Max length of link is 40").optional(),
 })
 
 interface EditProfileModalProps {
@@ -50,79 +50,97 @@ export default function EditProfileModal({
     profileData,
     userId
 }: EditProfileModalProps) {
-	const defaultImage = `/icons/pfp${Math.floor(Math.random() * 5) + 1}.png`
-	const [pending, setPending] = useState(false)
-	const [errorMessage, setErrorMessage] = useState("")
-	const [successMessage, setSuccessMessage] = useState("")
-	const { name, image, bio, user_id, links } = profileData
-	const [localImage, setLocalImage] = useState(image)
-	const [file, setFile] = useState<File | null>(null)
-	const router = useRouter()
+    const defaultImage = `/icons/pfp${Math.floor(Math.random() * 5) + 1}.png`
+    const [pending, setPending] = useState(false)
+    const [errorMessage, setErrorMessage] = useState("")
+    const [successMessage, setSuccessMessage] = useState("")
+    const { name, image, bio, user_id, links } = profileData
+    const [localImage, setLocalImage] = useState(image)
+    const [file, setFile] = useState<File | null>(null)
+    const router = useRouter()
 
-	const profileForm = useForm<z.infer<typeof profileSchema>>({
-		resolver: zodResolver(profileSchema),
-		defaultValues: {
-			name: name!!,
-			bio: bio!!,
-			link1: links!![0] !== undefined ? links!![0] : "",
-			link2: links!![1] !== undefined ? links!![1] : "",
-			link3: links!![2] !== undefined ? links!![2] : "",
-			link4: links!![3] !== undefined ? links!![3] : "",
-		},
-	})
+    const profileForm = useForm<z.infer<typeof profileSchema>>({
+        resolver: zodResolver(profileSchema),
+        defaultValues: {
+            name: name!!,
+            bio: bio!!,
+            link1: links!![0] !== undefined ? links!![0] : "",
+            link2: links!![1] !== undefined ? links!![1] : "",
+            link3: links!![2] !== undefined ? links!![2] : "",
+            link4: links!![3] !== undefined ? links!![3] : "",
+        },
+    })
 
-	const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
-		setErrorMessage("")
-		if (!e.target.files) return "File selection failed!"
+    const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
+        setErrorMessage("")
+        if (!e.target.files) return "File selection failed!"
 
-		if (!e.target.files[0].type.startsWith("image/")) {
-			setErrorMessage("File provided was not an image")
-			return
-		}
-		const selectedFile = e.target.files?.[0]
+        const selectedFile = e.target.files?.[0]
 
-		if (!selectedFile) {
-			setErrorMessage("File attach failed")
-			return
-		}
+        if (!selectedFile) {
+            setErrorMessage("File attach failed")
+            return
+        }
 
-		if (selectedFile.size > 4000000) {
-			setErrorMessage("Image cannot be larger than 4mb!")
-			return
-		}
+        if (selectedFile.size > 10000000) {
+            setErrorMessage("Image cannot be larger than 4mb!")
+            return
+        }
 
-		const url = URL.createObjectURL(selectedFile)
-		setLocalImage(url)
-		setFile(selectedFile)
-	}
+        const url = URL.createObjectURL(selectedFile)
+        setLocalImage(url)
+        setFile(selectedFile)
+    }
 
-	async function onSubmit(newProfileData: z.infer<typeof profileSchema>) {
-		let imgUrl: string | null = null
-		setPending(true)
-		setErrorMessage("")
-		try {
-			if (file) {
-				let existingImage = false
-				if (profileData.image) existingImage = true
-				try {
-					const path = await imageUpload(
-						file,
-						profileData.user_id,
-						existingImage
-					)
-					if (path) imgUrl = path
-				} catch (error) {
-					setPending(false)
-					setErrorMessage(String(error))
-				}
-			}
+    async function onSubmit(profileData: z.infer<typeof profileSchema>) {
+        let imgUrl: string | null = null;
+        setPending(true);
+        try {
+            if (file) {
+                const path = await imageUpload(file);
+                if (!path) {
+                    setPending(false);
+                    return alert("Image upload failed!");
+                }
+                imgUrl = path;
+            }
 
-			const links = [
-				newProfileData.link1,
-				newProfileData.link2,
-				newProfileData.link3,
-				newProfileData.link4,
-			].filter((link): link is string => link != "") // check if link is string and not empty
+            const links = [
+                profileData.link1,
+                profileData.link2,
+                profileData.link3,
+                profileData.link4,
+            ].filter((link): link is string => link != ""); // check if link is string and not empty
+
+            if (imgUrl) {
+                await updateProfile({
+                    profileData: {
+                        name: profileData.name!!,
+                        image: imgUrl,
+                        bio: profileData.bio!!,
+                        links: links,
+                    },
+                    user_id: user_id,
+                });
+            } else {
+                await updateProfile({
+                    profileData: {
+                        name: profileData.name!!,
+                        bio: profileData.bio!!,
+                        links: links,
+                    },
+                    user_id: user_id,
+                });
+            }
+            router.refresh();
+            setPending(false);
+            setSuccessMessage("Profile successfully updated!");
+        } catch (error) {
+            router.refresh();
+            setPending(false);
+            setErrorMessage(String(error));
+        }
+    }
 
     return (
         <Dialog>
