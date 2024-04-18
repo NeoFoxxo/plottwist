@@ -5,12 +5,25 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip";
+import deleteStory from "@/utils/actions/database/deleteStory";
 import unPublish from "@/utils/actions/database/privateStory";
 import publish from "@/utils/actions/database/publishStory";
-import { Globe, Loader2, Lock } from "lucide-react";
+import { Globe, Loader2, Lock, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "./ui/alert-dialog";
+import { Button } from "./ui/button";
 
 type SCENARIO_TYPES = {
     scenario: {
@@ -61,6 +74,7 @@ const bordercolor = [
 ];
 
 export function LibraryCard({ scenario }: SCENARIO_TYPES) {
+    const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
 
     const [pending, setPending] = useState(false);
@@ -68,6 +82,13 @@ export function LibraryCard({ scenario }: SCENARIO_TYPES) {
     const r = Math.floor(Math.random() * shadowcolor.length);
 
     const { title, prompt, story, finished, published } = scenario;
+
+    const handleDeleteStory = async () => {
+        setIsLoading(true);
+        await deleteStory(scenario.id);
+        router.refresh();
+        setIsLoading(false);
+    };
 
     return (
         <CardContainer className="inter-var h-[10rem] p-0 my-7">
@@ -106,8 +127,6 @@ export function LibraryCard({ scenario }: SCENARIO_TYPES) {
                 <div className="flex justify-between items-center mt-auto">
                     {finished == false && (
                         <CardItem
-                            as={"a"}
-                            href={`/app/library/continue/${scenario.id}`}
                             translateZ={74}
                             style={{ borderRadius: "1em" }}
                             className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white bg-transparent hover:bg-white/20 "
@@ -185,6 +204,38 @@ export function LibraryCard({ scenario }: SCENARIO_TYPES) {
                                 </>
                             )}
                         </div>
+                        <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                                <Button variant={"ghost"} className="w-12">
+                                    <Trash />
+                                </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle>
+                                        Are you absolutely sure?
+                                    </AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                        This action cannot be undone. This will
+                                        permanently delete your story.
+                                    </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                    <AlertDialogCancel>
+                                        Cancel
+                                    </AlertDialogCancel>
+                                    <AlertDialogAction
+                                        onClick={handleDeleteStory}
+                                    >
+                                        {isLoading ? (
+                                            <Loader2 className="animate-spin mx-4 my-2 h-4 w-4" />
+                                        ) : (
+                                            "Continue"
+                                        )}
+                                    </AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
                     </CardItem>
                 </div>
             </CardBody>
