@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 import { useRouter } from "next//navigation";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
 
 type SCENARIO_TYPES = {
@@ -107,9 +107,15 @@ export function ScenarioCard({
     const [pending, setPending] = useState(false);
     const router = useRouter();
 
+    // To get latest bookmarks
+    useEffect(() => {
+        router.refresh();
+    }, []);
+
     const handleAddBookmark = async () => {
         setIsLoading(true);
         await addBookmark(scenario.id);
+        router.refresh();
         setIsLoading(false);
     };
 
