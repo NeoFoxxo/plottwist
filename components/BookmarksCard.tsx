@@ -1,9 +1,17 @@
 "use client";
 
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@radix-ui/react-tooltip";
-import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
-import { Globe, Loader2, MessageSquareText, Trash } from "lucide-react";
+import { removeBookmark } from "@/utils/actions/database/removeBookmark";
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@radix-ui/react-tooltip";
+import { Loader2, MessageSquareText, Trash } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
 
 type BOOKMARK_INPUT_TYPES = {
     scenario: {
@@ -14,7 +22,7 @@ type BOOKMARK_INPUT_TYPES = {
         story: string | null;
         title: string;
         user_id: string;
-    },
+    };
     data: {
         data: {
             admin: boolean;
@@ -26,11 +34,22 @@ type BOOKMARK_INPUT_TYPES = {
             links: string[] | null;
             name: string | null;
             user_id: string;
-        }
-    },
+        };
+    };
 };
 
-export default function BookmarksCard({ scenario, data }: BOOKMARK_INPUT_TYPES) {
+export default function BookmarksCard({
+    scenario,
+    data,
+}: BOOKMARK_INPUT_TYPES) {
+    const router = useRouter();
+    const [isLoading, setIsLoading] = useState(false);
+    const handleRemoveBookmark = async () => {
+        setIsLoading(true);
+        await removeBookmark(scenario.id);
+        router.refresh();
+        setIsLoading(false);
+    };
 
     function relativeTime(timestamp: string) {
         const currentTime: any = new Date();
@@ -93,14 +112,27 @@ export default function BookmarksCard({ scenario, data }: BOOKMARK_INPUT_TYPES) 
 
     return (
         <CardContainer className="inter-var h-[10rem] p-4 my-7">
-            <CardBody className={`transition-all bg-gray-50 relative group/card shadow-2xl dark:bg-black/50 ${bordercolor[r]} ${shadowcolor[r]} hover:border-white w-auto h-auto max-md:h-auto my-auto sm:w-[25rem] max-w-[25rem] rounded-xl p-7 m-10 border flex flex-col`}>
+            <CardBody
+                className={`transition-all bg-gray-50 relative group/card shadow-2xl dark:bg-black/50 ${bordercolor[r]} ${shadowcolor[r]} hover:border-white w-auto h-auto max-md:h-auto my-auto sm:w-[25rem] max-w-[25rem] rounded-xl p-7 m-10 border flex flex-col`}
+            >
                 <CardItem translateZ="30">
                     <div className="flex flex-row mb-2">
-                        <a href="" className="h-[fit-content] w-[fit-content] m-auto p-0">
-                            <img className="rounded-full w-7 h-7" src={data.data!!.image!!}></img>
+                        <a
+                            href=""
+                            className="h-[fit-content] w-[fit-content] m-auto p-0"
+                        >
+                            <img
+                                className="rounded-full w-7 h-7"
+                                src={data.data!!.image!!}
+                            ></img>
                         </a>
-                        <a href="" className="h-auto w-[fit-content] m-auto p-0">
-                            <p className="text-sm ml-2 hover:underline">{data.data.name}</p>
+                        <a
+                            href=""
+                            className="h-auto w-[fit-content] m-auto p-0"
+                        >
+                            <p className="text-sm ml-2 hover:underline">
+                                {data.data.name}
+                            </p>
                         </a>
                     </div>
                 </CardItem>
@@ -167,15 +199,20 @@ export default function BookmarksCard({ scenario, data }: BOOKMARK_INPUT_TYPES) 
                             </CardItem>
                             <CardItem
                                 as="a"
-                                href="/b"
                                 style={{ borderRadius: "1em" }}
                                 className=" rounded-x bg-transparent hover:bg-white/20 text-xs font-bold"
                             >
                                 <TooltipProvider delayDuration={300}>
                                     <Tooltip>
-                                        <TooltipTrigger>
-                                            <Trash className="size-4 mx-4 my-2" />
-                                        </TooltipTrigger>
+                                        {isLoading ? (
+                                            <Loader2 className="animate-spin mx-4 my-2 h-4 w-4" />
+                                        ) : (
+                                            <TooltipTrigger
+                                                onClick={handleRemoveBookmark}
+                                            >
+                                                <Trash className="size-4 mx-4 my-2" />
+                                            </TooltipTrigger>
+                                        )}
                                         <TooltipContent
                                             className="p-0 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight"
                                             side="bottom"
@@ -189,6 +226,6 @@ export default function BookmarksCard({ scenario, data }: BOOKMARK_INPUT_TYPES) 
                     </CardItem>
                 </div>
             </CardBody>
-        </CardContainer >
+        </CardContainer>
     );
 }
