@@ -8,7 +8,7 @@ export interface ExtractStoryProps {
 export function extractStoryFromAI({ aiResponse, stage }: ExtractStoryProps) {
 	const story = aiResponse.response.story
 	if (!story) {
-		throw new Error("Story data is undefined, please try again" + aiResponse)
+		throw new Error("Story data is undefined, please try again")
 	}
 
 	if (stage === "finish") {
