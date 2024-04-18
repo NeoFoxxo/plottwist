@@ -50,7 +50,7 @@ export default async function Dashboard({
 							<ScenarioCard
 								key={scenario.id}
 								currentUser={data}
-								data={await getUserInfo(scenario.user_id)}
+								data={await getUserInfo(scenario?.user_id)}
 								scenario={scenario}
 							/>
 						))}

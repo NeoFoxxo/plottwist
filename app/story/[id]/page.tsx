@@ -7,8 +7,10 @@ import {
     TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { TracingBeam } from "@/components/ui/tracing-beam";
+import { getReviews } from "@/utils/actions/database/getReviews";
 import { getStory } from "@/utils/actions/database/getStory";
 import getUserInfo from "@/utils/actions/database/getUserinfo";
+import getSession from "@/utils/actions/database/getSession";
 import { Bookmark, BotIcon, MessageSquareText } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -31,24 +33,9 @@ export default async function StoryDetails({
 
     const icons = ["/icons/book.png", "/icons/star.png", "/icons/bookmark.png"];
 
-    const reviews = [
-        {
-            author: "bonndubz",
-            content: "you suck lol",
-        },
-        {
-            author: "neofox",
-            content: "naaa shudafug up",
-        },
-        {
-            author: "slaviik",
-            content: "e",
-        },
-        {
-            author: "peppermint",
-            content: "i think i need to go to school",
-        },
-    ];
+    const reviews = await getReviews({ storyId: Number(params.id), commentsCount: 20 });
+
+    const currentUser = await getSession()
 
     return (
         <main className="flex flex-col w-full mx-auto gap-2 py-8 my-12">
@@ -143,101 +130,119 @@ export default async function StoryDetails({
                                 </TooltipContent>
                             </Tooltip>
                         </TooltipProvider>
-                        <TooltipProvider delayDuration={300}>
-                            <Tooltip>
-                                <TooltipTrigger>
-                                    <Link
-                                        className={buttonVariants({
-                                            variant: "outline",
-                                        })}
-                                        href={""}
-                                    >
-                                        <MessageSquareText className="size-4 mx-4 my-2"></MessageSquareText>
-                                    </Link>
-                                </TooltipTrigger>
-                                <TooltipContent
-                                    className="p-0 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight"
-                                    side="bottom"
-                                >
-                                    <p
-                                        style={{
-                                            textShadow: "0em 0em 0.3em white",
-                                        }}
-                                    >
-                                        Add a review
-                                    </p>
-                                </TooltipContent>
-                            </Tooltip>
-                        </TooltipProvider>
-                        <TooltipProvider delayDuration={300}>
-                            <Tooltip>
-                                <TooltipTrigger>
-                                    <Link
-                                        className={buttonVariants({
-                                            variant: "outline",
-                                        })}
-                                        href={""}
-                                    >
-                                        <Bookmark className="size-4 mx-4 my-2"></Bookmark>
-                                    </Link>
-                                </TooltipTrigger>
-                                <TooltipContent
-                                    className="p-0 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight"
-                                    side="bottom"
-                                >
-                                    <p
-                                        style={{
-                                            textShadow: "0em 0em 0.3em white",
-                                        }}
-                                    >
-                                        Add to library
-                                    </p>
-                                </TooltipContent>
-                            </Tooltip>
-                        </TooltipProvider>
+                        {
+                            story?.user_id != currentUser.user?.id && (
+                                <>
+                                    <TooltipProvider delayDuration={300}>
+                                        <Tooltip>
+                                            <TooltipTrigger>
+                                                <Link
+                                                    className={buttonVariants({
+                                                        variant: "outline",
+                                                    })}
+                                                    href={""}
+                                                >
+                                                    <MessageSquareText className="size-4 mx-4 my-2"></MessageSquareText>
+                                                </Link>
+                                            </TooltipTrigger>
+                                            <TooltipContent
+                                                className="p-0 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight"
+                                                side="bottom"
+                                            >
+                                                <p
+                                                    style={{
+                                                        textShadow: "0em 0em 0.3em white",
+                                                    }}
+                                                >
+                                                    Add a review
+                                                </p>
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TooltipProvider>
+                                    <TooltipProvider delayDuration={300}>
+                                        <Tooltip>
+                                            <TooltipTrigger>
+                                                <Link
+                                                    className={buttonVariants({
+                                                        variant: "outline",
+                                                    })}
+                                                    href={""}
+                                                >
+                                                    <Bookmark className="size-4 mx-4 my-2"></Bookmark>
+                                                </Link>
+                                            </TooltipTrigger>
+                                            <TooltipContent
+                                                className="p-0 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight"
+                                                side="bottom"
+                                            >
+                                                <p
+                                                    style={{
+                                                        textShadow: "0em 0em 0.3em white",
+                                                    }}
+                                                >
+                                                    Add to library
+                                                </p>
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TooltipProvider>
+                                </>
+                            )
+                        }
                     </div>
                     <p className="font-mono text-sm mb-2 text-white/60">
                         Reviews
                     </p>
                     <div className="container h-[30vh] overflow-y-auto overflow-x-hidden border border-white/15 bg-black/10 border-solid rounded-lg p-5 flex flex-col items-start gap-3 w-full pt-4">
-                        {reviews.map((rev, index) => (
-                            <div
-                                className="flex flex-col gap-2 mx-auto w-[60rem]"
-                                key={index}
-                            >
-                                <div className="my-2">
-                                    <div className="flex flex-row gap-2">
-                                        <a href="" className="w-[fit-content]">
-                                            <img
-                                                className="w-6 h-6 rounded-full"
-                                                src="/icons/pfp1.png"
-                                            ></img>
-                                        </a>
-                                        <a
-                                            href=""
-                                            className="w-[fit-content] h-[fit-content]"
-                                        >
-                                            <h2
-                                                style={{
-                                                    textShadow:
-                                                        "0em 0em 0.3em white",
-                                                }}
-                                                className="text-sm cursor-pointer hover:underline w-full"
+                        {
+                            reviews!!.length == 0 ? (
+                                <>
+                                    No reviews (yet...)<br></br>{story?.user_id != currentUser.user?.id && (<a className="text-cyan-200 hover:underline hover:cursor-pointer p-0 m-0">Add a review!</a>)}
+                                </>
+                            ) : (
+                                <>
+                                    {
+                                        reviews!!.map(async (rev, index) => (
+                                            <div
+                                                className="flex flex-col gap-2 mx-auto w-[60rem]"
+                                                key={index}
                                             >
-                                                {rev.author}
-                                            </h2>
-                                        </a>
-                                    </div>
-                                    <p className="text-[14px] p-[0.1rem] mt-1 font-mono text-white/50">
-                                        {rev.content}
-                                    </p>
-                                </div>
-                                <div className="mx-auto w-full h-[0.01rem] bg-white/5"></div>
-                            </div>
-                        ))}
+                                                <div className="my-2">
+                                                    <div className="flex flex-row gap-2">
+                                                        <a href="" className="w-[fit-content]">
+                                                            <img
+                                                                className="w-6 h-6 rounded-full"
+                                                                src={(await getUserInfo(rev.user_id)).data!!.image!! || '/icons/pfp1.png'}
+                                                            ></img>
+                                                        </a>
+                                                        <a
+                                                            href=""
+                                                            className="w-[fit-content] h-[fit-content]"
+                                                        >
+                                                            <h2
+                                                                style={{
+                                                                    textShadow:
+                                                                        "0em 0em 0.3em white",
+                                                                }}
+                                                                className="text-sm cursor-pointer hover:underline w-full"
+                                                            >
+                                                                {(await getUserInfo(rev.user_id)).data.name}
+                                                            </h2>
+                                                        </a>
+                                                    </div>
+                                                    <p className="text-[14px] p-[0.1rem] mt-1 font-mono text-white/50">
+                                                        {rev.comment}
+                                                    </p>
+                                                </div>
+                                                <div className="mx-auto w-full h-[0.01rem] bg-white/5"></div>
+                                            </div>
+                                        ))
+                                    }
+                                </>
+                            )
+                        }
                     </div>
                 </div>
             </div>
-        </main>
+        </main >
     );
 }
