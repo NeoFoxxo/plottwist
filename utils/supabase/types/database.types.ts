@@ -98,6 +98,7 @@ export type Database = {
                     id: number;
                     prompt: string | null;
                     published: boolean | null;
+                    pinned: boolean | null;
                     story: string | null;
                     title: string;
                     user_id: string;
@@ -110,6 +111,7 @@ export type Database = {
                     id?: number;
                     prompt?: string | null;
                     published?: boolean | null;
+                    pinned?: boolean | null;
                     story?: string | null;
                     title?: string;
                     user_id?: string;
@@ -122,6 +124,7 @@ export type Database = {
                     id?: number;
                     prompt?: string | null;
                     published?: boolean | null;
+                    pinned?: boolean | null;
                     story?: string | null;
                     title?: string;
                     user_id?: string;
