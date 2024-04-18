@@ -3,7 +3,7 @@ import getUserInfo from "@/utils/actions/getUserinfo"
 import { createClient } from "@/utils/supabase/server"
 import { redirect } from "next/navigation"
 
-export default async function Profile() {
+export default async function Profile({ params }: { params: { id: string } }) {
 	const supabase = createClient()
 	const {
 		data: { user },
@@ -12,7 +12,7 @@ export default async function Profile() {
 	const user_id = user?.id
 	if (!user_id) redirect("/login")
 
-	const userInfo = await getUserInfo(user_id)
+	const userInfo = await getUserInfo(params.id);
 
 	return (
 		<div className="flex flex-col items-center flex-1 w-full m-4 text-2xl">
@@ -20,6 +20,7 @@ export default async function Profile() {
 				storyCount={userInfo.storyCount}
 				profileData={userInfo.profile}
 				date={userInfo.date}
+				userId={user?.id}
 			/>
 		</div>
 	)
