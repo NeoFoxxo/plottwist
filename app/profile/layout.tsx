@@ -1,12 +1,9 @@
-import { Sidebar } from "@/components/Sidebar";
-
 const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
-    return (
-        <div className="w-full flex justify-start items-start min-h-[84vh] pl-[70px]">
-            <Sidebar />
-            {children}
-        </div>
-    );
-};
+	return (
+		<div className="w-full flex justify-start items-start min-h-[84vh]">
+			{children}
+		</div>
+	)
+}
 
-export default ProfileLayout;
+export default ProfileLayout
