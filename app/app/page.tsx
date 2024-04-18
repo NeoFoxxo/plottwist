@@ -1,12 +1,8 @@
 import { createClient } from "@/utils/supabase/server"
 import { ScenarioCard } from "@/components/ScenarioCard"
 import { getScenarios } from "@/utils/actions/database/getScenarios"
-import {
-	Carousel,
-	CarouselContent,
-	CarouselItem,
-} from "@/components/ui/carousel"
 import getUserInfo from "@/utils/actions/database/getUserinfo"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 export default async function Dashboard() {
 	const supabase = createClient()
@@ -24,25 +20,19 @@ export default async function Dashboard() {
 				>
 					Most popular
 				</h2>
-				<Carousel
-					opts={{ align: "start" }}
-					orientation={"vertical"}
-					className="w-full mt-2"
-				>
-					<CarouselContent className="py-5 top-0 h-[80vh]">
-						{mostPopular?.map(async (scenario, index) => (
-							<CarouselItem key={index} className="py-5 md:basis-1/3">
-								<ScenarioCard
-									key={scenario.id}
-									currentUser={data}
-									data={await getUserInfo(scenario.user_id)}
-									scenario={scenario}
-								/>
-							</CarouselItem>
+				<ScrollArea className="w-full mt-2">
+					<div className="py-5 top-0 h-[80vh]">
+						{mostPopular?.map(async (scenario) => (
+							<ScenarioCard
+								key={scenario.id}
+								currentUser={data}
+								data={await getUserInfo(scenario.user_id)}
+								scenario={scenario}
+							/>
 						))}
 						<div className="pb-20"></div>
-					</CarouselContent>
-				</Carousel>
+					</div>
+				</ScrollArea>
 			</div>
 			<div className="flex flex-col w-full mx-auto">
 				<h2
@@ -51,27 +41,19 @@ export default async function Dashboard() {
 				>
 					New stories
 				</h2>
-				<Carousel
-					opts={{
-						align: "start",
-					}}
-					orientation="vertical"
-					className="w-full mt-2"
-				>
-					<CarouselContent className=" py-5 top-0 h-[80vh]">
+				<ScrollArea className="w-full mt-2">
+					<div className="py-5 top-0 h-[80vh]">
 						{recentStories?.map(async (scenario, index) => (
-							<CarouselItem key={index} className="py-5 md:basis-1/3">
-								<ScenarioCard
-									currentUser={data}
-									data={await getUserInfo(scenario.user_id)}
-									key={scenario.id}
-									scenario={scenario}
-								/>
-							</CarouselItem>
+							<ScenarioCard
+								currentUser={data}
+								data={await getUserInfo(scenario.user_id)}
+								key={scenario.id}
+								scenario={scenario}
+							/>
 						))}
 						<div className="pb-20"></div>
-					</CarouselContent>
-				</Carousel>
+					</div>
+				</ScrollArea>
 			</div>
 		</div>
 	)

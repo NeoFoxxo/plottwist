@@ -1,6 +1,5 @@
 "use client"
-import { Bookmark, MessageSquareText, Lock, Globe, Loader2 } from "lucide-react"
-import Link from "next/link"
+import { Lock, Globe, Loader2 } from "lucide-react"
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card"
 import {
 	Tooltip,
@@ -10,7 +9,7 @@ import {
 } from "@/components/ui/tooltip"
 import publish from "@/utils/actions/database/publishStory"
 import unPublish from "@/utils/actions/database/privateStory"
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 
 type SCENARIO_TYPES = {
@@ -22,8 +21,8 @@ type SCENARIO_TYPES = {
 		story: string | null
 		title: string
 		user_id: string
-		finished: boolean
-		published: boolean
+		finished: boolean | null
+		published: boolean | null
 	}
 }
 
@@ -62,8 +61,7 @@ const bordercolor = [
 ]
 
 export function LibraryCard({ scenario }: SCENARIO_TYPES) {
-
-	const router = useRouter();
+	const router = useRouter()
 
 	const [pending, setPending] = useState(false)
 
@@ -119,59 +117,71 @@ export function LibraryCard({ scenario }: SCENARIO_TYPES) {
 						<div className="flex justify-end mt-auto">
 							{finished == true && (
 								<>
-									{
-										published ? (
-											<CardItem
-												onClick={async () => { setPending(true); await unPublish(scenario.id); router.refresh(); setPending(false); }}
-												style={{ borderRadius: "1em" }}
-												className="mr-2 rounded-x bg-transparent hover:bg-white/20 text-xs p-2 font-bold"
-											>
-												<TooltipProvider delayDuration={300}>
-													<Tooltip>
-														<TooltipTrigger>
-															{
-																pending ? <Loader2 className="animate-spin h-4 w-4"></Loader2> : <Lock className="h-4 w-4" />
-															}
-														</TooltipTrigger>
-														<TooltipContent
-															className="p-0 pt-1 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight"
-															side="bottom"
-														>
-															<p>Make Private</p>
-														</TooltipContent>
-													</Tooltip>
-												</TooltipProvider>
-											</CardItem>
-										) : (
-											<CardItem
-												onClick={async () => { setPending(true); await publish(scenario.id); router.refresh(); setPending(false); }}
-												style={{ borderRadius: "1em" }}
-												className="mr-2 rounded-x bg-transparent hover:bg-white/20 text-xs p-2 font-bold"
-											>
-												<TooltipProvider delayDuration={300}>
-													<Tooltip>
-														<TooltipTrigger>
-															{
-																pending ? <Loader2 className="animate-spin h-4 w-4"></Loader2> : <Globe className="h-4 w-4" />
-															}
-														</TooltipTrigger>
-														<TooltipContent
-															className="p-0 pt-1 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight"
-															side="bottom"
-														>
-															<p>Publish</p>
-														</TooltipContent>
-													</Tooltip>
-												</TooltipProvider>
-											</CardItem>
-										)
-									}
+									{published ? (
+										<CardItem
+											onClick={async () => {
+												setPending(true)
+												await unPublish(scenario.id)
+												router.refresh()
+												setPending(false)
+											}}
+											style={{ borderRadius: "1em" }}
+											className="mr-2 rounded-x bg-transparent hover:bg-white/20 text-xs p-2 font-bold"
+										>
+											<TooltipProvider delayDuration={300}>
+												<Tooltip>
+													<TooltipTrigger>
+														{pending ? (
+															<Loader2 className="animate-spin h-4 w-4"></Loader2>
+														) : (
+															<Lock className="h-4 w-4" />
+														)}
+													</TooltipTrigger>
+													<TooltipContent
+														className="p-0 pt-1 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight"
+														side="bottom"
+													>
+														<p>Make Private</p>
+													</TooltipContent>
+												</Tooltip>
+											</TooltipProvider>
+										</CardItem>
+									) : (
+										<CardItem
+											onClick={async () => {
+												setPending(true)
+												await publish(scenario.id)
+												router.refresh()
+												setPending(false)
+											}}
+											style={{ borderRadius: "1em" }}
+											className="mr-2 rounded-x bg-transparent hover:bg-white/20 text-xs p-2 font-bold"
+										>
+											<TooltipProvider delayDuration={300}>
+												<Tooltip>
+													<TooltipTrigger>
+														{pending ? (
+															<Loader2 className="animate-spin h-4 w-4"></Loader2>
+														) : (
+															<Globe className="h-4 w-4" />
+														)}
+													</TooltipTrigger>
+													<TooltipContent
+														className="p-0 pt-1 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight"
+														side="bottom"
+													>
+														<p>Publish</p>
+													</TooltipContent>
+												</Tooltip>
+											</TooltipProvider>
+										</CardItem>
+									)}
 								</>
 							)}
 						</div>
 					</CardItem>
 				</div>
-			</CardBody >
-		</CardContainer >
+			</CardBody>
+		</CardContainer>
 	)
 }
