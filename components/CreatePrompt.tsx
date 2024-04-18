@@ -22,13 +22,17 @@ const createSchema = z.object({
 		.max(60, "Maximum characters should be 60!"),
 })
 
-export default function CreatePrompt() {
+export default function CreatePrompt({
+	existingPrompt,
+}: {
+	existingPrompt: string
+}) {
 	const [pending, setPending] = useState(false)
 	const [errorMessage, setErrorMessage] = useState("")
 	const [isDisabled, setIsDisabled] = useState(false)
 	const [isFormOpen, setIsFormOpen] = useState(true)
 	const [scenario, setScenario] = useState<StoryReturnTypes | null>(null)
-	const [prompt, setPrompt] = useState("")
+	const [prompt, setPrompt] = useState(existingPrompt)
 	const [regenerateCount, setRegenerateCount] = useState(0)
 	const [storyPartCount, setStoryPartCount] = useState(0)
 
@@ -148,7 +152,7 @@ export default function CreatePrompt() {
 						>
 							<div className="flex items-center justify-center gap-2">
 								{pending ? <Loader2 className="animate-spin" /> : <Bot />}
-								Create your story
+								{prompt ? <>Remix Story</> : <>Create your story</>}
 							</div>
 						</Button>
 						{errorMessage && (
