@@ -26,11 +26,11 @@ export default async function Library() {
                 Your Stories
             </h1>
             <div className="flex flex-row flex-wrap justify-center">
-                {userStories?.map((story) => (
+                {userStories?.length ? userStories?.map((story) => (
                     <div className="!max-w-[26rem] md:!h-80" key={story.id}>
                         <LibraryCard key={story.id} scenario={story} />
                     </div>
-                ))}
+                )) : <div className="text-xl pt-7">No stories created</div>}
             </div>
         </main>
     );
