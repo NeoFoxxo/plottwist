@@ -1,7 +1,7 @@
 import { createClient } from "@/utils/supabase/server"
 import { redirect } from "next/navigation"
 
-export default async function Stats() {
+export default async function Charts() {
 	const supabase = createClient()
 	const {
 		data: { user },
@@ -12,7 +12,7 @@ export default async function Stats() {
 
 	return (
 		<main className="flex flex-col flex-1 my-4 md:p-10 justify-start items-center w-full md:w-fit">
-			Stats Page
+			Charts Page
 		</main>
 	)
 }

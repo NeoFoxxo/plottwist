@@ -1,19 +1,19 @@
 "use client"
 import { Textarea } from "@/components/ui/textarea"
-import { continueStory } from "@/utils/actions/api/continueStory"
 import { StoryReturnTypes } from "@/utils/actions/database/insertStory"
-import { regenerateStory } from "@/utils/actions/api/regenerateStory"
-import { submitPrompt } from "@/utils/actions/api/submitPrompt"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Bot, Loader2 } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Button } from "./ui/button"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form"
 import { TextGenerateEffect } from "./ui/text-generate-effect"
-import { finishStory } from "@/utils/actions/api/finishStory"
 import Link from "next/link"
+import { useSubmitPrompt } from "@/utils/mutations/useSubmitPrompt"
+import { useRegeneratePrompt } from "@/utils/mutations/useRegeneratePrompt"
+import { useContinuePrompt } from "@/utils/mutations/useContinuePrompt"
+import { useFinishPrompt } from "@/utils/mutations/useFinishPrompt"
 
 const createSchema = z.object({
 	prompt: z
@@ -32,8 +32,35 @@ export default function CreatePrompt() {
 	const [regenerateCount, setRegenerateCount] = useState(0)
 	const [storyPartCount, setStoryPartCount] = useState(0)
 
-	let attempts = 0
-	let submitErr = ""
+	const submitPromptRequest = useSubmitPrompt({
+		setIsDisabled,
+		setIsFormOpen,
+		setScenario,
+		setPrompt,
+		setErrorMessage,
+	})
+	const regeneratePromptRequest = useRegeneratePrompt({
+		setScenario,
+		setErrorMessage,
+	})
+	const continueRequest = useContinuePrompt({
+		setScenario,
+		setErrorMessage,
+	})
+	const finishRequest = useFinishPrompt({
+		setScenario,
+		setErrorMessage,
+	})
+
+	const isLoading =
+		submitPromptRequest.isPending ||
+		regeneratePromptRequest.isPending ||
+		continueRequest.isPending ||
+		finishRequest.isPending
+
+	useEffect(() => {
+		setPending(isLoading)
+	}, [isLoading])
 
 	const form = useForm<z.infer<typeof createSchema>>({
 		resolver: zodResolver(createSchema),
@@ -43,69 +70,43 @@ export default function CreatePrompt() {
 	})
 
 	async function onSubmit(values: z.infer<typeof createSchema>) {
-		setPending(true)
-		setErrorMessage("")
 		setStoryPartCount((storyPartCount) => storyPartCount + 1)
-		if (attempts >= 3) {
-			setErrorMessage(`Could not create story: ${submitErr}`)
-			setPending(false)
-			return
-		}
-
-		try {
-			const scenarioData = await submitPrompt(values)
-			setPending(false)
-			setIsDisabled(true)
-			setIsFormOpen(false)
-			setScenario(scenarioData)
-			setPrompt(scenarioData.prompt ? scenarioData.prompt : "")
-		} catch (err) {
-			attempts++
-			submitErr = String(err)
-			onSubmit(values)
-		}
+		setErrorMessage("")
+		submitPromptRequest.mutate(values)
 	}
 
 	async function regenerate() {
-		setPending(true)
 		setRegenerateCount((regenerateCount) => regenerateCount + 1)
+		setErrorMessage("")
 		if (regenerateCount >= 3) {
 			setErrorMessage("Maximum regenerate attempts reached")
 			setPending(false)
 			return
 		}
-		const scenarioData = await regenerateStory({
+		regeneratePromptRequest.mutate({
 			prompt: prompt,
 			previousStoryId: scenario?.id!!,
 		})
-		setPending(false)
-		setScenario(scenarioData)
 	}
 
 	async function generateFromChoice(choice: string) {
-		setPending(true)
 		setStoryPartCount((storyPartCount) => storyPartCount + 1)
-
-		let scenarioData: StoryReturnTypes
-
+		setErrorMessage("")
 		if (storyPartCount >= 8) {
-			scenarioData = await finishStory({
+			finishRequest.mutate({
 				title: scenario?.title!,
 				prompt: `${scenario?.story!!} ${choice}`,
 				previousStoryId: scenario?.id!!,
 				currentStory: scenario?.story!!,
 			})
 		} else {
-			scenarioData = await continueStory({
+			continueRequest.mutate({
 				title: scenario?.title!,
 				prompt: `${scenario?.story!!} ${choice}`,
 				previousStoryId: scenario?.id!!,
 				currentStory: scenario?.story!!,
 			})
 		}
-
-		setPending(false)
-		setScenario(scenarioData)
 	}
 
 	return (
@@ -204,7 +205,7 @@ export default function CreatePrompt() {
 						) : (
 							<>
 								<h4 className="font-semibold">Make your choice:</h4>
-								{scenario.choices.map((choice, index) => {
+								{scenario!!.choices!!.map((choice, index) => {
 									return (
 										<div
 											key={index}

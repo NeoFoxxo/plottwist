@@ -12,7 +12,7 @@ import { TextGenerateEffect } from "@/components/ui/text-generate-effect"
 import Image from "next/image"
 import Link from "next/link"
 import { redirect } from "next/navigation"
-import getUserInfo from "@/utils/actions/getUserinfo"
+import getUserInfo from "@/utils/actions/database/getUserinfo"
 
 export default async function StoryDetails({
 	params,
@@ -51,7 +51,7 @@ export default async function StoryDetails({
 	]
 
 	return (
-		<main className="flex flex-col w-full mx-auto gap-2 py-8 mb-8">
+		<main className="flex flex-col w-full mx-auto gap-2 py-8 my-12">
 			<div className="flex flex-col w-full mx-auto">
 				<TracingBeam className="pt-6 pb-10">
 					<h1
