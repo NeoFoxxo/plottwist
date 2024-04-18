@@ -70,7 +70,7 @@ export function LibraryCard({ scenario }: SCENARIO_TYPES) {
 	const { title, prompt, story, finished, published } = scenario
 
 	return (
-		<CardContainer className="inter-var h-[10rem] p-4 my-7">
+		<CardContainer className="inter-var h-[10rem] p-0 my-7">
 			<CardBody
 				className={`transition-all bg-gray-50 relative group/card shadow-2xl dark:bg-black/50 ${bordercolor[r]} ${shadowcolor[r]} hover:border-white w-auto h-auto max-md:h-auto my-auto sm:w-[25rem] max-w-[25rem] rounded-xl p-7 m-10 border flex flex-col`}
 			>

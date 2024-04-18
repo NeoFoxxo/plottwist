@@ -25,7 +25,7 @@ export default async function Library() {
 			>
 				Your Stories
 			</h1>
-			<div className="flex flex-row flex-wrap md:ml-[5rem]">
+			<div className="flex flex-row flex-wrap justify-center">
 				{userStories?.map((story) => (
 					<div className="!max-w-[26rem] md:!h-80">
 						<LibraryCard key={story.id} scenario={story} />
