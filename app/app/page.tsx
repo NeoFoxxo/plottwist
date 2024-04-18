@@ -3,13 +3,37 @@ import { ScenarioCard } from "@/components/ScenarioCard"
 import { getScenarios } from "@/utils/actions/database/getScenarios"
 import getUserInfo from "@/utils/actions/database/getUserinfo"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
-export default async function Dashboard() {
+export default async function Dashboard({
+	searchParams,
+}: {
+	searchParams: { stories: number }
+}) {
 	const supabase = createClient()
 
-	const { data, error: authError } = await supabase.auth.getUser()
+	let { data, error } = await supabase.auth.getUser()
 
-	const { mostPopular, recentStories } = await getScenarios()
+	// if user is not logged in provide a fake id so that it does not crash
+	// the id is used for the "your story" functionality
+	if (error) {
+		data = {
+			//@ts-expect-error
+			user: {
+				id: "unauthenticated user",
+			},
+		}
+	}
+
+	//@ts-expect-error
+	let storyCount = parseInt(searchParams.stories) // make sure its an int
+
+	if (!storyCount) {
+		storyCount = 20
+	}
+
+	const { mostPopular, recentStories } = await getScenarios({ storyCount })
 
 	return (
 		<div className="container h-[90vh] overflow-hidden p-4 flex flex-row max-lg:flex-col mx-auto text-2xl">
@@ -30,6 +54,11 @@ export default async function Dashboard() {
 								scenario={scenario}
 							/>
 						))}
+						<Link href={`/app?stories=${storyCount + 20}`}>
+							<div className="flex mt-5">
+								<Button className="mx-auto">Show More</Button>
+							</div>
+						</Link>
 						<div className="pb-20"></div>
 					</div>
 				</ScrollArea>
@@ -51,6 +80,11 @@ export default async function Dashboard() {
 								scenario={scenario}
 							/>
 						))}
+						<Link href={`/app?stories=${storyCount + 20}`}>
+							<div className="flex mt-5">
+								<Button className="mx-auto">Show More</Button>
+							</div>
+						</Link>
 						<div className="pb-20"></div>
 					</div>
 				</ScrollArea>
