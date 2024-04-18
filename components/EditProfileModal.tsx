@@ -32,8 +32,9 @@ const profileSchema = z.object({
 
 interface EditProfileModalProps {
 	profileData: {
-		bio: string
-		links?: string[] | undefined
+		admin: boolean
+		bio: string | null
+		links?: string[] | null
 		created_at: string
 		email: string
 		id: number
@@ -56,7 +57,7 @@ export default function EditProfileModal({
 		resolver: zodResolver(profileSchema),
 		defaultValues: {
 			name: name!!,
-			bio: bio,
+			bio: bio!!,
 			link1: links!![0] !== undefined ? links!![0] : "",
 			link2: links!![1] !== undefined ? links!![1] : "",
 			link3: links!![2] !== undefined ? links!![2] : "",

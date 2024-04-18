@@ -6,8 +6,9 @@ import { Textarea } from "./ui/textarea"
 
 interface UserProfileProps {
 	profileData: {
-		bio: string
-		links?: string[] | undefined
+		admin: boolean
+		bio: string | null
+		links?: string[] | null
 		created_at: string
 		email: string
 		id: number
@@ -97,7 +98,7 @@ export default function UserProfile({
 							<h3 className="text-[1.2rem] md:text-xl font-bold pb-1">Bio:</h3>
 							<Textarea
 								className="text-start bg-transparent w-full resize-none"
-								value={bio}
+								value={bio!!}
 								disabled
 							/>
 						</CardItem>
