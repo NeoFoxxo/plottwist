@@ -10,18 +10,18 @@ import { ChevronDown } from "lucide-react";
 import Link from "next/link";
 import AuthButton from "./AuthButton";
 
-export default function ProfileDropdown({ email }: { email: string }) {
+export default function ProfileDropdown({ email, userId }: { email: string, userId: string }) {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger>
-                <div className="flex justify-center items-center bg-primary text-black px-4 py-2 gap-2 text-md rounded-md hover:bg-neutral-200">
+                <div className="flex items-center justify-center gap-2 px-4 py-2 text-black rounded-md bg-primary text-md hover:bg-neutral-200">
                     {email} <ChevronDown className="w-4 h-4 -mr-1" />
                 </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <Link href="/profile">
+                <Link href={`/profile/${userId}`}>
                     <DropdownMenuItem>Profile</DropdownMenuItem>
                 </Link>
                 <Link href="/app">

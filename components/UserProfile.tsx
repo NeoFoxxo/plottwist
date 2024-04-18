@@ -18,12 +18,14 @@ interface UserProfileProps {
     };
     date: string;
     storyCount: number | null;
+    userId: string | undefined;
 }
 
 export default function UserProfile({
     profileData,
     date,
     storyCount,
+    userId
 }: UserProfileProps) {
     const { name, image, email, bio, links } = profileData;
 
@@ -72,7 +74,7 @@ export default function UserProfile({
                         <div className="flex gap-3 pt-3.5">
                             {accountInfo.map((info: any, index) => (
                                 <CardItem translateZ="40" key={index}>
-                                    <div className="flex items-center flex-col md:flex-row gap-2">
+                                    <div className="flex flex-col items-center gap-2 md:flex-row">
                                         <span
                                             style={{
                                                 textShadow:
@@ -108,7 +110,7 @@ export default function UserProfile({
                                 Bio:
                             </h3>
                             <Textarea
-                                className="text-start bg-transparent w-full resize-none"
+                                className="w-full bg-transparent resize-none text-start"
                                 value={bio!!}
                                 disabled
                             />
@@ -117,14 +119,14 @@ export default function UserProfile({
                             <h3 className="text-[1.2rem] md:text-xl font-bold pb-1">
                                 Links:
                             </h3>
-                            <div className="grid grid-cols-1 md:grid-cols-2 mx-auto gap-6 py-4">
+                            <div className="grid grid-cols-1 gap-6 py-4 mx-auto md:grid-cols-2">
                                 {links?.map((singleLink, index) => {
                                     const cleanLink = makeLink(singleLink);
                                     return (
                                         <a
                                             key={index}
                                             href={cleanLink}
-                                            className="hover:text-green-400 p-2 rounded-md border border-input text-xs md:text-sm w-full bg-transparent"
+                                            className="w-full p-2 text-xs bg-transparent border rounded-md hover:text-green-400 border-input md:text-sm"
                                         >
                                             {cleanLink}
                                         </a>
@@ -133,7 +135,7 @@ export default function UserProfile({
                             </div>
                         </CardItem>
                         <CardItem translateZ={"40"}>
-                            <EditProfileModal profileData={profileData} />
+                            <EditProfileModal profileData={profileData} userId={userId} />
                         </CardItem>
                     </CardBody>
                 </CardContainer>

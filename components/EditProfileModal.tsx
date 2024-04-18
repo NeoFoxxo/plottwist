@@ -43,10 +43,12 @@ interface EditProfileModalProps {
         name: string | null;
         user_id: string;
     };
+    userId: string | undefined;
 }
 
 export default function EditProfileModal({
     profileData,
+    userId
 }: EditProfileModalProps) {
     const defaultImage = `/icons/pfp${Math.floor(Math.random() * 5) + 1}.png`;
     const [pending, setPending] = useState(false);
@@ -139,7 +141,10 @@ export default function EditProfileModal({
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="outline">Edit Profile</Button>
+                {userId === profileData.user_id ?
+                    <Button variant="outline">Edit Profile</Button>
+                    : null
+                }
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
@@ -154,7 +159,7 @@ export default function EditProfileModal({
                         onSubmit={profileForm.handleSubmit(onSubmit)}
                         className="space-y-4"
                     >
-                        <div className="p-5 flex justify-center items-center gap-5">
+                        <div className="flex items-center justify-center gap-5 p-5">
                             <img
                                 src={localImage ? localImage!! : defaultImage!!}
                                 alt="default-user"
@@ -170,7 +175,7 @@ export default function EditProfileModal({
                             />
                             <label
                                 htmlFor="user-file"
-                                className="user-edit cursor-pointer inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+                                className="inline-flex items-center justify-center h-10 px-4 py-2 text-sm font-medium transition-colors rounded-md cursor-pointer user-edit whitespace-nowrap ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90"
                             >
                                 Change Image
                             </label>
@@ -279,10 +284,10 @@ export default function EditProfileModal({
                             )}
                         </DialogFooter>
                         {errorMessage && (
-                            <p className=" text-red-600">{errorMessage}</p>
+                            <p className="text-red-600 ">{errorMessage}</p>
                         )}
                         {successMessage && (
-                            <p className=" text-green-500">{successMessage}</p>
+                            <p className="text-green-500 ">{successMessage}</p>
                         )}
                     </form>
                 </Form>
