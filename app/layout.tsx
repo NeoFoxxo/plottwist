@@ -45,8 +45,10 @@ export default async function RootLayout({
 						enableSystem
 						disableTransitionOnChange
 					>
-						<Header email={user?.email} />
-						{children}
+						<Header email={user?.email} userId={user?.id} />
+						<div className="my-15">
+							{children}
+						</div>
 					</ThemeProvider>
 				</main>
 			</body>

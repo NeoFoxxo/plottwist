@@ -17,8 +17,8 @@ export function Sidebar() {
             icon: <LayoutDashboard className="w-5 h-5" />,
         },
         {
-            text: "Statistics",
-            href: "/app/stats",
+            text: "Charts",
+            href: "/app/charts",
             icon: <BarChartBig className="w-5 h-5" />,
         },
         {
@@ -41,8 +41,9 @@ export function Sidebar() {
     return (
         <div className="group transition-all ease-in-out delay-150 w-[70px] hover:w-80 bg-zinc-950 z-50 fixed top-16 left-0 flex flex-col justify-between h-[100vh] px-3 max-lg:hidden border-r border-[rgba(255,255,255,0.15)] duration-300">
             <nav className="flex flex-col gap-4 mt-4">
-                {links.map((link) => (
+                {links.map((link, index) => (
                     <Link
+                        key={index}
                         href={link.href}
                         className={cn(
                             buttonVariants({ variant: "ghost" }),

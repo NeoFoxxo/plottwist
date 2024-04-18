@@ -1,67 +1,93 @@
+import { createClient } from "@/utils/supabase/server"
 import { ScenarioCard } from "@/components/ScenarioCard"
 import { getScenarios } from "@/utils/actions/database/getScenarios"
-import {
-	Carousel,
-	CarouselContent,
-	CarouselItem,
-} from "@/components/ui/carousel"
+import getUserInfo from "@/utils/actions/database/getUserinfo"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
-export default async function Dashboard() {
-	const { mostPopular, recentStories } = await getScenarios()
+export default async function Dashboard({
+	searchParams,
+}: {
+	searchParams: { stories: number }
+}) {
+	const supabase = createClient()
+
+	let { data, error } = await supabase.auth.getUser()
+
+	// if user is not logged in provide a fake id so that it does not crash
+	// the id is used for the "your story" functionality
+	if (error) {
+		data = {
+			//@ts-expect-error
+			user: {
+				id: "unauthenticated user",
+			},
+		}
+	}
+
+	//@ts-expect-error
+	let storyCount = parseInt(searchParams.stories) // make sure its an int
+
+	if (!storyCount) {
+		storyCount = 20
+	}
+
+	const { mostPopular, recentStories } = await getScenarios({ storyCount })
 
 	return (
-		<div className="container p-4 flex flex-row max-md:flex-col mx-auto text-2xl w-[100vw] max-h-[80vh] overflow-hidden max-md:overflow-y-scroll">
+		<div className="container h-[90vh] overflow-hidden p-4 flex flex-row max-lg:flex-col mx-auto text-2xl">
 			<div className="flex flex-col w-full mx-auto">
-				<p
-					style={{
-						fontFamily: '"Poppins", sans-serif',
-						textShadow: "0em 0em 0.3em rgba(100,240,230,1)",
-					}}
-					className="text-4xl font-bold text-center"
+				<h2
+					style={{ textShadow: "0em 0em 0.6em white" }}
+					className="text-2xl font-bold text-center"
 				>
 					Most popular
-				</p>
-				<Carousel
-					opts={{ align: "start" }}
-					orientation={"vertical"}
-					className="w-full mt-10"
-				>
-					<CarouselContent className="top-0 max-h-[80vh]">
-						{mostPopular?.map((scenario, index) => (
-							<CarouselItem key={index} className="pt-0 md:basis-1/3">
-								<ScenarioCard key={scenario.id} scenario={scenario} />
-							</CarouselItem>
+				</h2>
+				<ScrollArea className="w-full mt-2">
+					<div className="py-5 top-0 h-[80vh]">
+						{mostPopular?.map(async (scenario) => (
+							<ScenarioCard
+								key={scenario.id}
+								currentUser={data}
+								data={await getUserInfo(scenario.user_id)}
+								scenario={scenario}
+							/>
 						))}
+						<Link href={`/app?stories=${storyCount + 20}`}>
+							<div className="flex mt-5">
+								<Button className="mx-auto">Show More</Button>
+							</div>
+						</Link>
 						<div className="pb-20"></div>
-					</CarouselContent>
-				</Carousel>
+					</div>
+				</ScrollArea>
 			</div>
 			<div className="flex flex-col w-full mx-auto">
-				<p
-					style={{
-						fontFamily: '"Poppins", sans-serif',
-						textShadow: "0em 0em 0.3em rgba(100,240,230,1)",
-					}}
-					className="text-4xl font-bold text-center max-md:mt-10"
+				<h2
+					style={{ textShadow: "0em 0em 0.6em white" }}
+					className="text-2xl font-bold text-center"
 				>
 					New stories
-				</p>
-				<Carousel
-					opts={{
-						align: "start",
-					}}
-					orientation="vertical"
-					className="w-full mt-10"
-				>
-					<CarouselContent className="top-0 max-h-[80vh] ">
-						{recentStories?.map((scenario, index) => (
-							<CarouselItem key={index} className="p-0 md:basis-1/3">
-								<ScenarioCard key={scenario.id} scenario={scenario} />
-							</CarouselItem>
+				</h2>
+				<ScrollArea className="w-full mt-2">
+					<div className="py-5 top-0 h-[80vh]">
+						{recentStories?.map(async (scenario, index) => (
+							<ScenarioCard
+								currentUser={data}
+								data={await getUserInfo(scenario.user_id)}
+								key={scenario.id}
+								scenario={scenario}
+							/>
 						))}
+						<Link href={`/app?stories=${storyCount + 20}`}>
+							<div className="flex mt-5">
+								<Button className="mx-auto">Show More</Button>
+							</div>
+						</Link>
 						<div className="pb-20"></div>
-					</CarouselContent>
-				</Carousel>
+					</div>
+				</ScrollArea>
 			</div>
 		</div>
 	)

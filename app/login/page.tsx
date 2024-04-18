@@ -31,7 +31,7 @@ export default function Login({
 	}
 
 	return (
-		<div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2">
+		<div className="pt-40 flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2">
 			<form className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground">
 				<div className="mb-5">
 					<h1 className="text-2xl font-bold">Sign in</h1>
