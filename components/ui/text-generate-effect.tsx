@@ -20,7 +20,7 @@ export const TextGenerateEffect = ({
             },
             {
                 duration: 1,
-                delay: stagger(0.1),
+                delay: stagger(0.05),
             }
         );
     }, [scope.current, words]);
@@ -45,7 +45,10 @@ export const TextGenerateEffect = ({
     return (
         <div className={cn(className)}>
             <div>
-                <div style={{ wordSpacing: '2px', letterSpacing: '0.5px' }} className=" dark:text-white text-black leading-snug tracking-wide">
+                <div
+                    style={{ wordSpacing: "2px", letterSpacing: "0.5px" }}
+                    className=" dark:text-white text-black leading-snug tracking-wide"
+                >
                     {renderWords()}
                 </div>
             </div>
