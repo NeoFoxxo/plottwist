@@ -48,6 +48,7 @@ export type Database = {
             comments: {
                 Row: {
                     comment: string | null
+                    comment_id: string
                     created_at: string
                     id: number
                     scenario_id: number
@@ -55,6 +56,7 @@ export type Database = {
                 }
                 Insert: {
                     comment?: string | null
+                    comment_id?: string
                     created_at?: string
                     id?: number
                     scenario_id: number
@@ -62,6 +64,7 @@ export type Database = {
                 }
                 Update: {
                     comment?: string | null
+                    comment_id?: string
                     created_at?: string
                     id?: number
                     scenario_id?: number
@@ -135,6 +138,7 @@ export type Database = {
                     finished: boolean | null
                     follow_count: number
                     id: number
+                    pinned: boolean | null
                     prompt: string | null
                     published: boolean | null
                     story: string | null
@@ -147,6 +151,7 @@ export type Database = {
                     finished?: boolean | null
                     follow_count?: number
                     id?: number
+                    pinned?: boolean | null
                     prompt?: string | null
                     published?: boolean | null
                     story?: string | null
@@ -159,6 +164,7 @@ export type Database = {
                     finished?: boolean | null
                     follow_count?: number
                     id?: number
+                    pinned?: boolean | null
                     prompt?: string | null
                     published?: boolean | null
                     story?: string | null

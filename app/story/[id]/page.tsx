@@ -1,5 +1,6 @@
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
+import CreateReview from "@/components/CreateReview"
 import {
     Tooltip,
     TooltipContent,
@@ -11,10 +12,12 @@ import { getReviews } from "@/utils/actions/database/getReviews";
 import { getStory } from "@/utils/actions/database/getStory";
 import getUserInfo from "@/utils/actions/database/getUserinfo";
 import getSession from "@/utils/actions/database/getSession";
-import { Bookmark, BotIcon, MessageSquareText } from "lucide-react";
+import { Bookmark, BotIcon, MessageSquareText, Trash } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import DeleteReview from "@/components/DeleteReview";
 
 export default async function StoryDetails({
     params,
@@ -136,14 +139,24 @@ export default async function StoryDetails({
                                     <TooltipProvider delayDuration={300}>
                                         <Tooltip>
                                             <TooltipTrigger>
-                                                <Link
-                                                    className={buttonVariants({
-                                                        variant: "outline",
-                                                    })}
-                                                    href={""}
-                                                >
-                                                    <MessageSquareText className="size-4 mx-4 my-2"></MessageSquareText>
-                                                </Link>
+                                                <Dialog>
+                                                    <DialogTrigger asChild>
+                                                        <Link
+                                                            className={buttonVariants({
+                                                                variant: "outline",
+                                                            })}
+                                                            href={""}
+                                                        >
+                                                            <MessageSquareText className="size-4 mx-4 my-2"></MessageSquareText>
+                                                        </Link>
+                                                    </DialogTrigger>
+                                                    <DialogContent className="sm:max-w-[425px]">
+                                                        <DialogHeader>
+                                                            <DialogTitle>Add a review</DialogTitle>
+                                                        </DialogHeader>
+                                                        <CreateReview storyId={story?.id!!} authorId={currentUser!!.user!!.id} />
+                                                    </DialogContent>
+                                                </Dialog>
                                             </TooltipTrigger>
                                             <TooltipContent
                                                 className="p-0 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight"
@@ -196,7 +209,7 @@ export default async function StoryDetails({
                         {
                             reviews!!.length == 0 ? (
                                 <>
-                                    No reviews (yet...)<br></br>{story?.user_id != currentUser.user?.id && (<a className="text-cyan-200 hover:underline hover:cursor-pointer p-0 m-0">Add a review!</a>)}
+                                    No reviews (yet...)
                                 </>
                             ) : (
                                 <>
@@ -207,29 +220,36 @@ export default async function StoryDetails({
                                                 key={index}
                                             >
                                                 <div className="my-2">
-                                                    <div className="flex flex-row gap-2">
-                                                        <a href="" className="w-[fit-content]">
-                                                            <img
-                                                                className="w-6 h-6 rounded-full"
-                                                                src={(await getUserInfo(rev.user_id)).data!!.image!! || '/icons/pfp1.png'}
-                                                            ></img>
-                                                        </a>
-                                                        <a
-                                                            href=""
-                                                            className="w-[fit-content] h-[fit-content]"
-                                                        >
-                                                            <h2
-                                                                style={{
-                                                                    textShadow:
-                                                                        "0em 0em 0.3em white",
-                                                                }}
-                                                                className="text-sm cursor-pointer hover:underline w-full"
+                                                    <div className="flex justify-between">
+                                                        <div className="flex flex-row gap-2">
+                                                            <a href="" className="w-[fit-content]">
+                                                                <img
+                                                                    className="w-6 h-6 rounded-full"
+                                                                    src={(await getUserInfo(rev.user_id)).data!!.image!! || '/icons/pfp1.png'}
+                                                                ></img>
+                                                            </a>
+                                                            <a
+                                                                href=""
+                                                                className="w-[fit-content] h-[fit-content]"
                                                             >
-                                                                {(await getUserInfo(rev.user_id)).data.name}
-                                                            </h2>
-                                                        </a>
+                                                                <h2
+                                                                    style={{
+                                                                        textShadow:
+                                                                            "0em 0em 0.3em white",
+                                                                    }}
+                                                                    className="text-sm cursor-pointer hover:underline w-full"
+                                                                >
+                                                                    {(await getUserInfo(rev.user_id)).data.name}
+                                                                </h2>
+                                                            </a>
+                                                        </div>
+                                                        {
+                                                            rev.user_id == currentUser.user?.id && (
+                                                                <DeleteReview comment={rev.comment_id} />
+                                                            )
+                                                        }
                                                     </div>
-                                                    <p className="text-[14px] p-[0.1rem] mt-1 font-mono text-white/50">
+                                                    <p className="text-[14px] p-[0.1rem] mt-0 font-mono text-white/50">
                                                         {rev.comment}
                                                     </p>
                                                 </div>
