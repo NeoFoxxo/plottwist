@@ -7,6 +7,9 @@ import {
 	TooltipTrigger,
 } from "@/components/ui/tooltip"
 
+import { addBookmark } from "@/utils/actions/database/addBookmark"
+import unPublish from "@/utils/actions/database/privateStory"
+import publish from "@/utils/actions/database/publishStory"
 import {
 	Bookmark,
 	Globe,
@@ -15,12 +18,10 @@ import {
 	MessageSquareText,
 	Trash,
 } from "lucide-react"
-import Link from "next/link"
-import { CardBody, CardContainer, CardItem } from "./ui/3d-card"
 import { useRouter } from "next//navigation"
+import Link from "next/link"
 import { useState } from "react"
-import publish from "@/utils/actions/database/publishStory"
-import unPublish from "@/utils/actions/database/privateStory"
+import { CardBody, CardContainer, CardItem } from "./ui/3d-card"
 
 type SCENARIO_TYPES = {
 	scenario: {
@@ -100,10 +101,17 @@ export function ScenarioCard({
 }: SCENARIO_TYPES) {
 	const r = Math.floor(Math.random() * shadowcolor.length)
 	const { title, prompt, story } = scenario
+	const [isLoading, setIsLoading] = useState(false)
 	const bookmarkFlag = bookmark ? bookmark : false
 
 	const [pending, setPending] = useState(false)
 	const router = useRouter()
+
+	const handleAddBookmark = async () => {
+		setIsLoading(true)
+		await addBookmark(scenario.id)
+		setIsLoading(false)
+	}
 
 	return (
 		<CardContainer className="inter-var h-[10rem] p-4 my-7">
@@ -194,25 +202,31 @@ export function ScenarioCard({
 								</CardItem>
 								<CardItem
 									as="a"
-									href="/b"
 									style={{ borderRadius: "1em" }}
 									className=" rounded-x bg-transparent hover:bg-white/20 text-xs font-bold"
 								>
 									<TooltipProvider delayDuration={300}>
 										<Tooltip>
 											<TooltipTrigger>
-												{bookmark ? (
+												{bookmarkFlag ? (
 													<Trash className="size-4 mx-4 my-2" />
+												) : isLoading ? (
+													<Loader2 className="animate-spin h-4 w-4" />
 												) : (
-													<Bookmark className="size-4 mx-4 my-2"></Bookmark>
+													<Bookmark
+														onClick={handleAddBookmark}
+														className="size-4 mx-4 my-2"
+													></Bookmark>
 												)}
 											</TooltipTrigger>
 											<TooltipContent
 												className="p-0 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight"
 												side="bottom"
 											>
-												{bookmark ? (
+												{bookmarkFlag ? (
 													<p>Remove from bookmarks</p>
+												) : isLoading ? (
+													<span></span>
 												) : (
 													<p>Add to bookmarks</p>
 												)}
