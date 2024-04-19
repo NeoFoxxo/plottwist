@@ -20,6 +20,7 @@
     "@supabase/supabase-js": "latest",
     "@tanstack/react-query": "^5.29.2",
     "autoprefixer": "10.4.17",
+    "browser-image-compression": "^2.0.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "embla-carousel-react": "^8.0.2",
