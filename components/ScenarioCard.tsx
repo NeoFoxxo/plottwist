@@ -118,9 +118,9 @@ export function ScenarioCard({
 	}
 
 	return (
-		<CardContainer className="p-4 inter-var my-7">
+		<CardContainer className="p-4 inter-var">
 			<CardBody
-				className={`transition-all bg-gray-50 relative group/card shadow-2xl dark:bg-black/50 ${bordercolor[r]} ${shadowcolor[r]} hover:border-white w-auto my-auto sm:w-[25rem] max-w-[25rem] h-auto rounded-xl p-7 m-0 border flex flex-col`}
+				className={`transition-all bg-gray-50 relative group/card shadow-2xl dark:bg-black/50 ${bordercolor[r]} ${shadowcolor[r]} hover:border-white w-auto sm:w-[25rem] max-w-[25rem] h-auto rounded-xl p-7 m-0 border flex flex-col`}
 			>
 				<div className="flex items-center justify-between">
 					<CardItem translateZ="30">
