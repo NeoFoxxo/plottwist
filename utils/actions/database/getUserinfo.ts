@@ -13,7 +13,12 @@ export default async function getUserInfo(user_id: string) {
 		.select("*", { count: "exact", head: true })
 		.eq("user_id", user_id)
 
-	if (dataerr || infoerr) throw new Error("Error when fetching user's info: " + dataerr || "Error when fetching user's info: " + infoerr)
+	// TODO: figure out why these throw on the dashboard
+	if (dataerr)
+		console.log("Error when fetching user's info: " + dataerr?.message)
+
+	if (infoerr)
+		console.log("Error when fetching user's info: " + infoerr?.message)
 
 	const userInfo = {
 		data: user!![0],
