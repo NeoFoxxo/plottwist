@@ -1,4 +1,4 @@
-import { Button, buttonVariants } from "@/components/ui/button"
+import { buttonVariants } from "@/components/ui/button"
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect"
 import CreateReview from "@/components/CreateReview"
 import {
@@ -9,13 +9,12 @@ import {
 } from "@/components/ui/tooltip"
 import { TracingBeam } from "@/components/ui/tracing-beam"
 import { getReviews } from "@/utils/actions/database/getReviews"
-import { getStory } from "@/utils/actions/database/getStory"
+import { getStory, getStoryReturnType } from "@/utils/actions/database/getStory"
 import getUserInfo from "@/utils/actions/database/getUserinfo"
 import getSession from "@/utils/actions/database/getSession"
 import { Bookmark, BotIcon, MessageSquareText } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-import { redirect } from "next/navigation"
 import {
 	Dialog,
 	DialogContent,
@@ -24,6 +23,8 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog"
 import DeleteReview from "@/components/DeleteReview"
+import NotFound from "@/app/not-found"
+import { createClient } from "@/utils/supabase/server"
 
 export default async function StoryDetails({
 	params,
@@ -32,15 +33,28 @@ export default async function StoryDetails({
 	params: { id: string }
 	searchParams: { isReview: boolean }
 }) {
-	const story = await getStory(params.id)
+	const supabase = createClient()
+	const {
+		data: { user },
+	} = await supabase.auth.getUser()
 
-	let user = await getUserInfo(story?.user_id!!)
+	const user_id = user?.id
 
-	if (!user) {
-		redirect("/app")
+	let story: getStoryReturnType | null
+
+	try {
+		story = await getStory(params.id)
+	} catch (error) {
+		return <NotFound />
 	}
 
-	const accountInfo = [user.stories!!, 20, 570]
+	let author = await getUserInfo(story?.user_id!!)
+
+	// if the story is private and the current user is not the author, 404 since its nun of their business
+	if (story?.published === false && author.data.user_id != user_id)
+		return <NotFound />
+
+	const accountInfo = [author.stories!!, 20, 570]
 
 	const icons = ["/icons/book.png", "/icons/star.png", "/icons/bookmark.png"]
 
@@ -73,7 +87,7 @@ export default async function StoryDetails({
 					<div className="flex items-center gap-3 w-full">
 						<a href="" className="w-[fit-content]">
 							<Image
-								src={user.data.image || "/icons/pfp1.png"}
+								src={author.data.image || "/icons/pfp1.png"}
 								width={150}
 								height={150}
 								alt="Author"
@@ -88,7 +102,7 @@ export default async function StoryDetails({
 									}}
 									className="text-base font-bold cursor-pointer hover:underline w-full"
 								>
-									{user.data.name!!}
+									{author.data.name!!}
 								</h2>
 							</a>
 							<div className="flex flex-row text-start">
