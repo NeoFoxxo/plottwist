@@ -7,7 +7,6 @@
   "jsxSingleQuote": false,
   "bracketSpacing": true,
   "bracketSameLine": true,
-  "jsxBracketSameLine": true,
   "arrowParens": "always",
   "requirePragma": false,
   "embeddedLanguageFormatting": "auto",

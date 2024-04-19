@@ -7,6 +7,7 @@ import unPublish from "@/utils/actions/database/privateStory";
 import publish from "@/utils/actions/database/publishStory";
 import { removeBookmark } from "@/utils/actions/database/removeBookmark";
 import { Bookmark, Globe, Loader2, Lock, MessageSquareText, Trash } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -117,7 +118,7 @@ export function ScenarioCard({ scenario, bookmark, data, currentUser }: SCENARIO
           <CardItem translateZ="30">
             <div className="mb-2 flex flex-row">
               <a href="" className="m-auto h-[fit-content] w-[fit-content] p-0">
-                <img className="h-7 w-7 rounded-full" src={data.data!!.image!!}></img>
+                <Image className="h-7 w-7 rounded-full" src={data.data!!.image!!} alt="scenario"></Image>
               </a>
               <a href="" className="m-auto h-auto w-[fit-content] p-0">
                 <p className="ml-2 text-sm hover:underline">{data.data.name}</p>
