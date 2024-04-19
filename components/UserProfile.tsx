@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import EditProfileModal from "./EditProfileModal";
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
 import { Textarea } from "./ui/textarea";
+import { profile } from "console";
 
 interface UserProfileProps {
     profileData: {
@@ -54,7 +55,7 @@ export default function UserProfile({
                                 <img
                                     src={image ? image!! : defaultImage!!}
                                     alt="default-user"
-                                    className="rounded-full w-10 h-10 md:w-28 md:h-28 transition-all hover:shadow-[0em_0em_1em_rgba(255,255,255,0.8)] cursor-pointer"
+                                    className={profileData.user_id == userId ? "rounded-full w-10 h-10 md:w-28 md:h-28 transition-all hover:shadow-[0em_0em_1em_rgba(255,255,255,0.8)] cursor-pointer" : "rounded-full w-10 h-10 md:w-28 md:h-28 transition-all hover:shadow-[0em_0em_1em_rgba(255,255,255,0.8)]"}
                                 />
                             </CardItem>
                             <CardItem translateZ="60">

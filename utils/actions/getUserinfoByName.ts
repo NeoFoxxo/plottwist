@@ -1,0 +1,28 @@
+import { createClient } from "@/utils/supabase/client"
+
+export default async function getUserInfoByName(username: string) {
+    const supabase = createClient()
+
+
+    const { data: user, error: dataerr } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq('name', username)
+
+    if (dataerr) throw new Error('a')
+
+    const { count: storyCount, error: infoerr } = await supabase
+        .from("scenarios")
+        .select("*", { count: "exact", head: true })
+        .eq('user_id', user[0].user_id)
+
+    if (infoerr) throw new Error('b')
+
+    const userInfo = {
+        profile: user[0],
+        storyCount: storyCount,
+        date: new Date(user[0].created_at).toLocaleDateString(),
+    }
+
+    return userInfo
+}
