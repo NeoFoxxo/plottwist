@@ -3,6 +3,7 @@ import { createClient } from "@/utils/supabase/client"
 export interface UpdateProfileProps {
 	profileData: {
 		name: string
+		normalised_name: string
 		image?: string
 		bio: string
 		links: string[]
@@ -22,7 +23,10 @@ export async function updateProfile({
 		.eq("user_id", user_id)
 
 	if (error) {
-		throw new Error(`Profile update failed: ${error.message}`)
+		if (error.code === "23505") {
+			throw new Error(`Username already taken!`)
+		}
+		throw new Error(`Profile update failed: ${error.code}`)
 	}
 
 	return { message: "Profile updated successfully!" }

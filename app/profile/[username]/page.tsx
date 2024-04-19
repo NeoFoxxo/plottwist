@@ -4,7 +4,11 @@ import getUserInfoByName from "@/utils/actions/database/getUserinfoByName"
 import { createClient } from "@/utils/supabase/server"
 import { redirect } from "next/navigation"
 
-export default async function Profile({ params }: { params: { username: string } }) {
+export default async function Profile({
+	params,
+}: {
+	params: { username: string }
+}) {
 	const supabase = createClient()
 	const {
 		data: { user },
@@ -13,7 +17,12 @@ export default async function Profile({ params }: { params: { username: string }
 	const user_id = user?.id
 	if (!user_id) redirect("/login")
 
-	const userInfo = await getUserInfoByName(params.username);
+	// check it is over 20 characters and if it contains characters that are not letters and numbers
+	if (params.username.length > 20 || /[^a-zA-Z0-9]/.test(params.username)) {
+		return <NotFound />
+	}
+
+	const userInfo = await getUserInfoByName(params.username.toLowerCase())
 
 	if (userInfo === 404) {
 		return <NotFound />
