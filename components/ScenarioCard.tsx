@@ -105,22 +105,20 @@ export function ScenarioCard({
     const [isLoading, setIsLoading] = useState(false);
 
     const [pending, setPending] = useState(false);
-    const router = useRouter();
-
     // To get latest bookmarks
     useEffect(() => {
-        router.refresh();
+        window.location.reload;
     }, []);
 
     const handleAddBookmark = async (isBookmark: boolean) => {
         if (isBookmark) {
             setIsLoading(true);
             await removeBookmark(scenario.id);
-            router.refresh();
+            window.location.reload;
         } else {
             setIsLoading(true);
             await addBookmark(scenario.id);
-            router.refresh();
+            window.location.reload;
         }
     };
 
@@ -269,7 +267,7 @@ export function ScenarioCard({
                             onClick={async () => {
                                 setPending(true);
                                 await unPublish(scenario.id);
-                                router.refresh();
+                                window.location.reload;
                                 setPending(false);
                             }}
                             style={{ borderRadius: "1em" }}
@@ -299,7 +297,7 @@ export function ScenarioCard({
                             onClick={async () => {
                                 setPending(true);
                                 await publish(scenario.id);
-                                router.refresh();
+                                window.location.reload;
                                 setPending(false);
                             }}
                             style={{ borderRadius: "1em" }}
