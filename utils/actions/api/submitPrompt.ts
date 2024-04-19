@@ -27,13 +27,13 @@ export async function submitPrompt({ prompt }: { prompt: string }) {
 	})
 
 	try {
-		const scenario = insertStory({
+		const scenario = await insertStory({
 			title: title!!,
 			story,
 			choices: choices!!,
 			prompt,
 		})
-		return scenario
+		return { scenario, currentPart: story }
 	} catch (error) {
 		throw new Error(String(error))
 	}

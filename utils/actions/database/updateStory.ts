@@ -26,7 +26,7 @@ export default async function updateStory({
 				choices: choices,
 				title: title,
 				finished: true,
-				published: false
+				published: false,
 			})
 			.eq("id", previousStoryId)
 			.select()
@@ -42,7 +42,7 @@ export default async function updateStory({
 			choices: choices,
 			title: title,
 			finished: false,
-			published: false
+			published: false,
 		})
 		.eq("id", previousStoryId)
 		.select()

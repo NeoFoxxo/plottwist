@@ -46,7 +46,7 @@ export async function finishStory({
 			previousStoryId,
 			isFinished: true,
 		})
-		return scenario
+		return { scenario, currentPart: story }
 	} catch (error) {
 		throw new Error(String(error))
 	}

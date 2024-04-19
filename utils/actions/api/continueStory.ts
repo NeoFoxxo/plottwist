@@ -45,7 +45,7 @@ export async function continueStory({
 			choices: choices!!,
 			previousStoryId,
 		})
-		return scenario
+		return { scenario, currentPart: story }
 	} catch (error) {
 		throw new Error(String(error))
 	}
