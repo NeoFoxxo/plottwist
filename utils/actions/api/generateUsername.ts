@@ -40,6 +40,6 @@ export async function generateRandomUsername() {
 		let username =
 			arr[Math.floor(Math.random() * arr.length)] +
 			Math.floor(Math.random() * 1000000)
-		return username
+		return username.toLowerCase()
 	}
 }

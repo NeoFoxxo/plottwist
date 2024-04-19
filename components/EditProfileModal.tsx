@@ -23,7 +23,15 @@ import {
 import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form"
 
 const profileSchema = z.object({
-	name: z.string().min(2, "Username should be at least 2 characters"),
+	name: z
+		.string()
+		.min(2, "Username should be at least 2 characters")
+		.max(20, "Username must be shorter than 20 characters")
+		.refine(
+			(value) => !/[^a-zA-Z0-9]/.test(value ?? ""),
+			"Username can only contain letters and numbers"
+		),
+
 	bio: z.string().max(80, "Max length of bio is 80").optional(),
 	link1: z.string().max(40, "Max length of link is 40").optional(),
 	link2: z.string().max(40, "Max length of link is 40").optional(),
@@ -95,6 +103,8 @@ export default function EditProfileModal({
 	async function onSubmit(profileData: z.infer<typeof profileSchema>) {
 		let imgUrl: string | null = null
 		setPending(true)
+		setErrorMessage("")
+		setSuccessMessage("")
 		try {
 			if (file) {
 				const path = await imageUpload(file)
@@ -116,6 +126,7 @@ export default function EditProfileModal({
 				await updateProfile({
 					profileData: {
 						name: profileData.name!!,
+						normalised_name: profileData.name!!.toLowerCase(),
 						image: imgUrl,
 						bio: profileData.bio!!,
 						links: links,
@@ -126,13 +137,14 @@ export default function EditProfileModal({
 				await updateProfile({
 					profileData: {
 						name: profileData.name!!,
+						normalised_name: profileData.name!!.toLowerCase(),
 						bio: profileData.bio!!,
 						links: links,
 					},
 					user_id: user_id,
 				})
 			}
-			router.push('/profile/' + profileData.name)
+			router.push("/profile/" + profileData.name.toLowerCase())
 			setPending(false)
 			setSuccessMessage("Profile successfully updated!")
 		} catch (error) {
@@ -191,7 +203,7 @@ export default function EditProfileModal({
 									<FormControl>
 										<Textarea
 											onKeyDown={() => {
-												; ("")
+												;("")
 											}}
 											className="w-full text-left resize-none"
 											{...field}
