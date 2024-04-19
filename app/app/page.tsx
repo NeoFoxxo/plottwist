@@ -49,7 +49,7 @@ export default async function Dashboard({
 					Most popular
 				</h2>
 				<ScrollArea className="w-full mt-2">
-					<div className="py-5 top-0 h-[80vh]">
+					<div className="flex flex-col py-5 top-0 h-[80vh]">
 						{mostPopular?.map(async (scenario) => (
 							<ScenarioCard
 								key={scenario.id}
