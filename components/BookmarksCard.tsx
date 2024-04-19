@@ -41,7 +41,6 @@ export default function BookmarksCard({ scenario, data }: BOOKMARK_INPUT_TYPES) 
     setIsLoading(true);
     await removeBookmark(scenario.id);
     router.refresh();
-    setIsLoading(false);
   };
 
   function relativeTime(timestamp: string) {

@@ -1,9 +1,10 @@
-import { createClient } from "@/utils/supabase/server";
 import { ScenarioCard } from "@/components/ScenarioCard";
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { getBookmarksId } from "@/utils/actions/database/getBookmarksId";
 import { getScenarios } from "@/utils/actions/database/getScenarios";
 import getUserInfo from "@/utils/actions/database/getUserinfo";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Button } from "@/components/ui/button";
+import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
 
 export default async function Dashboard({ searchParams }: { searchParams: { stories: number } }) {
@@ -21,6 +22,8 @@ export default async function Dashboard({ searchParams }: { searchParams: { stor
       },
     };
   }
+
+  const bookmark = await getBookmarksId(data?.user?.id!!);
 
   //@ts-expect-error
   let storyCount = parseInt(searchParams.stories); // make sure its an int
@@ -45,6 +48,7 @@ export default async function Dashboard({ searchParams }: { searchParams: { stor
                 currentUser={data}
                 data={await getUserInfo(scenario?.user_id)}
                 scenario={scenario}
+                bookmark={bookmark.includes(scenario.id) ? true : false}
               />
             ))}
             <Link href={`/app?stories=${storyCount + 20}`}>
@@ -68,6 +72,7 @@ export default async function Dashboard({ searchParams }: { searchParams: { stor
                 data={await getUserInfo(scenario.user_id)}
                 key={scenario.id}
                 scenario={scenario}
+                bookmark={bookmark.includes(scenario.id) ? true : false}
               />
             ))}
             <Link href={`/app?stories=${storyCount + 20}`}>

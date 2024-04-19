@@ -17,6 +17,8 @@ export function extractStoryFromAI({ aiResponse, stage }: ExtractStoryProps) {
 
   let choices: string[];
   try {
+    if (aiResponse.choices.choices.length !== 3)
+      throw new Error("Choice data is undefined, please try again");
     choices = aiResponse.choices.choices.map((singleChoice) => singleChoice);
   } catch (error) {
     throw new Error("Choice data is undefined, please try again");

@@ -5,10 +5,10 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { addBookmark } from "@/utils/actions/database/addBookmark";
 import unPublish from "@/utils/actions/database/privateStory";
 import publish from "@/utils/actions/database/publishStory";
+import { removeBookmark } from "@/utils/actions/database/removeBookmark";
 import { Bookmark, Globe, Loader2, Lock, MessageSquareText, Trash } from "lucide-react";
-import { useRouter } from "next//navigation";
-import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
 
@@ -25,7 +25,7 @@ type SCENARIO_TYPES = {
     title: string;
     user_id: string;
   };
-  bookmark?: boolean;
+  bookmark: boolean | false;
   data: {
     data: {
       admin: boolean | null;
@@ -86,7 +86,6 @@ export function ScenarioCard({ scenario, bookmark, data, currentUser }: SCENARIO
   const r = Math.floor(Math.random() * shadowcolor.length);
   const { title, prompt, story } = scenario;
   const [isLoading, setIsLoading] = useState(false);
-  const bookmarkFlag = bookmark ? bookmark : false;
 
   const [pending, setPending] = useState(false);
   const router = useRouter();
@@ -98,11 +97,16 @@ export function ScenarioCard({ scenario, bookmark, data, currentUser }: SCENARIO
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleAddBookmark = async () => {
-    setIsLoading(true);
-    await addBookmark(scenario.id);
-    router.refresh();
-    setIsLoading(false);
+  const handleAddBookmark = async (isBookmark: boolean) => {
+    if (isBookmark) {
+      setIsLoading(true);
+      await removeBookmark(scenario.id);
+      router.refresh();
+    } else {
+      setIsLoading(true);
+      await addBookmark(scenario.id);
+      router.refresh();
+    }
   };
 
   return (
@@ -113,7 +117,7 @@ export function ScenarioCard({ scenario, bookmark, data, currentUser }: SCENARIO
           <CardItem translateZ="30">
             <div className="mb-2 flex flex-row">
               <a href="" className="m-auto h-[fit-content] w-[fit-content] p-0">
-                <Image className="h-7 w-7 rounded-full" src={data.data!!.image!!} alt="scenario-img"></Image>
+                <img className="h-7 w-7 rounded-full" src={data.data!!.image!!}></img>
               </a>
               <a href="" className="m-auto h-auto w-[fit-content] p-0">
                 <p className="ml-2 text-sm hover:underline">{data.data.name}</p>
@@ -183,24 +187,31 @@ export function ScenarioCard({ scenario, bookmark, data, currentUser }: SCENARIO
                   </TooltipProvider>
                 </CardItem>
                 <CardItem
-                  as="a"
+                  as="button"
+                  onClick={() => {
+                    handleAddBookmark(bookmark);
+                  }}
                   style={{ borderRadius: "1em" }}
                   className=" rounded-x bg-transparent text-xs font-bold hover:bg-white/20">
                   <TooltipProvider delayDuration={300}>
                     <Tooltip>
                       <TooltipTrigger>
-                        {bookmarkFlag ? (
-                          <Trash className="mx-4 my-2 size-4" />
+                        {bookmark ? (
+                          isLoading ? (
+                            <Loader2 className="mx-4 my-2 h-4 w-4 animate-spin" />
+                          ) : (
+                            <Trash className="mx-4 my-2 size-4" />
+                          )
                         ) : isLoading ? (
                           <Loader2 className="mx-4 my-2 h-4 w-4 animate-spin" />
                         ) : (
-                          <Bookmark onClick={handleAddBookmark} className="mx-4 my-2 size-4"></Bookmark>
+                          <Bookmark className="mx-4 my-2 size-4"></Bookmark>
                         )}
                       </TooltipTrigger>
                       <TooltipContent
                         className="m-0 border-none bg-transparent p-0 font-mono text-xs font-extralight outline-none"
                         side="bottom">
-                        {bookmarkFlag ? (
+                        {bookmark ? (
                           <p>Remove from bookmarks</p>
                         ) : isLoading ? (
                           <span></span>

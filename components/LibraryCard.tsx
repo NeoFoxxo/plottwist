@@ -1,12 +1,13 @@
 "use client";
-import { Lock, Globe, Loader2, Trash, Pin, PinOff } from "lucide-react";
-import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import publish from "@/utils/actions/database/publishStory";
+import deleteStory from "@/utils/actions/database/deleteStory";
+import { pinStory } from "@/utils/actions/database/pinStory";
 import unPublish from "@/utils/actions/database/privateStory";
+import publish from "@/utils/actions/database/publishStory";
+import { Globe, Loader2, Lock, Pin, PinOff, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Button } from "./ui/button";
+import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -18,8 +19,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "./ui/alert-dialog";
-import deleteStory from "@/utils/actions/database/deleteStory";
-import { pinStory } from "@/utils/actions/database/pinStory";
+import { Button } from "./ui/button";
 
 type SCENARIO_TYPES = {
   scenario: {
@@ -166,7 +166,6 @@ export function LibraryCard({ scenario }: SCENARIO_TYPES) {
                         setPending(true);
                         await unPublish(scenario.id);
                         router.refresh();
-                        setPending(false);
                       }}
                       style={{ borderRadius: "1em" }}
                       className="rounded-x mr-2 bg-transparent p-3 text-xs font-bold hover:bg-white/20">
@@ -193,7 +192,6 @@ export function LibraryCard({ scenario }: SCENARIO_TYPES) {
                         setPending(true);
                         await publish(scenario.id);
                         router.refresh();
-                        setPending(false);
                       }}
                       style={{ borderRadius: "1em" }}
                       className="rounded-x mr-2 bg-transparent p-3 text-xs font-bold hover:bg-white/20">
