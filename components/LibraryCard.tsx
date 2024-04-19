@@ -165,7 +165,6 @@ export function LibraryCard({ scenario }: SCENARIO_TYPES) {
 												setPending(true)
 												await unPublish(scenario.id)
 												router.refresh()
-												setPending(false)
 											}}
 											style={{ borderRadius: "1em" }}
 											className="mr-2 rounded-x bg-transparent hover:bg-white/20 text-xs p-3 font-bold"
@@ -194,7 +193,6 @@ export function LibraryCard({ scenario }: SCENARIO_TYPES) {
 												setPending(true)
 												await publish(scenario.id)
 												router.refresh()
-												setPending(false)
 											}}
 											style={{ borderRadius: "1em" }}
 											className="mr-2 rounded-x bg-transparent hover:bg-white/20 text-xs p-3 font-bold"
