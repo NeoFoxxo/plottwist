@@ -26,8 +26,15 @@ export default async function RootLayout({
 	let username
 
 	if (user) {
-		let { data, error } = await supabase.from('profiles').select('name').eq('user_id', user!!.id)
-		username = data!![0].name
+		const { data, error } = await supabase
+			.from("profiles")
+			.select("name")
+			.eq("user_id", user.id)
+		if (error) {
+			console.error("Error fetching username:", error)
+		} else if (data && data.length > 0) {
+			username = data[0].name
+		}
 	}
 
 	return (
@@ -52,10 +59,12 @@ export default async function RootLayout({
 						enableSystem
 						disableTransitionOnChange
 					>
-						<Header username={username!!} email={user?.email} userId={user?.id} />
-						<div className="my-15">
-							{children}
-						</div>
+						<Header
+							username={username!!}
+							email={user?.email}
+							userId={user?.id}
+						/>
+						<div className="my-15">{children}</div>
 					</ThemeProvider>
 				</main>
 			</body>

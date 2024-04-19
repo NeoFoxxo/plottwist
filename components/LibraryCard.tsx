@@ -24,6 +24,7 @@ import {
 } from "./ui/alert-dialog"
 import deleteStory from "@/utils/actions/database/deleteStory"
 import { pinStory } from "@/utils/actions/database/pinStory"
+import Link from "next/link"
 
 type SCENARIO_TYPES = {
 	scenario: {
@@ -103,7 +104,7 @@ export function LibraryCard({ scenario }: SCENARIO_TYPES) {
 			>
 				<CardItem
 					href={`/story/${scenario.id}`}
-					as="a"
+					as={Link}
 					style={{ cursor: "pointer" }}
 					translateZ="50"
 					className="text-xl font-bold text-neutral-600 dark:text-white"
