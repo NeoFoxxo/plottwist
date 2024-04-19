@@ -9,10 +9,19 @@ import {
 } from "@/components/ui/tooltip"
 import publish from "@/utils/actions/database/publishStory"
 import unPublish from "@/utils/actions/database/privateStory"
-import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { Button } from "./ui/button"
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./ui/alert-dialog"
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from "./ui/alert-dialog"
 import deleteStory from "@/utils/actions/database/deleteStory"
 import { pinStory } from "@/utils/actions/database/pinStory"
 
@@ -66,9 +75,8 @@ const bordercolor = [
 ]
 
 export function LibraryCard({ scenario }: SCENARIO_TYPES) {
-	const [isLoading, setIsLoading] = useState(false);
-	const [isLoading2, setIsLoading2] = useState(false);
-	const router = useRouter()
+	const [isLoading, setIsLoading] = useState(false)
+	const [isLoading2, setIsLoading2] = useState(false)
 
 	const [pending, setPending] = useState(false)
 
@@ -77,15 +85,15 @@ export function LibraryCard({ scenario }: SCENARIO_TYPES) {
 	const { title, prompt, story, finished, published, pinned } = scenario
 
 	const handleDeleteStory = async () => {
-		setIsLoading2(true);
-		await deleteStory(scenario.id);
-		router.refresh();
+		setIsLoading2(true)
+		await deleteStory(scenario.id)
+		window.location.reload()
 	}
 
 	const handlePinStory = async () => {
-		setIsLoading(true);
-		await pinStory(scenario.id, pinned);
-		router.refresh();
+		setIsLoading(true)
+		await pinStory(scenario.id, pinned)
+		window.location.reload()
 	}
 
 	return (
@@ -128,11 +136,15 @@ export function LibraryCard({ scenario }: SCENARIO_TYPES) {
 							<TooltipProvider delayDuration={300}>
 								<Tooltip>
 									<TooltipTrigger>
-										<Button variant={"ghost"} className="px-2.5 mr-2" onClick={handlePinStory}>
-											{isLoading ? <Loader2 className="animate-spin h-4 w-4" /> : (
-												<>
-													{pinned ? <PinOff size={18} /> : <Pin size={18} />}
-												</>
+										<Button
+											variant={"ghost"}
+											className="px-2.5 mr-2"
+											onClick={handlePinStory}
+										>
+											{isLoading ? (
+												<Loader2 className="animate-spin h-4 w-4" />
+											) : (
+												<>{pinned ? <PinOff size={18} /> : <Pin size={18} />}</>
 											)}
 										</Button>
 									</TooltipTrigger>
@@ -140,7 +152,7 @@ export function LibraryCard({ scenario }: SCENARIO_TYPES) {
 										className="p-0 pt-1 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight"
 										side="bottom"
 									>
-										<p>{pinned ? 'Unpin' : 'Pin'}</p>
+										<p>{pinned ? "Unpin" : "Pin"}</p>
 									</TooltipContent>
 								</Tooltip>
 							</TooltipProvider>
@@ -148,8 +160,8 @@ export function LibraryCard({ scenario }: SCENARIO_TYPES) {
 					</CardItem>
 					{finished == false && (
 						<CardItem
-							as={'a'}
-							href={'/app/library/continue/' + scenario.id}
+							as={"a"}
+							href={"/app/library/continue/" + scenario.id}
 							translateZ={74}
 							style={{ borderRadius: "1em" }}
 							className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white bg-transparent hover:bg-white/20 "
@@ -166,7 +178,7 @@ export function LibraryCard({ scenario }: SCENARIO_TYPES) {
 											onClick={async () => {
 												setPending(true)
 												await unPublish(scenario.id)
-												router.refresh()
+												window.location.reload()
 											}}
 											style={{ borderRadius: "1em" }}
 											className="mr-2 rounded-x bg-transparent hover:bg-white/20 text-xs p-3 font-bold"
@@ -194,7 +206,7 @@ export function LibraryCard({ scenario }: SCENARIO_TYPES) {
 											onClick={async () => {
 												setPending(true)
 												await publish(scenario.id)
-												router.refresh()
+												window.location.reload()
 											}}
 											style={{ borderRadius: "1em" }}
 											className="mr-2 rounded-x bg-transparent hover:bg-white/20 text-xs p-3 font-bold"
@@ -223,15 +235,21 @@ export function LibraryCard({ scenario }: SCENARIO_TYPES) {
 							<AlertDialog>
 								<AlertDialogTrigger asChild>
 									<Button variant={"ghost"} className="px-2.5">
-										{isLoading2 ? <Loader2 className='animate-spin' size={18} /> : <Trash size={18} />}
+										{isLoading2 ? (
+											<Loader2 className="animate-spin" size={18} />
+										) : (
+											<Trash size={18} />
+										)}
 									</Button>
 								</AlertDialogTrigger>
 								<AlertDialogContent>
 									<AlertDialogHeader>
-										<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+										<AlertDialogTitle>
+											Are you absolutely sure?
+										</AlertDialogTitle>
 										<AlertDialogDescription>
-											This action cannot be undone. This will permanently delete your
-											story.
+											This action cannot be undone. This will permanently delete
+											your story.
 										</AlertDialogDescription>
 									</AlertDialogHeader>
 									<AlertDialogFooter>
