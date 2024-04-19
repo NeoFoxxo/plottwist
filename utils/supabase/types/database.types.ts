@@ -42,7 +42,49 @@ export type Database = {
                         isOneToOne: false;
                         referencedRelation: "users";
                         referencedColumns: ["id"];
-                    }
+                    },
+                ];
+            };
+            comments: {
+                Row: {
+                    comment: string | null;
+                    comment_id: string;
+                    created_at: string;
+                    id: number;
+                    scenario_id: number;
+                    user_id: string;
+                };
+                Insert: {
+                    comment?: string | null;
+                    comment_id?: string;
+                    created_at?: string;
+                    id?: number;
+                    scenario_id: number;
+                    user_id?: string;
+                };
+                Update: {
+                    comment?: string | null;
+                    comment_id?: string;
+                    created_at?: string;
+                    id?: number;
+                    scenario_id?: number;
+                    user_id?: string;
+                };
+                Relationships: [
+                    {
+                        foreignKeyName: "public_comments_scenario_id_fkey";
+                        columns: ["scenario_id"];
+                        isOneToOne: false;
+                        referencedRelation: "scenarios";
+                        referencedColumns: ["id"];
+                    },
+                    {
+                        foreignKeyName: "public_comments_user_id_fkey";
+                        columns: ["user_id"];
+                        isOneToOne: false;
+                        referencedRelation: "users";
+                        referencedColumns: ["id"];
+                    },
                 ];
             };
             profiles: {
@@ -54,7 +96,8 @@ export type Database = {
                     id: number;
                     image: string | null;
                     links: string[] | null;
-                    name: string | null;
+                    name: string;
+                    normalised_name: string | null;
                     user_id: string;
                 };
                 Insert: {
@@ -65,7 +108,8 @@ export type Database = {
                     id?: number;
                     image?: string | null;
                     links?: string[] | null;
-                    name?: string | null;
+                    name: string;
+                    normalised_name?: string | null;
                     user_id?: string;
                 };
                 Update: {
@@ -76,7 +120,8 @@ export type Database = {
                     id?: number;
                     image?: string | null;
                     links?: string[] | null;
-                    name?: string | null;
+                    name?: string;
+                    normalised_name?: string | null;
                     user_id?: string;
                 };
                 Relationships: [
@@ -86,7 +131,7 @@ export type Database = {
                         isOneToOne: false;
                         referencedRelation: "users";
                         referencedColumns: ["id"];
-                    }
+                    },
                 ];
             };
             scenarios: {
@@ -96,9 +141,9 @@ export type Database = {
                     finished: boolean | null;
                     follow_count: number;
                     id: number;
+                    pinned: boolean | null;
                     prompt: string | null;
                     published: boolean | null;
-                    pinned: boolean | null;
                     story: string | null;
                     title: string;
                     user_id: string;
@@ -109,9 +154,9 @@ export type Database = {
                     finished?: boolean | null;
                     follow_count?: number;
                     id?: number;
+                    pinned?: boolean | null;
                     prompt?: string | null;
                     published?: boolean | null;
-                    pinned?: boolean | null;
                     story?: string | null;
                     title?: string;
                     user_id?: string;
@@ -122,9 +167,9 @@ export type Database = {
                     finished?: boolean | null;
                     follow_count?: number;
                     id?: number;
+                    pinned?: boolean | null;
                     prompt?: string | null;
                     published?: boolean | null;
-                    pinned?: boolean | null;
                     story?: string | null;
                     title?: string;
                     user_id?: string;
@@ -136,7 +181,7 @@ export type Database = {
                         isOneToOne: false;
                         referencedRelation: "users";
                         referencedColumns: ["id"];
-                    }
+                    },
                 ];
             };
         };
@@ -144,7 +189,13 @@ export type Database = {
             [_ in never]: never;
         };
         Functions: {
-            [_ in never]: never;
+            add_bookmark_rpc: {
+                Args: {
+                    b_user_id: string;
+                    b_scenario_id: number;
+                };
+                Returns: undefined;
+            };
         };
         Enums: {
             [_ in never]: never;
@@ -166,7 +217,7 @@ export type Tables<
     }
         ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
               Database[PublicTableNameOrOptions["schema"]]["Views"])
-        : never = never
+        : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
     ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
           Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
@@ -175,14 +226,14 @@ export type Tables<
         ? R
         : never
     : PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] &
-          PublicSchema["Views"])
-    ? (PublicSchema["Tables"] &
-          PublicSchema["Views"])[PublicTableNameOrOptions] extends {
-          Row: infer R;
-      }
-        ? R
-        : never
-    : never;
+            PublicSchema["Views"])
+      ? (PublicSchema["Tables"] &
+            PublicSchema["Views"])[PublicTableNameOrOptions] extends {
+            Row: infer R;
+        }
+          ? R
+          : never
+      : never;
 
 export type TablesInsert<
     PublicTableNameOrOptions extends
@@ -192,7 +243,7 @@ export type TablesInsert<
         schema: keyof Database;
     }
         ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
-        : never = never
+        : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
     ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
           Insert: infer I;
@@ -200,12 +251,12 @@ export type TablesInsert<
         ? I
         : never
     : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
-    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
-          Insert: infer I;
-      }
-        ? I
-        : never
-    : never;
+      ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+            Insert: infer I;
+        }
+          ? I
+          : never
+      : never;
 
 export type TablesUpdate<
     PublicTableNameOrOptions extends
@@ -215,7 +266,7 @@ export type TablesUpdate<
         schema: keyof Database;
     }
         ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
-        : never = never
+        : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
     ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
           Update: infer U;
@@ -223,12 +274,12 @@ export type TablesUpdate<
         ? U
         : never
     : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
-    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
-          Update: infer U;
-      }
-        ? U
-        : never
-    : never;
+      ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+            Update: infer U;
+        }
+          ? U
+          : never
+      : never;
 
 export type Enums<
     PublicEnumNameOrOptions extends
@@ -236,9 +287,9 @@ export type Enums<
         | { schema: keyof Database },
     EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
         ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"]
-        : never = never
+        : never = never,
 > = PublicEnumNameOrOptions extends { schema: keyof Database }
     ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
     : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
-    ? PublicSchema["Enums"][PublicEnumNameOrOptions]
-    : never;
+      ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+      : never;
