@@ -4,6 +4,11 @@ import EditProfileModal from "./EditProfileModal";
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
 import { Textarea } from "./ui/textarea";
 import { profile } from "console";
+import { Star } from "lucide-react";
+import { Button } from "./ui/button";
+import { addStar } from "@/utils/actions/database/addStar";
+import { useEffect } from "react";
+import { getStars } from "@/utils/actions/database/getStars";
 
 interface UserProfileProps {
     profileData: {
@@ -22,7 +27,7 @@ interface UserProfileProps {
     userId: string | undefined;
 }
 
-export default function UserProfile({
+export default async function UserProfile({
     profileData,
     date,
     storyCount,
@@ -44,6 +49,8 @@ export default function UserProfile({
     const texts = ["Stories", "Stars", "Bookmarks"];
     const defaultImage = `/icons/pfp${Math.floor(Math.random() * 5) + 1}.png`;
     const linkRegex = /^https?:\/\//;
+
+    const isEqual = await getStars({ userId: profileData.user_id, authorId: userId })
 
     function makeLink(link: string) {
         // check if link starts with https:// or http://
@@ -90,7 +97,7 @@ export default function UserProfile({
                                 </p>
                             </CardItem>
                         </div>
-                        <div className="flex gap-3 pt-3.5">
+                        <div className="flex gap-3 pt-3.5 justify-between">
                             {accountInfo.map((info: any, index) => (
                                 <CardItem translateZ="40" key={index}>
                                     <div className="flex flex-col items-center gap-2 md:flex-row">
@@ -109,9 +116,20 @@ export default function UserProfile({
                                     </div>
                                 </CardItem>
                             ))}
+                            {
+                                isEqual ? (
+                                    <Button variant={'outline'}>
+                                        <img className="invert" src="/icons/starred.png"></img>
+                                    </Button>
+                                ) : (
+                                    <Button onClick={async () => { await addStar({ userId: profileData.user_id!!, authorId: userId }) }} variant={'outline'}>
+                                        <Star className="invert-0"></Star>
+                                    </Button>
+                                )
+                            }
                         </div>
                     </CardBody>
-                </CardContainer>
+                </CardContainer >
                 <CardContainer className="py-0 inter-var">
                     <CardBody className="flex flex-1 flex-col gap-4 w-full h-auto bg-gray-50 relative dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black/30 dark:border-white/[0.2] border-black/[0.1] rounded-xl p-7 border">
                         <CardItem translateZ={"60"} className="w-full">
@@ -158,7 +176,7 @@ export default function UserProfile({
                         </CardItem>
                     </CardBody>
                 </CardContainer>
-            </div>
-        </div>
+            </div >
+        </div >
     );
 }
