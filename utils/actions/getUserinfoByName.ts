@@ -9,14 +9,14 @@ export default async function getUserInfoByName(username: string) {
         .select("*")
         .eq('name', username)
 
-    if (dataerr) throw new Error('a')
+    if (dataerr) return 404
 
     const { count: storyCount, error: infoerr } = await supabase
         .from("scenarios")
         .select("*", { count: "exact", head: true })
         .eq('user_id', user[0].user_id)
 
-    if (infoerr) throw new Error('b')
+    if (infoerr) return 404
 
     const userInfo = {
         profile: user[0],

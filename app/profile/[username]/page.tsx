@@ -1,3 +1,4 @@
+import NotFound from "@/app/not-found"
 import UserProfile from "@/components/UserProfile"
 import getUserInfo from "@/utils/actions/getUserinfo"
 import getUserInfoByName from "@/utils/actions/getUserinfoByName"
@@ -14,6 +15,10 @@ export default async function Profile({ params }: { params: { username: string }
 	if (!user_id) redirect("/login")
 
 	const userInfo = await getUserInfoByName(params.username);
+
+	if (userInfo === 404) {
+		return <NotFound />
+	}
 
 	return (
 		<div className="flex flex-col items-center flex-1 w-full m-4 text-2xl">
