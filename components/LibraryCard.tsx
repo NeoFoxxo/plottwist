@@ -148,6 +148,8 @@ export function LibraryCard({ scenario }: SCENARIO_TYPES) {
 					</CardItem>
 					{finished == false && (
 						<CardItem
+							as={'a'}
+							href={'/app/library/continue/' + scenario.id}
 							translateZ={74}
 							style={{ borderRadius: "1em" }}
 							className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white bg-transparent hover:bg-white/20 "
