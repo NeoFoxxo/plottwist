@@ -106,11 +106,6 @@ export function ScenarioCard({
 	const [remixLoading, setRemixLoading] = useState(false)
 	const [reviewLoading, setReviewLoading] = useState(false)
 
-	// To get latest bookmarks
-	useEffect(() => {
-		window.location.reload()
-	}, [])
-
 	const handleAddBookmark = async (isBookmark: boolean) => {
 		setIsLoading(true)
 		if (isBookmark) {
