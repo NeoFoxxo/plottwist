@@ -132,7 +132,7 @@ export default function EditProfileModal({
 					user_id: user_id,
 				})
 			}
-			router.refresh()
+			router.push('/profile/' + profileData.name)
 			setPending(false)
 			setSuccessMessage("Profile successfully updated!")
 		} catch (error) {
@@ -191,7 +191,7 @@ export default function EditProfileModal({
 									<FormControl>
 										<Textarea
 											onKeyDown={() => {
-												;("")
+												; ("")
 											}}
 											className="w-full text-left resize-none"
 											{...field}

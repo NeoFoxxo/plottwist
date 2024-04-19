@@ -30,7 +30,17 @@ export default function UserProfile({
 }: UserProfileProps) {
     const { name, image, email, bio, links } = profileData;
 
-    const accountInfo = [storyCount, 20, 570];
+    function simplifyNumber(number: number) {
+        if (number >= 1000000) {
+            return (number / 1000000).toFixed(1) + 'M';
+        } else if (number >= 1000) {
+            return (number / 1000).toFixed(1) + 'K';
+        } else {
+            return number;
+        }
+    }
+
+    const accountInfo = [simplifyNumber(storyCount!!), simplifyNumber(0), simplifyNumber(0)];
     const texts = ["Stories", "Stars", "Bookmarks"];
     const defaultImage = `/icons/pfp${Math.floor(Math.random() * 5) + 1}.png`;
     const linkRegex = /^https?:\/\//;
