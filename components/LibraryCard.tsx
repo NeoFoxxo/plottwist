@@ -124,6 +124,29 @@ export function LibraryCard({ scenario }: SCENARIO_TYPES) {
 					Prompt: {prompt}
 				</CardItem>
 				<div className="flex justify-between items-center mt-auto">
+					<CardItem translateZ={70}>
+						<div className="flex justify-start">
+							<TooltipProvider delayDuration={300}>
+								<Tooltip>
+									<TooltipTrigger>
+										<Button variant={"ghost"} className="px-2.5 mr-2" onClick={handlePinStory}>
+											{isLoading ? <Loader2 className="animate-spin h-4 w-4" /> : (
+												<>
+													{pinned ? <PinOff size={18} /> : <Pin size={18} />}
+												</>
+											)}
+										</Button>
+									</TooltipTrigger>
+									<TooltipContent
+										className="p-0 pt-1 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight"
+										side="bottom"
+									>
+										<p>{pinned ? 'Unpin' : 'Pin'}</p>
+									</TooltipContent>
+								</Tooltip>
+							</TooltipProvider>
+						</div>
+					</CardItem>
 					{finished == false && (
 						<CardItem
 							translateZ={74}
@@ -146,7 +169,7 @@ export function LibraryCard({ scenario }: SCENARIO_TYPES) {
 												setPending(false)
 											}}
 											style={{ borderRadius: "1em" }}
-											className="mr-2 rounded-x bg-transparent hover:bg-white/20 text-xs p-2 font-bold"
+											className="mr-2 rounded-x bg-transparent hover:bg-white/20 text-xs p-3 font-bold"
 										>
 											<TooltipProvider delayDuration={300}>
 												<Tooltip>
@@ -175,7 +198,7 @@ export function LibraryCard({ scenario }: SCENARIO_TYPES) {
 												setPending(false)
 											}}
 											style={{ borderRadius: "1em" }}
-											className="mr-2 rounded-x bg-transparent hover:bg-white/20 text-xs p-2 font-bold"
+											className="mr-2 rounded-x bg-transparent hover:bg-white/20 text-xs p-3 font-bold"
 										>
 											<TooltipProvider delayDuration={300}>
 												<Tooltip>
@@ -198,40 +221,33 @@ export function LibraryCard({ scenario }: SCENARIO_TYPES) {
 									)}
 								</>
 							)}
+							<AlertDialog>
+								<AlertDialogTrigger asChild>
+									<Button variant={"ghost"} className="px-2.5">
+										<Trash size={18} />
+									</Button>
+								</AlertDialogTrigger>
+								<AlertDialogContent>
+									<AlertDialogHeader>
+										<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+										<AlertDialogDescription>
+											This action cannot be undone. This will permanently delete your
+											story.
+										</AlertDialogDescription>
+									</AlertDialogHeader>
+									<AlertDialogFooter>
+										<AlertDialogCancel>Cancel</AlertDialogCancel>
+										<AlertDialogAction onClick={handleDeleteStory}>
+											{isLoading ? (
+												<Loader2 className="animate-spin mx-4 my-2 h-4 w-4" />
+											) : (
+												"Continue"
+											)}
+										</AlertDialogAction>
+									</AlertDialogFooter>
+								</AlertDialogContent>
+							</AlertDialog>
 						</div>
-						<Button variant={"ghost"} className="px-2.5 mr-2" onClick={handlePinStory}>
-							{isLoading ? <Loader2 className="animate-spin h-4 w-4" /> : (
-								<>
-									{pinned ? <PinOff size={18} /> : <Pin size={18} />}
-								</>
-							)}
-						</Button>
-						<AlertDialog>
-							<AlertDialogTrigger asChild>
-								<Button variant={"ghost"} className="px-2.5">
-									<Trash size={18} />
-								</Button>
-							</AlertDialogTrigger>
-							<AlertDialogContent>
-								<AlertDialogHeader>
-									<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-									<AlertDialogDescription>
-										This action cannot be undone. This will permanently delete your
-										story.
-									</AlertDialogDescription>
-								</AlertDialogHeader>
-								<AlertDialogFooter>
-									<AlertDialogCancel>Cancel</AlertDialogCancel>
-									<AlertDialogAction onClick={handleDeleteStory}>
-										{isLoading ? (
-											<Loader2 className="animate-spin mx-4 my-2 h-4 w-4" />
-										) : (
-											"Continue"
-										)}
-									</AlertDialogAction>
-								</AlertDialogFooter>
-							</AlertDialogContent>
-						</AlertDialog>
 					</CardItem>
 				</div>
 			</CardBody>
