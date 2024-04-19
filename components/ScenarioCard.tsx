@@ -198,7 +198,7 @@ export function ScenarioCard({
                             <div className="flex justify-end mt-auto">
                                 <CardItem
                                     as="a"
-                                    href="/b"
+                                    href={`/story/${scenario.id}?isReview=true`}
                                     style={{ borderRadius: "1em" }}
                                     className="mr-2 rounded-x bg-transparent hover:bg-white/20 text-xs font-bold"
                                 >

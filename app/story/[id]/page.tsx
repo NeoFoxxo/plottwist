@@ -18,11 +18,14 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import DeleteReview from "@/components/DeleteReview";
+import { getURL } from "next/dist/shared/lib/utils";
 
 export default async function StoryDetails({
     params,
+    searchParams
 }: {
-    params: { id: string };
+    params: { id: string },
+    searchParams: { isReview: boolean }
 }) {
     const story = await getStory(params.id);
 
@@ -42,6 +45,14 @@ export default async function StoryDetails({
 
     return (
         <main className="flex flex-col w-full mx-auto gap-2 py-8 my-12">
+            <Dialog open={true}>
+                <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                        <DialogTitle>Add a review</DialogTitle>
+                    </DialogHeader>
+                    <CreateReview storyId={story!!.id} authorId={currentUser!!.user!!.id} />
+                </DialogContent>
+            </Dialog >
             <div className="flex flex-col w-full mx-auto">
                 <TracingBeam className="pt-6 pb-10">
                     <h1

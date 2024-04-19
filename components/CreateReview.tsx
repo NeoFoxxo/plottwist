@@ -8,7 +8,6 @@ import { z } from "zod"
 import { Button } from "./ui/button"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form"
 import { addReview } from "@/utils/actions/database/addReview"
-import { redirect } from 'next/navigation';
 
 const reviewSchema = z.object({
     comment: z
@@ -18,7 +17,6 @@ const reviewSchema = z.object({
 })
 
 export default function CreateReview({ storyId, authorId }: { storyId: number, authorId: string }) {
-    const [pending, setPending] = useState(false)
     const [errorMessage, setErrorMessage] = useState("")
     const [isDisabled, setDisabled] = useState(false)
 
@@ -30,7 +28,6 @@ export default function CreateReview({ storyId, authorId }: { storyId: number, a
     })
 
     async function onSubmit(values: z.infer<typeof reviewSchema>) {
-        setPending(true)
         setDisabled(true)
         let send = await addReview({ storyId: storyId, authorId: authorId, comment: values.comment })
         if (send === 'failed') {
@@ -55,8 +52,9 @@ export default function CreateReview({ storyId, authorId }: { storyId: number, a
                             <FormItem>
                                 <FormControl>
                                     <Textarea
-                                        className="font-mono mx-auto text-left w-full resize-none"
+                                        className={"font-mono mx-auto text-left w-full resize-none"}
                                         minLength={20}
+                                        readOnly={isDisabled}
                                         maxLength={200}
                                         placeholder="Your comment here.."
                                         {...field}
@@ -68,12 +66,11 @@ export default function CreateReview({ storyId, authorId }: { storyId: number, a
                     ></FormField>
                     <Button
                         variant="default"
-                        className={pending ? "hidden" : "block"}
                         type="submit"
                         disabled={isDisabled}
                     >
                         <div className="flex items-center justify-center gap-2">
-                            {pending ? <Loader2 className="animate-spin" /> : <MessageSquareText />}
+                            {isDisabled ? <Loader2 className="animate-spin" /> : <MessageSquareText />}
                             Add
                         </div>
                     </Button>
