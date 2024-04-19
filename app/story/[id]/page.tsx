@@ -246,7 +246,10 @@ export default async function StoryDetails({
 													</a>
 												</div>
 												{rev.user_id == currentUser.user?.id && (
-													<DeleteReview comment={rev.comment_id} />
+													<DeleteReview
+														commentId={rev.comment_id}
+														storyId={story?.id!!}
+													/>
 												)}
 											</div>
 											<p className="text-[14px] p-[0.1rem] mt-0 font-mono text-white/50">
