@@ -8,7 +8,9 @@ export function useSubmitPrompt({
 	setScenario,
 	setPrompt,
 	setErrorMessage,
+	setStoryParts,
 }: {
+	setStoryParts: React.Dispatch<React.SetStateAction<string[]>>
 	setIsDisabled: React.Dispatch<React.SetStateAction<boolean>>
 	setIsFormOpen: React.Dispatch<React.SetStateAction<boolean>>
 	setScenario: React.Dispatch<React.SetStateAction<StoryReturnTypes | null>>
@@ -21,12 +23,13 @@ export function useSubmitPrompt({
 		onSuccess: (data) => {
 			setIsDisabled(true)
 			setIsFormOpen(false)
-			setScenario(data)
-			setPrompt(data.prompt ? data.prompt : "")
+			setScenario(data.scenario)
+			setStoryParts((storyParts) => [...storyParts, data.currentPart])
+			setPrompt(data.scenario.prompt ? data.scenario.prompt : "")
 		},
 		onError: (error) => {
 			setErrorMessage(`Could not create story: ${error}`)
 		},
-		retry: 3,
+		retry: 4,
 	})
 }

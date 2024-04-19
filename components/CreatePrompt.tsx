@@ -35,24 +35,29 @@ export default function CreatePrompt({
 	const [prompt, setPrompt] = useState(existingPrompt)
 	const [regenerateCount, setRegenerateCount] = useState(0)
 	const [storyPartCount, setStoryPartCount] = useState(0)
+	const [storyParts, setStoryParts] = useState([""])
 
 	const submitPromptRequest = useSubmitPrompt({
 		setIsDisabled,
 		setIsFormOpen,
 		setScenario,
+		setStoryParts,
 		setPrompt,
 		setErrorMessage,
 	})
 	const regeneratePromptRequest = useRegeneratePrompt({
 		setScenario,
+		setStoryParts,
 		setErrorMessage,
 	})
 	const continueRequest = useContinuePrompt({
 		setScenario,
+		setStoryParts,
 		setErrorMessage,
 	})
 	const finishRequest = useFinishPrompt({
 		setScenario,
+		setStoryParts,
 		setErrorMessage,
 	})
 
@@ -169,10 +174,12 @@ export default function CreatePrompt({
 					</h4>
 					<article className="flex flex-col gap-2">
 						<h4 className="font-semibold text-[1.05rem]">Your story:</h4>
-						<TextGenerateEffect
-							className="font-normal text-[1.05rem]"
-							words={scenario.story ? scenario.story : "Loading..."}
-						/>
+						{storyParts.map((currentPart) => (
+							<TextGenerateEffect
+								className="font-normal text-[1.05rem]"
+								words={currentPart}
+							/>
+						))}
 					</article>
 
 					{storyPartCount === 1 ? (
