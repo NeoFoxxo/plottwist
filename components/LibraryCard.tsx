@@ -67,6 +67,7 @@ const bordercolor = [
 
 export function LibraryCard({ scenario }: SCENARIO_TYPES) {
 	const [isLoading, setIsLoading] = useState(false);
+	const [isLoading2, setIsLoading2] = useState(false);
 	const router = useRouter()
 
 	const [pending, setPending] = useState(false)
@@ -76,17 +77,15 @@ export function LibraryCard({ scenario }: SCENARIO_TYPES) {
 	const { title, prompt, story, finished, published, pinned } = scenario
 
 	const handleDeleteStory = async () => {
-		setIsLoading(true);
+		setIsLoading2(true);
 		await deleteStory(scenario.id);
 		router.refresh();
-		setIsLoading(false);
 	}
 
 	const handlePinStory = async () => {
 		setIsLoading(true);
 		await pinStory(scenario.id, pinned);
 		router.refresh();
-		setIsLoading(false);
 	}
 
 	return (
@@ -224,7 +223,7 @@ export function LibraryCard({ scenario }: SCENARIO_TYPES) {
 							<AlertDialog>
 								<AlertDialogTrigger asChild>
 									<Button variant={"ghost"} className="px-2.5">
-										<Trash size={18} />
+										{isLoading2 ? <Loader2 className='animate-spin' size={18} /> : <Trash size={18} />}
 									</Button>
 								</AlertDialogTrigger>
 								<AlertDialogContent>
