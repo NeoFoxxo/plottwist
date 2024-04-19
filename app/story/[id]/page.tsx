@@ -12,7 +12,7 @@ import { getReviews } from "@/utils/actions/database/getReviews"
 import { getStory, getStoryReturnType } from "@/utils/actions/database/getStory"
 import getUserInfo from "@/utils/actions/database/getUserinfo"
 import getSession from "@/utils/actions/database/getSession"
-import { Bookmark, BotIcon, MessageSquareText } from "lucide-react"
+import { Bookmark, MessageSquareText } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import {
@@ -25,6 +25,7 @@ import {
 import DeleteReview from "@/components/DeleteReview"
 import NotFound from "@/app/not-found"
 import { createClient } from "@/utils/supabase/server"
+import RemixButton from "@/components/RemixButton"
 
 export default async function StoryDetails({
 	params,
@@ -129,14 +130,7 @@ export default async function StoryDetails({
 						<TooltipProvider delayDuration={300}>
 							<Tooltip>
 								<TooltipTrigger>
-									<Link
-										className={buttonVariants({
-											variant: "outline",
-										})}
-										href={""}
-									>
-										<BotIcon className="size-5 mx-4 my-2"></BotIcon>
-									</Link>
+									<RemixButton storyId={story.id} />
 								</TooltipTrigger>
 								<TooltipContent
 									className="p-0 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight"
