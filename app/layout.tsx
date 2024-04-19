@@ -23,6 +23,13 @@ export default async function RootLayout({
 		data: { user },
 	} = await supabase.auth.getUser()
 
+	let username
+
+	if (user) {
+		let { data, error } = await supabase.from('profiles').select('name').eq('user_id', user!!.id)
+		username = data!![0].name
+	}
+
 	return (
 		<html lang="en" className={GeistSans.className}>
 			<Head>
@@ -45,7 +52,7 @@ export default async function RootLayout({
 						enableSystem
 						disableTransitionOnChange
 					>
-						<Header email={user?.email} userId={user?.id} />
+						<Header username={username!!} email={user?.email} userId={user?.id} />
 						<div className="my-15">
 							{children}
 						</div>
