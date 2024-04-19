@@ -138,7 +138,7 @@ export default function CreatePrompt({
 									</p>
 									<FormControl>
 										<Textarea
-											className="font-mono mx-auto text-center resize-none w-auto sm:w-[35rem]"
+											className="font-mono mx-auto text-center resize-none w-10/12 sm:w-[35rem]"
 											minLength={15}
 											maxLength={60}
 											placeholder="What is your story about?"
