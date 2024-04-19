@@ -18,7 +18,6 @@ import {
 	MessageSquareText,
 	Trash,
 } from "lucide-react"
-import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card"
@@ -107,22 +106,14 @@ export function ScenarioCard({
 	const [remixLoading, setRemixLoading] = useState(false)
 	const [reviewLoading, setReviewLoading] = useState(false)
 
-	const router = useRouter()
-
-	// To get latest bookmarks
-	useEffect(() => {
-		router.refresh()
-	}, [])
-
 	const handleAddBookmark = async (isBookmark: boolean) => {
+		setIsLoading(true)
 		if (isBookmark) {
-			setIsLoading(true)
 			await removeBookmark(scenario.id)
-			router.refresh()
+			window.location.reload()
 		} else {
-			setIsLoading(true)
 			await addBookmark(scenario.id)
-			router.refresh()
+			window.location.reload()
 		}
 	}
 
@@ -273,7 +264,7 @@ export function ScenarioCard({
 							onClick={async () => {
 								setPending(true)
 								await unPublish(scenario.id)
-								router.refresh()
+								window.location.reload()
 								setPending(false)
 							}}
 							style={{ borderRadius: "1em" }}
@@ -303,7 +294,7 @@ export function ScenarioCard({
 							onClick={async () => {
 								setPending(true)
 								await publish(scenario.id)
-								router.refresh()
+								window.location.reload()
 								setPending(false)
 							}}
 							style={{ borderRadius: "1em" }}

@@ -1,19 +1,6 @@
-import { buttonVariants } from "@/components/ui/button"
+import NotFound from "@/app/not-found"
+import BookmarkedButton from "@/components/BookmarkedButton"
 import CreateReview from "@/components/CreateReview"
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipProvider,
-	TooltipTrigger,
-} from "@/components/ui/tooltip"
-import { TracingBeam } from "@/components/ui/tracing-beam"
-import { getReviews } from "@/utils/actions/database/getReviews"
-import { getStory, getStoryReturnType } from "@/utils/actions/database/getStory"
-import getUserInfo from "@/utils/actions/database/getUserinfo"
-import getSession from "@/utils/actions/database/getSession"
-import { Bookmark, MessageSquareText } from "lucide-react"
-import Image from "next/image"
-import Link from "next/link"
 import {
 	Dialog,
 	DialogContent,
@@ -21,11 +8,26 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog"
-import DeleteReview from "@/components/DeleteReview"
-import NotFound from "@/app/not-found"
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from "@/components/ui/tooltip"
+import { TracingBeam } from "@/components/ui/tracing-beam"
+import { getBookmarksId } from "@/utils/actions/database/getBookmarksId"
+import { getReviews } from "@/utils/actions/database/getReviews"
+import getSession from "@/utils/actions/database/getSession"
+import { getStory, getStoryReturnType } from "@/utils/actions/database/getStory"
+import getUserInfo from "@/utils/actions/database/getUserinfo"
 import { createClient } from "@/utils/supabase/server"
+import { MessageSquareText } from "lucide-react"
+import Image from "next/image"
+import Link from "next/link"
 import RemixButton from "@/components/RemixButton"
 import AnimateStory from "@/components/AnimateStory"
+import { buttonVariants } from "@/components/ui/button"
+import DeleteReview from "@/components/DeleteReview"
 
 export default async function StoryDetails({
 	params,
@@ -56,6 +58,9 @@ export default async function StoryDetails({
 		return <NotFound />
 
 	const accountInfo = [author.stories!!, 20, 570]
+
+	const bookmarks = await getBookmarksId(user!!?.id)
+	const isBookmarked = bookmarks.includes(story!!?.id) ? true : false
 
 	const icons = ["/icons/book.png", "/icons/star.png", "/icons/bookmark.png"]
 
@@ -188,14 +193,10 @@ export default async function StoryDetails({
 								<TooltipProvider delayDuration={300}>
 									<Tooltip>
 										<TooltipTrigger>
-											<Link
-												className={buttonVariants({
-													variant: "outline",
-												})}
-												href={""}
-											>
-												<Bookmark className="size-4 mx-4 my-2"></Bookmark>
-											</Link>
+											<BookmarkedButton
+												storyId={story!!.id}
+												isBookmarked={isBookmarked}
+											/>
 										</TooltipTrigger>
 										<TooltipContent
 											className="p-0 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight"
@@ -206,7 +207,9 @@ export default async function StoryDetails({
 													textShadow: "0em 0em 0.3em white",
 												}}
 											>
-												Add to library
+												{isBookmarked
+													? "Remove from library"
+													: "Add to library"}
 											</p>
 										</TooltipContent>
 									</Tooltip>

@@ -10,7 +10,7 @@ export default async function Bookmarks() {
 		data: { user },
 	} = await supabase.auth.getUser()
 
-	const user_id = user?.id
+	const user_id = user?.id;
 	if (!user_id) redirect("/login")
 
 	const scenarios = await getBookmarks(user_id)
