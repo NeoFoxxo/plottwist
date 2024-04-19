@@ -1,7 +1,6 @@
 import NotFound from "@/app/not-found"
 import UserProfile from "@/components/UserProfile"
-import getUserInfo from "@/utils/actions/getUserinfo"
-import getUserInfoByName from "@/utils/actions/getUserinfoByName"
+import getUserInfoByName from "@/utils/actions/database/getUserinfoByName"
 import { createClient } from "@/utils/supabase/server"
 import { redirect } from "next/navigation"
 
