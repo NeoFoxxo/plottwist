@@ -39,7 +39,7 @@ export async function generateRandomUsername() {
 	} catch (err) {
 		let username =
 			arr[Math.floor(Math.random() * arr.length)] +
-			Math.floor(Math.random() * 100)
+			Math.floor(Math.random() * 1000000)
 		return username
 	}
 }
