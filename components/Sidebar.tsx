@@ -1,12 +1,6 @@
 import { buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import {
-	BarChartBig,
-	Bookmark,
-	LayoutDashboard,
-	LibraryBig,
-	SquarePen,
-} from "lucide-react"
+import { Bookmark, LayoutDashboard, LibraryBig, SquarePen } from "lucide-react"
 import Link from "next/link"
 
 export function Sidebar() {
@@ -15,11 +9,6 @@ export function Sidebar() {
 			text: "Dashboard",
 			href: "/app",
 			icon: <LayoutDashboard className="w-5 h-5" />,
-		},
-		{
-			text: "Charts",
-			href: "/app/charts",
-			icon: <BarChartBig className="w-5 h-5" />,
 		},
 		{
 			text: "My Library",
