@@ -39,24 +39,24 @@ type SCENARIO_TYPES = {
     bookmark?: boolean;
     data: {
         data: {
-            admin: boolean;
-            bio: string | null;
-            created_at: string;
-            email: string;
-            id: number;
-            image: string | null;
-            links: string[] | null;
-            name: string | null;
-            user_id: string;
+            admin: boolean | null
+            bio: string | null
+            created_at: string | null
+            email: string | null
+            id: number
+            image: string | null
+            links: string[] | null
+            name: string | null
+            user_id: string
         };
     };
     currentUser:
-        | {
-              user: any;
-          }
-        | {
-              user: null;
-          };
+    | {
+        user: any;
+    }
+    | {
+        user: null;
+    };
 };
 
 function truncateString(str: string, maxl: number) {
@@ -198,7 +198,7 @@ export function ScenarioCard({
                             <div className="flex justify-end mt-auto">
                                 <CardItem
                                     as="a"
-                                    href="/b"
+                                    href={`/story/${scenario.id}?isReview=true`}
                                     style={{ borderRadius: "1em" }}
                                     className="mr-2 rounded-x bg-transparent hover:bg-white/20 text-xs font-bold"
                                 >
