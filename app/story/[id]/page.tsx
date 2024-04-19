@@ -1,4 +1,4 @@
-import { Button, buttonVariants } from "@/components/ui/button"
+import { buttonVariants } from "@/components/ui/button"
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect"
 import CreateReview from "@/components/CreateReview"
 import {
@@ -9,13 +9,12 @@ import {
 } from "@/components/ui/tooltip"
 import { TracingBeam } from "@/components/ui/tracing-beam"
 import { getReviews } from "@/utils/actions/database/getReviews"
-import { getStory } from "@/utils/actions/database/getStory"
+import { getStory, getStoryReturnType } from "@/utils/actions/database/getStory"
 import getUserInfo from "@/utils/actions/database/getUserinfo"
 import getSession from "@/utils/actions/database/getSession"
 import { Bookmark, BotIcon, MessageSquareText } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-import { redirect } from "next/navigation"
 import {
 	Dialog,
 	DialogContent,
@@ -24,6 +23,7 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog"
 import DeleteReview from "@/components/DeleteReview"
+import NotFound from "@/app/not-found"
 
 export default async function StoryDetails({
 	params,
@@ -32,13 +32,17 @@ export default async function StoryDetails({
 	params: { id: string }
 	searchParams: { isReview: boolean }
 }) {
-	const story = await getStory(params.id)
+	let story: getStoryReturnType | null
+
+	try {
+		story = await getStory(params.id)
+	} catch (error) {
+		return <NotFound />
+	}
+
+	if (story?.published === false) return <NotFound />
 
 	let user = await getUserInfo(story?.user_id!!)
-
-	if (!user) {
-		redirect("/app")
-	}
 
 	const accountInfo = [user.stories!!, 20, 570]
 
