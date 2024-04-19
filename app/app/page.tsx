@@ -5,6 +5,8 @@ import getUserInfo from "@/utils/actions/database/getUserinfo"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { getBookmarks } from "@/utils/actions/database/getBookmarks"
+import { getBookmarksId } from "@/utils/actions/database/getBookmarksId"
 
 export default async function Dashboard({
 	searchParams,
@@ -25,6 +27,8 @@ export default async function Dashboard({
 			},
 		}
 	}
+
+	const bookmark = await getBookmarksId(data?.user?.id!!)
 
 	//@ts-expect-error
 	let storyCount = parseInt(searchParams.stories) // make sure its an int
@@ -52,6 +56,7 @@ export default async function Dashboard({
 								currentUser={data}
 								data={await getUserInfo(scenario?.user_id)}
 								scenario={scenario}
+								bookmark={bookmark.includes(scenario.id) ? true : false}
 							/>
 						))}
 						<Link href={`/app?stories=${storyCount + 20}`}>
@@ -78,8 +83,11 @@ export default async function Dashboard({
 								data={await getUserInfo(scenario.user_id)}
 								key={scenario.id}
 								scenario={scenario}
+								bookmark={bookmark.includes(scenario.id) ? true : false}
 							/>
-						))}
+						))
+
+						}
 						<Link href={`/app?stories=${storyCount + 20}`}>
 							<div className="flex mt-5">
 								<Button className="mx-auto">Show More</Button>

@@ -18,10 +18,11 @@ import {
     MessageSquareText,
     Trash,
 } from "lucide-react";
-import { useRouter } from "next//navigation";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
+import { removeBookmark } from "@/utils/actions/database/removeBookmark";
 
 type SCENARIO_TYPES = {
     scenario: {
@@ -36,7 +37,7 @@ type SCENARIO_TYPES = {
         title: string;
         user_id: string;
     };
-    bookmark?: boolean;
+    bookmark: boolean | false;
     data: {
         data: {
             admin: boolean | null
@@ -102,7 +103,6 @@ export function ScenarioCard({
     const r = Math.floor(Math.random() * shadowcolor.length);
     const { title, prompt, story } = scenario;
     const [isLoading, setIsLoading] = useState(false);
-    const bookmarkFlag = bookmark ? bookmark : false;
 
     const [pending, setPending] = useState(false);
     const router = useRouter();
@@ -112,11 +112,16 @@ export function ScenarioCard({
         router.refresh();
     }, []);
 
-    const handleAddBookmark = async () => {
-        setIsLoading(true);
-        await addBookmark(scenario.id);
-        router.refresh();
-        setIsLoading(false);
+    const handleAddBookmark = async (isBookmark: boolean) => {
+        if (isBookmark) {
+            setIsLoading(true);
+            await removeBookmark(scenario.id);
+            router.refresh();
+        } else {
+            setIsLoading(true);
+            await addBookmark(scenario.id);
+            router.refresh();
+        }
     };
 
     return (
@@ -217,22 +222,26 @@ export function ScenarioCard({
                                     </TooltipProvider>
                                 </CardItem>
                                 <CardItem
-                                    as="a"
+                                    as="button"
+                                    onClick={
+                                        () => {
+                                            handleAddBookmark(bookmark)
+                                        }
+                                    }
                                     style={{ borderRadius: "1em" }}
                                     className=" rounded-x bg-transparent hover:bg-white/20 text-xs font-bold"
                                 >
                                     <TooltipProvider delayDuration={300}>
                                         <Tooltip>
                                             <TooltipTrigger>
-                                                {bookmarkFlag ? (
-                                                    <Trash className="size-4 mx-4 my-2" />
-                                                ) : isLoading ? (
-                                                    <Loader2 className="animate-spin h-4 w-4 mx-4 my-2" />
+                                                {bookmark ? (
+                                                    isLoading ? (
+                                                        <Loader2 className="animate-spin h-4 w-4 mx-4 my-2" />
+                                                    ) : <Trash className="size-4 mx-4 my-2" />
                                                 ) : (
-                                                    <Bookmark
-                                                        onClick={
-                                                            handleAddBookmark
-                                                        }
+                                                    isLoading ? (
+                                                        <Loader2 className="animate-spin h-4 w-4 mx-4 my-2" />
+                                                    ) : <Bookmark
                                                         className="size-4 mx-4 my-2"
                                                     ></Bookmark>
                                                 )}
@@ -241,7 +250,7 @@ export function ScenarioCard({
                                                 className="p-0 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight"
                                                 side="bottom"
                                             >
-                                                {bookmarkFlag ? (
+                                                {bookmark ? (
                                                     <p>Remove from bookmarks</p>
                                                 ) : isLoading ? (
                                                     <span></span>
