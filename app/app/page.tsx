@@ -40,7 +40,7 @@ export default async function Dashboard({
 	const { mostPopular, recentStories } = await getScenarios({ storyCount })
 
 	return (
-		<div className="container h-[90vh] overflow-hidden p-4 flex flex-row max-lg:flex-col mx-auto text-2xl">
+		<div className="container flex flex-row justify-end p-4 text-2xl gap-y-10 gap-x-20 max-xl:gap-x-8 max-lg:flex-col">
 			<div className="flex flex-col w-full mx-auto">
 				<h2
 					style={{ textShadow: "0em 0em 0.6em white" }}
@@ -77,7 +77,7 @@ export default async function Dashboard({
 				</h2>
 				<ScrollArea className="w-full mt-2">
 					<div className="py-5 top-0 h-[80vh]">
-						{recentStories?.map(async (scenario, index) => (
+						{recentStories?.map(async (scenario) => (
 							<ScenarioCard
 								currentUser={data}
 								data={await getUserInfo(scenario.user_id)}
