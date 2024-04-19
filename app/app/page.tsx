@@ -1,94 +1,84 @@
-import { createClient } from "@/utils/supabase/server"
-import { ScenarioCard } from "@/components/ScenarioCard"
-import { getScenarios } from "@/utils/actions/database/getScenarios"
-import getUserInfo from "@/utils/actions/database/getUserinfo"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
+import { createClient } from "@/utils/supabase/server";
+import { ScenarioCard } from "@/components/ScenarioCard";
+import { getScenarios } from "@/utils/actions/database/getScenarios";
+import getUserInfo from "@/utils/actions/database/getUserinfo";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
-export default async function Dashboard({
-	searchParams,
-}: {
-	searchParams: { stories: number }
-}) {
-	const supabase = createClient()
+export default async function Dashboard({ searchParams }: { searchParams: { stories: number } }) {
+  const supabase = createClient();
 
-	let { data, error } = await supabase.auth.getUser()
+  let { data, error } = await supabase.auth.getUser();
 
-	// if user is not logged in provide a fake id so that it does not crash
-	// the id is used for the "your story" functionality
-	if (error) {
-		data = {
-			//@ts-expect-error
-			user: {
-				id: "unauthenticated user",
-			},
-		}
-	}
+  // if user is not logged in provide a fake id so that it does not crash
+  // the id is used for the "your story" functionality
+  if (error) {
+    data = {
+      //@ts-expect-error
+      user: {
+        id: "unauthenticated user",
+      },
+    };
+  }
 
-	//@ts-expect-error
-	let storyCount = parseInt(searchParams.stories) // make sure its an int
+  //@ts-expect-error
+  let storyCount = parseInt(searchParams.stories); // make sure its an int
 
-	if (!storyCount) {
-		storyCount = 20
-	}
+  if (!storyCount) {
+    storyCount = 20;
+  }
 
-	const { mostPopular, recentStories } = await getScenarios({ storyCount })
+  const { mostPopular, recentStories } = await getScenarios({ storyCount });
 
-	return (
-		<div className="container h-[90vh] overflow-hidden p-4 flex flex-row max-lg:flex-col mx-auto text-2xl">
-			<div className="flex flex-col w-full mx-auto">
-				<h2
-					style={{ textShadow: "0em 0em 0.6em white" }}
-					className="text-2xl font-bold text-center"
-				>
-					Most popular
-				</h2>
-				<ScrollArea className="w-full mt-2">
-					<div className="py-5 top-0 h-[80vh]">
-						{mostPopular?.map(async (scenario) => (
-							<ScenarioCard
-								key={scenario.id}
-								currentUser={data}
-								data={await getUserInfo(scenario?.user_id)}
-								scenario={scenario}
-							/>
-						))}
-						<Link href={`/app?stories=${storyCount + 20}`}>
-							<div className="flex mt-5">
-								<Button className="mx-auto">Show More</Button>
-							</div>
-						</Link>
-						<div className="pb-20"></div>
-					</div>
-				</ScrollArea>
-			</div>
-			<div className="flex flex-col w-full mx-auto">
-				<h2
-					style={{ textShadow: "0em 0em 0.6em white" }}
-					className="text-2xl font-bold text-center"
-				>
-					New stories
-				</h2>
-				<ScrollArea className="w-full mt-2">
-					<div className="py-5 top-0 h-[80vh]">
-						{recentStories?.map(async (scenario, index) => (
-							<ScenarioCard
-								currentUser={data}
-								data={await getUserInfo(scenario.user_id)}
-								key={scenario.id}
-								scenario={scenario}
-							/>
-						))}
-						<Link href={`/app?stories=${storyCount + 20}`}>
-							<div className="flex mt-5">
-								<Button className="mx-auto">Show More</Button>
-							</div>
-						</Link>
-						<div className="pb-20"></div>
-					</div>
-				</ScrollArea>
-			</div>
-		</div>
-	)
+  return (
+    <div className="container mx-auto flex h-[90vh] flex-row overflow-hidden p-4 text-2xl max-lg:flex-col">
+      <div className="mx-auto flex w-full flex-col">
+        <h2 style={{ textShadow: "0em 0em 0.6em white" }} className="text-center text-2xl font-bold">
+          Most popular
+        </h2>
+        <ScrollArea className="mt-2 w-full">
+          <div className="top-0 h-[80vh] py-5">
+            {mostPopular?.map(async (scenario) => (
+              <ScenarioCard
+                key={scenario.id}
+                currentUser={data}
+                data={await getUserInfo(scenario?.user_id)}
+                scenario={scenario}
+              />
+            ))}
+            <Link href={`/app?stories=${storyCount + 20}`}>
+              <div className="mt-5 flex">
+                <Button className="mx-auto">Show More</Button>
+              </div>
+            </Link>
+            <div className="pb-20"></div>
+          </div>
+        </ScrollArea>
+      </div>
+      <div className="mx-auto flex w-full flex-col">
+        <h2 style={{ textShadow: "0em 0em 0.6em white" }} className="text-center text-2xl font-bold">
+          New stories
+        </h2>
+        <ScrollArea className="mt-2 w-full">
+          <div className="top-0 h-[80vh] py-5">
+            {recentStories?.map(async (scenario, index) => (
+              <ScenarioCard
+                currentUser={data}
+                data={await getUserInfo(scenario.user_id)}
+                key={scenario.id}
+                scenario={scenario}
+              />
+            ))}
+            <Link href={`/app?stories=${storyCount + 20}`}>
+              <div className="mt-5 flex">
+                <Button className="mx-auto">Show More</Button>
+              </div>
+            </Link>
+            <div className="pb-20"></div>
+          </div>
+        </ScrollArea>
+      </div>
+    </div>
+  );
 }

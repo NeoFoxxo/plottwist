@@ -3,7 +3,10 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint": "next lint",
+    "prepare": "husky",
+    "prettier": "prettier --write ."
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
@@ -41,6 +44,12 @@
     "@types/node": "20.11.5",
     "@types/react": "18.2.48",
     "@types/react-dom": "18.2.18",
-    "encoding": "^0.1.13"
+    "encoding": "^0.1.13",
+    "eslint": "8.57.0",
+    "eslint-config-next": "14.2.2",
+    "eslint-config-prettier": "^9.1.0",
+    "lint-staged": "^15.2.2",
+    "prettier": "^3.2.5",
+    "prettier-plugin-tailwindcss": "^0.5.14"
   }
 }

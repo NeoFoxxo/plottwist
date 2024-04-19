@@ -1,52 +1,52 @@
-"use server"
-import { extractStoryFromAI } from "../../extractStoryFromAI"
-import { AIResponse } from "../../supabase/types/AIResponse"
-import updateStory from "../database/updateStory"
+"use server";
+import { extractStoryFromAI } from "../../extractStoryFromAI";
+import { AIResponse } from "../../supabase/types/AIResponse";
+import updateStory from "../database/updateStory";
 
 export async function continueStory({
-	title,
-	prompt,
-	previousStoryId,
-	currentStory,
+  title,
+  prompt,
+  previousStoryId,
+  currentStory,
 }: {
-	title: string
-	prompt: string
-	previousStoryId: number
-	currentStory: string
+  title: string;
+  prompt: string;
+  previousStoryId: number;
+  currentStory: string;
 }) {
-	const res = await fetch(`${process.env.AI_API_URL}/continue`, {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-			Authorization: `Bearer ${process.env.AI_API_KEY}`,
-		},
-		body: JSON.stringify({ prompt }),
-	})
+  const res = await fetch(`${process.env.AI_API_URL}/continue`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.AI_API_KEY}`,
+    },
+    body: JSON.stringify({ prompt }),
+  });
 
-	if (!res.ok) {
-		const errorMessage = await res.json()
-		throw new Error(errorMessage)
-	}
+  if (!res.ok) {
+    const errorMessage = await res.json();
+    throw new Error(errorMessage);
+  }
 
-	const data = await res.json()
-	const aiResponse: AIResponse = data.result.Output
+  const data = await res.json();
+  const aiResponse: AIResponse = data.result.Output;
 
-	const { story, choices } = extractStoryFromAI({
-		aiResponse,
-		stage: "continue",
-	})
+  const { story, choices } = extractStoryFromAI({
+    aiResponse,
+    stage: "continue",
+  });
 
-	const fullStory = currentStory + " " + story
+  const fullStory = currentStory + " " + story;
 
-	try {
-		const scenario = await updateStory({
-			title,
-			story: fullStory,
-			choices: choices!!,
-			previousStoryId,
-		})
-		return { scenario, currentPart: story }
-	} catch (error) {
-		throw new Error(String(error))
-	}
+  try {
+    const scenario = await updateStory({
+      title,
+      story: fullStory,
+      choices: choices!!,
+      previousStoryId,
+    });
+    return { scenario, currentPart: story };
+  } catch (error) {
+    throw new Error(String(error));
+  }
 }
