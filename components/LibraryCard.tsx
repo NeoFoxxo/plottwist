@@ -1,5 +1,5 @@
 "use client"
-import { Lock, Globe, Loader2 } from "lucide-react"
+import { Lock, Globe, Loader2, Trash, Pin, PinOff } from "lucide-react"
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card"
 import {
 	Tooltip,
@@ -11,6 +11,10 @@ import publish from "@/utils/actions/database/publishStory"
 import unPublish from "@/utils/actions/database/privateStory"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+import { Button } from "./ui/button"
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./ui/alert-dialog"
+import deleteStory from "@/utils/actions/database/deleteStory"
+import { pinStory } from "@/utils/actions/database/pinStory"
 
 type SCENARIO_TYPES = {
 	scenario: {
@@ -23,6 +27,7 @@ type SCENARIO_TYPES = {
 		user_id: string
 		finished: boolean | null
 		published: boolean | null
+		pinned: boolean | null
 	}
 }
 
@@ -61,13 +66,27 @@ const bordercolor = [
 ]
 
 export function LibraryCard({ scenario }: SCENARIO_TYPES) {
+	const [isLoading, setIsLoading] = useState(false);
+	const [isLoading2, setIsLoading2] = useState(false);
 	const router = useRouter()
 
 	const [pending, setPending] = useState(false)
 
 	const r = Math.floor(Math.random() * shadowcolor.length)
 
-	const { title, prompt, story, finished, published } = scenario
+	const { title, prompt, story, finished, published, pinned } = scenario
+
+	const handleDeleteStory = async () => {
+		setIsLoading2(true);
+		await deleteStory(scenario.id);
+		router.refresh();
+	}
+
+	const handlePinStory = async () => {
+		setIsLoading(true);
+		await pinStory(scenario.id, pinned);
+		router.refresh();
+	}
 
 	return (
 		<CardContainer className="inter-var h-[10rem] p-0 my-7">
@@ -104,6 +123,29 @@ export function LibraryCard({ scenario }: SCENARIO_TYPES) {
 					Prompt: {prompt}
 				</CardItem>
 				<div className="flex justify-between items-center mt-auto">
+					<CardItem translateZ={70}>
+						<div className="flex justify-start">
+							<TooltipProvider delayDuration={300}>
+								<Tooltip>
+									<TooltipTrigger>
+										<Button variant={"ghost"} className="px-2.5 mr-2" onClick={handlePinStory}>
+											{isLoading ? <Loader2 className="animate-spin h-4 w-4" /> : (
+												<>
+													{pinned ? <PinOff size={18} /> : <Pin size={18} />}
+												</>
+											)}
+										</Button>
+									</TooltipTrigger>
+									<TooltipContent
+										className="p-0 pt-1 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight"
+										side="bottom"
+									>
+										<p>{pinned ? 'Unpin' : 'Pin'}</p>
+									</TooltipContent>
+								</Tooltip>
+							</TooltipProvider>
+						</div>
+					</CardItem>
 					{finished == false && (
 						<CardItem
 							translateZ={74}
@@ -126,7 +168,7 @@ export function LibraryCard({ scenario }: SCENARIO_TYPES) {
 												setPending(false)
 											}}
 											style={{ borderRadius: "1em" }}
-											className="mr-2 rounded-x bg-transparent hover:bg-white/20 text-xs p-2 font-bold"
+											className="mr-2 rounded-x bg-transparent hover:bg-white/20 text-xs p-3 font-bold"
 										>
 											<TooltipProvider delayDuration={300}>
 												<Tooltip>
@@ -155,7 +197,7 @@ export function LibraryCard({ scenario }: SCENARIO_TYPES) {
 												setPending(false)
 											}}
 											style={{ borderRadius: "1em" }}
-											className="mr-2 rounded-x bg-transparent hover:bg-white/20 text-xs p-2 font-bold"
+											className="mr-2 rounded-x bg-transparent hover:bg-white/20 text-xs p-3 font-bold"
 										>
 											<TooltipProvider delayDuration={300}>
 												<Tooltip>
@@ -178,6 +220,32 @@ export function LibraryCard({ scenario }: SCENARIO_TYPES) {
 									)}
 								</>
 							)}
+							<AlertDialog>
+								<AlertDialogTrigger asChild>
+									<Button variant={"ghost"} className="px-2.5">
+										{isLoading2 ? <Loader2 className='animate-spin' size={18} /> : <Trash size={18} />}
+									</Button>
+								</AlertDialogTrigger>
+								<AlertDialogContent>
+									<AlertDialogHeader>
+										<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+										<AlertDialogDescription>
+											This action cannot be undone. This will permanently delete your
+											story.
+										</AlertDialogDescription>
+									</AlertDialogHeader>
+									<AlertDialogFooter>
+										<AlertDialogCancel>Cancel</AlertDialogCancel>
+										<AlertDialogAction onClick={handleDeleteStory}>
+											{isLoading ? (
+												<Loader2 className="animate-spin mx-4 my-2 h-4 w-4" />
+											) : (
+												"Continue"
+											)}
+										</AlertDialogAction>
+									</AlertDialogFooter>
+								</AlertDialogContent>
+							</AlertDialog>
 						</div>
 					</CardItem>
 				</div>

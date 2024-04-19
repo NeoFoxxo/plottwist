@@ -18,9 +18,8 @@ export async function removeBookmark(scenario_id: number) {
         .eq("user_id", user_id)
         .eq("scenario_id", scenario_id);
     if (existingError) throw new Error("Existing bookmarks check failed!");
-    console.log("starting delete");
+
     if (existingScenario.length > 0) {
-        console.log("Ran delete");
         if (!email) throw new Error("Email not found for user!");
 
         const { error } = await supabase
