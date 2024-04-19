@@ -39,7 +39,7 @@ export async function regenerateStory({
 			title: title!!,
 			previousStoryId,
 		})
-		return scenario
+		return { scenario, currentPart: story }
 	} catch (error) {
 		throw new Error(String(error))
 	}
