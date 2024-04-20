@@ -12,14 +12,14 @@ export function LandingPage() {
 		{
 			id: 1,
 			name: "NeoFox",
-			designation: "TypeScript Techie",
+			designation: "Full Stack Dev",
 			image:
 				"https://avatars.githubusercontent.com/u/104744179",
 		},
 		{
 			id: 2,
 			name: "xhyabunny",
-			designation: "React & AI Logics",
+			designation: "ReactTS & AI Logics",
 			image:
 				"https://avatars.githubusercontent.com/u/106491722",
 		},
