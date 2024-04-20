@@ -23,7 +23,7 @@ let arr = [
 	"JustUsername",
 ]
 
-export async function generateRandomUsername() {
+export async function generateRandomUsername(): Promise<string> {
 	try {
 		const response = await fetch(process.env.AI_API_URL + "/create-user", {
 			method: "POST",
@@ -40,6 +40,6 @@ export async function generateRandomUsername() {
 		let username =
 			arr[Math.floor(Math.random() * arr.length)] +
 			Math.floor(Math.random() * 1000000)
-		return username.toLowerCase()
+		return username
 	}
 }
