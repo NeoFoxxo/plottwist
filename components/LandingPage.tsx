@@ -11,13 +11,13 @@ export function LandingPage() {
 		{
 			id: 1,
 			name: "NeoFox",
-			designation: "Lead Developer",
+			designation: "Full Stack Developer",
 			image: "https://avatars.githubusercontent.com/u/104744179",
 		},
 		{
 			id: 2,
 			name: "xhyabunny",
-			designation: "Lead Designer, Frontend, & AI Logic",
+			designation: "Designer, Frontend, & AI Logic",
 			image: "https://avatars.githubusercontent.com/u/106491722",
 		},
 		{
