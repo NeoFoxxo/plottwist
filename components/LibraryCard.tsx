@@ -161,7 +161,7 @@ export function LibraryCard({ scenario }: SCENARIO_TYPES) {
 					</CardItem>
 					{finished == false && (
 						<CardItem
-							as={"a"}
+							as={Link}
 							href={"/app/library/continue/" + scenario.id}
 							translateZ={74}
 							style={{ borderRadius: "1em" }}

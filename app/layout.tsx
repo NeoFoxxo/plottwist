@@ -64,7 +64,7 @@ export default async function RootLayout({
 							email={user?.email}
 							userId={user?.id}
 						/>
-						<div className="my-15">{children}</div>
+						<div>{children}</div>
 					</ThemeProvider>
 				</main>
 			</body>

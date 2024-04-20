@@ -126,7 +126,12 @@ export default function CreatePrompt({
 						onSubmit={form.handleSubmit(onSubmit)}
 						className="w-full p-4 space-y-6 text-center sm:py-4 md:p-0"
 					>
-						<h1 className="text-4xl font-bold">Create a story.</h1>
+						<h1
+							style={{ textShadow: "0em 0em 0.6em white" }}
+							className="text-4xl font-bold"
+						>
+							Create a story
+						</h1>
 						<FormField
 							control={form.control}
 							name="prompt"
@@ -138,7 +143,7 @@ export default function CreatePrompt({
 									</p>
 									<FormControl>
 										<Textarea
-											className="font-mono mx-auto text-center resize-none w-auto sm:w-[35rem]"
+											className="font-mono mx-auto text-center resize-none w-10/12 sm:w-[35rem]"
 											minLength={15}
 											maxLength={60}
 											placeholder="What is your story about?"

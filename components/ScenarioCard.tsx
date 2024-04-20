@@ -19,7 +19,7 @@ import {
 	Trash,
 } from "lucide-react"
 import Link from "next/link"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card"
 import { removeBookmark } from "@/utils/actions/database/removeBookmark"
 
@@ -118,11 +118,11 @@ export function ScenarioCard({
 	}
 
 	return (
-		<CardContainer className="inter-var h-[10rem] p-4 my-7">
+		<CardContainer className="p-4 inter-var">
 			<CardBody
-				className={`transition-all bg-gray-50 relative group/card shadow-2xl dark:bg-black/50 ${bordercolor[r]} ${shadowcolor[r]} hover:border-white w-auto h-auto max-md:h-auto my-auto sm:w-[25rem] max-w-[25rem] rounded-xl p-7 m-10 border flex flex-col`}
+				className={`transition-all bg-gray-50 relative group/card shadow-2xl dark:bg-black/50 ${bordercolor[r]} ${shadowcolor[r]} hover:border-white w-auto sm:w-[25rem] max-w-[25rem] h-auto rounded-xl p-7 m-0 border flex flex-col`}
 			>
-				<div className="flex justify-between items-center">
+				<div className="flex items-center justify-between">
 					<CardItem translateZ="30">
 						<div className="flex flex-row mb-2">
 							<a href="" className="h-[fit-content] w-[fit-content] m-auto p-0">
@@ -132,13 +132,13 @@ export function ScenarioCard({
 								></img>
 							</a>
 							<a href="" className="h-auto w-[fit-content] m-auto p-0">
-								<p className="text-sm ml-2 hover:underline">{data.data.name}</p>
+								<p className="ml-2 text-sm hover:underline">{data.data.name}</p>
 							</a>
 						</div>
 					</CardItem>
 					{data.data.user_id == currentUser.user.id && (
 						<CardItem>
-							<p className="text-sm px-1 rounded-sm bg-green-400/40">Yours</p>
+							<p className="px-1 text-sm rounded-sm bg-green-400/40">Yours</p>
 						</CardItem>
 					)}
 				</div>
@@ -154,7 +154,7 @@ export function ScenarioCard({
 				<CardItem
 					as="p"
 					translateZ="60"
-					className="text-neutral-400 text-xs max-w-sm mt-2 dark:text-neutral-400/80 hover:dark:text-neutral-400/100"
+					className="max-w-sm mt-2 text-xs text-neutral-400 dark:text-neutral-400/80 hover:dark:text-neutral-400/100"
 				>
 					{truncateString(story!!, 180)}
 				</CardItem>
@@ -171,7 +171,7 @@ export function ScenarioCard({
 				>
 					Prompt: {prompt}
 				</CardItem>
-				<div className="flex justify-between items-center mt-auto">
+				<div className="flex items-center justify-between mt-auto">
 					<CardItem
 						translateZ={74}
 						as={Link}
@@ -180,10 +180,10 @@ export function ScenarioCard({
 							setRemixLoading(true)
 						}}
 						style={{ borderRadius: "1em" }}
-						className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white bg-transparent hover:bg-white/20 "
+						className="px-4 py-2 text-xs font-normal bg-transparent rounded-xl dark:text-white hover:bg-white/20 "
 					>
 						{remixLoading ? (
-							<Loader2 className="animate-spin h-4 w-4 mx-4 my-2"></Loader2>
+							<Loader2 className="w-4 h-4 mx-4 my-2 animate-spin"></Loader2>
 						) : (
 							<>Remix →</>
 						)}
@@ -198,19 +198,19 @@ export function ScenarioCard({
 										setReviewLoading(true)
 									}}
 									style={{ borderRadius: "1em" }}
-									className="mr-2 rounded-x bg-transparent hover:bg-white/20 text-xs font-bold"
+									className="mr-2 text-xs font-bold bg-transparent rounded-x hover:bg-white/20"
 								>
 									<TooltipProvider delayDuration={300}>
 										<Tooltip>
 											<TooltipTrigger>
 												{reviewLoading ? (
-													<Loader2 className="animate-spin h-4 w-4 mx-4 my-2"></Loader2>
+													<Loader2 className="w-4 h-4 mx-4 my-2 animate-spin"></Loader2>
 												) : (
-													<MessageSquareText className="size-4 mx-4 my-2"></MessageSquareText>
+													<MessageSquareText className="mx-4 my-2 size-4"></MessageSquareText>
 												)}
 											</TooltipTrigger>
 											<TooltipContent
-												className="p-0 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight"
+												className="p-0 m-0 font-mono text-xs bg-transparent border-none outline-none font-extralight"
 												side="bottom"
 											>
 												<p>Add a review</p>
@@ -224,25 +224,25 @@ export function ScenarioCard({
 										handleAddBookmark(bookmark)
 									}}
 									style={{ borderRadius: "1em" }}
-									className=" rounded-x bg-transparent hover:bg-white/20 text-xs font-bold"
+									className="text-xs font-bold bg-transparent rounded-x hover:bg-white/20"
 								>
 									<TooltipProvider delayDuration={300}>
 										<Tooltip>
 											<TooltipTrigger>
 												{bookmark ? (
 													isLoading ? (
-														<Loader2 className="animate-spin h-4 w-4 mx-4 my-2" />
+														<Loader2 className="w-4 h-4 mx-4 my-2 animate-spin" />
 													) : (
-														<Trash className="size-4 mx-4 my-2" />
+														<Trash className="mx-4 my-2 size-4" />
 													)
 												) : isLoading ? (
-													<Loader2 className="animate-spin h-4 w-4 mx-4 my-2" />
+													<Loader2 className="w-4 h-4 mx-4 my-2 animate-spin" />
 												) : (
-													<Bookmark className="size-4 mx-4 my-2"></Bookmark>
+													<Bookmark className="mx-4 my-2 size-4"></Bookmark>
 												)}
 											</TooltipTrigger>
 											<TooltipContent
-												className="p-0 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight"
+												className="p-0 m-0 font-mono text-xs bg-transparent border-none outline-none font-extralight"
 												side="bottom"
 											>
 												{bookmark ? (
@@ -268,19 +268,19 @@ export function ScenarioCard({
 								setPending(false)
 							}}
 							style={{ borderRadius: "1em" }}
-							className="mr-2 rounded-x bg-transparent hover:bg-white/20 text-xs p-2 font-bold"
+							className="p-2 mr-2 text-xs font-bold bg-transparent rounded-x hover:bg-white/20"
 						>
 							<TooltipProvider delayDuration={300}>
 								<Tooltip>
 									<TooltipTrigger>
 										{pending ? (
-											<Loader2 className="animate-spin h-4 w-4 mx-4 my-2"></Loader2>
+											<Loader2 className="w-4 h-4 mx-4 my-2 animate-spin"></Loader2>
 										) : (
-											<Lock className="h-4 w-4" />
+											<Lock className="w-4 h-4" />
 										)}
 									</TooltipTrigger>
 									<TooltipContent
-										className="p-0 pt-1 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight"
+										className="p-0 pt-1 m-0 font-mono text-xs bg-transparent border-none outline-none font-extralight"
 										side="bottom"
 									>
 										<p>Make Private</p>
@@ -298,19 +298,19 @@ export function ScenarioCard({
 								setPending(false)
 							}}
 							style={{ borderRadius: "1em" }}
-							className="mr-2 rounded-x bg-transparent hover:bg-white/20 text-xs p-2 font-bold"
+							className="p-2 mr-2 text-xs font-bold bg-transparent rounded-x hover:bg-white/20"
 						>
 							<TooltipProvider delayDuration={300}>
 								<Tooltip>
 									<TooltipTrigger>
 										{pending ? (
-											<Loader2 className="animate-spin mx-4 my-2 h-4 w-4"></Loader2>
+											<Loader2 className="w-4 h-4 mx-4 my-2 animate-spin"></Loader2>
 										) : (
-											<Globe className="h-4 w-4" />
+											<Globe className="w-4 h-4" />
 										)}
 									</TooltipTrigger>
 									<TooltipContent
-										className="p-0 pt-1 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight"
+										className="p-0 pt-1 m-0 font-mono text-xs bg-transparent border-none outline-none font-extralight"
 										side="bottom"
 									>
 										<p>Publish</p>
