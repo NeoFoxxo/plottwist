@@ -15,15 +15,15 @@ export default function CardForLimit({ stories }: { stories: number }) {
 
     return (
         <Card className="mb-4 border-none overflow-hidden bg-black/50">
-            <div className="hidden opacity-0 group-hover:block group-hover:opacity-100">
+            <div className="hidden opacity-0 max-lg:block max-lg:opacity-100 lg:group-hover:block lg:group-hover:opacity-100">
                 <CardHeader className="text-2xl font-bold">
                     <h2>{stories}/10 Stories Generated</h2>
                 </CardHeader>
-                <CardContent className="hidden opacity-0 group-hover:block group-hover:opacity-100">
+                <CardContent className="hidden opacity-0 max-lg:block max-lg:opacity-100 lg:group-hover:block lg:group-hover:opacity-100">
                     <p className="text-xs">This limit will be reset at 12AM EST.</p>
                 </CardContent>
             </div>
-            <div className="block opacity-100 group-hover:hidden group-hover:opacity-0 text-center mx-auto">
+            <div className="block opacity-100 max-lg:block max-lg:opacity-100 lg:group-hover:hidden lg:group-hover:opacity-0 text-center mx-auto">
                 {stories}/10
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
