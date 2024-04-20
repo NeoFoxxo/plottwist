@@ -5,30 +5,30 @@ import Link from "next/link"
 import StoryLimitCard from "./StoryLimitCard"
 import { getMaxStories } from "@/utils/actions/database/getMaxStories"
 
-export async function Sidebar() {
-	const links = [
-		{
-			text: "Dashboard",
-			href: "/app",
-			icon: <LayoutDashboard className="w-5 h-5" />,
-		},
-		{
-			text: "My Library",
-			href: "/app/library",
-			icon: <LibraryBig className="w-5 h-5" />,
-		},
-		{
-			text: "Bookmarks",
-			href: "/app/bookmarks",
-			icon: <Bookmark className="w-5 h-5" />,
-		},
-		{
-			text: "Create",
-			href: "/app/create",
-			icon: <SquarePen className="w-5 h-5" />,
-		},
-	]
+export const links = [
+	{
+		text: "Dashboard",
+		href: "/app",
+		icon: <LayoutDashboard className="w-5 h-5" />,
+	},
+	{
+		text: "My Library",
+		href: "/app/library",
+		icon: <LibraryBig className="w-5 h-5" />,
+	},
+	{
+		text: "Bookmarks",
+		href: "/app/bookmarks",
+		icon: <Bookmark className="w-5 h-5" />,
+	},
+	{
+		text: "Create",
+		href: "/app/create",
+		icon: <SquarePen className="w-5 h-5" />,
+	},
+]
 
+export async function Sidebar() {
 	const storiesData = await getMaxStories()
 
 	return (
