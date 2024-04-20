@@ -25,6 +25,7 @@ import {
 import deleteStory from "@/utils/actions/database/deleteStory"
 import { pinStory } from "@/utils/actions/database/pinStory"
 import Link from "next/link"
+import { truncateString } from "@/utils/truncateString"
 
 type SCENARIO_TYPES = {
 	scenario: {
@@ -38,22 +39,6 @@ type SCENARIO_TYPES = {
 		finished: boolean | null
 		published: boolean | null
 		pinned: boolean | null
-	}
-}
-
-function truncateString(str: string, maxl: number) {
-	// Trim any leading or trailing spaces
-	str?.trim()
-
-	if (str?.length > maxl) {
-		// Find the index of the last space before the 120th character
-		let lastSpaceIndex = str.lastIndexOf(" ", maxl)
-		// If no space is found, truncate at 120th character
-		let endIndex = lastSpaceIndex === -1 ? maxl : lastSpaceIndex
-
-		return str.substring(0, endIndex).trim() + " ..."
-	} else {
-		return str
 	}
 }
 
