@@ -1,16 +1,25 @@
+import { createClient } from "@/utils/supabase/server"
 
-import { createClient } from "@/utils/supabase/client";
+export async function getStars({
+	userId,
+	authorId,
+}: {
+	userId: string
+	authorId: string | undefined
+}) {
+	const supabase = createClient()
 
-export async function getStars({ userId, authorId }: { userId: string, authorId: string | undefined }) {
+	const { data: data, error: error } = await supabase
+		.from("profiles")
+		.select("star_array")
+		.eq("user_id", userId!!)
 
-    const supabase = createClient()
+	if (error) {
+		console.log("error occured when seeing if user has starred author " + error)
+		return false
+	}
 
-    const { data: data2, error: error2 } = await supabase.from('profiles').select('star_array').eq('user_id', authorId!!)
+	if (data[0].star_array?.includes(authorId!!)) return true
 
-    if (error2) return 'failed2'
-
-    if (data2[0].star_array?.includes(userId)) return true
-
-    return false
-
+	return false
 }
