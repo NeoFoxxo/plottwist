@@ -11,6 +11,7 @@ import unPublish from "@/utils/actions/database/privateStory"
 import publish from "@/utils/actions/database/publishStory"
 import {
 	Bookmark,
+	CalendarDays,
 	Globe,
 	Loader2,
 	Lock,
@@ -21,6 +22,8 @@ import { useState } from "react"
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card"
 import { removeBookmark } from "@/utils/actions/database/removeBookmark"
 import { truncateString } from "@/utils/truncateString"
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card"
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 
 type SCENARIO_TYPES = {
 	scenario: {
@@ -116,27 +119,65 @@ export function ScenarioCard({
 		}
 	}
 
+	const dateObj = new Date(data.data.created_at as string);
+	const date = dateObj.toLocaleString('en-US', { month: 'long', year: 'numeric' })
+
 	return (
 		<CardContainer className="p-4 inter-var">
 			<CardBody
 				className={`transition-all bg-gray-50 relative group/card shadow-2xl dark:bg-black/50 ${bordercolor[r]} ${shadowcolor[r]} hover:border-white w-auto sm:w-[25rem] max-w-[25rem] h-auto rounded-xl p-7 m-0 border flex flex-col`}
 			>
 				<div className="flex items-center justify-between">
-					<CardItem translateZ="30">
+					<CardItem translateZ="80">
 						<div className="flex flex-row mb-2">
-							<Link href={`/profile/${data.data.name}`} className="flex items-center">
-								<img
-									alt="User profile"
-									width={0}
-									height={0}
-									className="rounded-full w-7 h-7"
-									src={data.data!!.image!!}
-								></img>
-								<p className="ml-2 text-sm hover:underline flex">{data.data.name} {data.data.admin && (<img
-									src="/icons/admin.png"
-									className="w-3.5 h-3.5 flex ml-[0.4rem] my-auto"></img>
-								)}</p>
-							</Link>
+							<HoverCard>
+								<HoverCardTrigger asChild>
+									<Link href={`/profile/${data.data.name}`} className="flex items-center">
+										<img
+											alt="User profile"
+											width={0}
+											height={0}
+											className="rounded-full w-7 h-7"
+											src={data.data!!.image!!}
+										></img>
+										<p className="flex ml-2 text-sm hover:underline">{data.data.name}
+											{data.data.admin && (
+												<img
+													src="/icons/admin.png"
+													className="w-3.5 h-3.5 flex ml-[0.4rem] my-auto">
+												</img>
+											)}</p>
+									</Link>
+								</HoverCardTrigger>
+								<HoverCardContent className="ml-36">
+									<div className="flex justify-between space-x-4">
+										<div>
+											<Avatar>
+												<AvatarImage src={data.data!!.image!!} />
+												<AvatarFallback>VC</AvatarFallback>
+											</Avatar>
+											<div className="pt-1.5 space-y-1">
+												<h4 className="text-sm font-semibold">@{data.data.name}</h4>
+												<p className="text-sm">
+													{truncateString(data.data.bio as string, 60)}
+												</p>
+												<div className="flex items-center pt-2">
+													<CalendarDays className="w-4 h-4 mr-2 opacity-70" />
+													<span className="text-xs text-muted-foreground">
+														{date}
+													</span>
+												</div>
+											</div>
+										</div>
+										{data.data.admin && (
+											<img
+												src="/icons/admin.png"
+												className="w-3.5 h-3.5 flex ml-[0.4rem] mb-auto">
+											</img>
+										)}
+									</div>
+								</HoverCardContent>
+							</HoverCard>
 						</div>
 					</CardItem>
 					{data.data.user_id == currentUser.user.id && (
