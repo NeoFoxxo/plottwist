@@ -8,7 +8,7 @@ export default async function getUserInfoByName(username: string) {
 		.select("*")
 		.eq("normalised_name", username)
 
-	if (dataerr) return 404
+	if (!user!![0] || dataerr) return 404
 
 	const { count: storyCount, error: infoerr } = await supabase
 		.from("scenarios")
