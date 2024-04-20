@@ -108,7 +108,10 @@ export default async function StoryDetails({
 									textShadow: "0em 0em 0.3em white",
 								}}
 								className="text-base font-bold cursor-pointer hover:underline">
-								{author.data.name!!}
+								<p className="flex">{author.data.name!!} {author.data.admin && (<img
+									src="/icons/admin.png"
+									className="w-4 h-4 flex ml-[0.3rem] my-auto"></img>
+								)}</p>
 							</Link>
 							<div className="flex flex-row text-start">
 								{accountInfo.map((info: any, index) => (
@@ -137,7 +140,7 @@ export default async function StoryDetails({
 						<TooltipProvider delayDuration={300}>
 							<Tooltip>
 								<TooltipTrigger>
-									<RemixButton storyId={story.id} />
+									<RemixButton storyId={story!!.id} />
 								</TooltipTrigger>
 								<TooltipContent
 									className="p-0 m-0 font-mono text-xs bg-transparent border-none outline-none font-extralight"

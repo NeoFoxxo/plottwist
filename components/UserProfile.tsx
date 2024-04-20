@@ -116,7 +116,7 @@ export default function UserProfile({
 									</div>
 								</CardItem>
 							))}
-							{userId != "no user" && (
+							{userId != profileData.user_id && (
 								<StarButton
 									hasStarred={hasStarred}
 									authorId={profileData.user_id!!}
