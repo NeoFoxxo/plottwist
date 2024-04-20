@@ -22,6 +22,7 @@ import Link from "next/link"
 import { useState } from "react"
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card"
 import { removeBookmark } from "@/utils/actions/database/removeBookmark"
+import { truncateString } from "@/utils/truncateString"
 
 type SCENARIO_TYPES = {
 	scenario: {
@@ -57,22 +58,8 @@ type SCENARIO_TYPES = {
 		| {
 				user: null
 		  }
-}
-
-function truncateString(str: string, maxl: number) {
-	// Trim any leading or trailing spaces
-	str?.trim()
-
-	if (str?.length > maxl) {
-		// Find the index of the last space before the 120th character
-		let lastSpaceIndex = str.lastIndexOf(" ", maxl)
-		// If no space is found, truncate at 120th character
-		let endIndex = lastSpaceIndex === -1 ? maxl : lastSpaceIndex
-
-		return str.substring(0, endIndex).trim() + " ..."
-	} else {
-		return str
-	}
+	bookmarkCount: number
+	commentCount: number
 }
 
 const shadowcolor = [
@@ -98,22 +85,26 @@ export function ScenarioCard({
 	bookmark,
 	data,
 	currentUser,
+	bookmarkCount,
+	commentCount,
 }: SCENARIO_TYPES) {
 	const r = Math.floor(Math.random() * shadowcolor.length)
 	const { title, prompt, story } = scenario
-	const [isLoading, setIsLoading] = useState(false)
 	const [pending, setPending] = useState(false)
 	const [remixLoading, setRemixLoading] = useState(false)
 	const [reviewLoading, setReviewLoading] = useState(false)
+	const [isBookmarked, setisBookmarked] = useState(bookmark)
+	const [fakeBmrkCount, setFakeBmrkCount] = useState(bookmarkCount)
 
-	const handleAddBookmark = async (isBookmark: boolean) => {
-		setIsLoading(true)
-		if (isBookmark) {
+	const handleAddBookmark = async () => {
+		if (isBookmarked) {
+			setFakeBmrkCount((fakeBmrkCount) => fakeBmrkCount - 1)
+			setisBookmarked(false)
 			await removeBookmark(scenario.id)
-			window.location.reload()
 		} else {
+			setFakeBmrkCount((fakeBmrkCount) => fakeBmrkCount + 1)
+			setisBookmarked(true)
 			await addBookmark(scenario.id)
-			window.location.reload()
 		}
 	}
 
@@ -206,7 +197,10 @@ export function ScenarioCard({
 												{reviewLoading ? (
 													<Loader2 className="w-4 h-4 mx-4 my-2 animate-spin"></Loader2>
 												) : (
-													<MessageSquareText className="mx-4 my-2 size-4"></MessageSquareText>
+													<>
+														<MessageSquareText className="mx-4 my-2 size-4" />
+														{commentCount}
+													</>
 												)}
 											</TooltipTrigger>
 											<TooltipContent
@@ -222,7 +216,7 @@ export function ScenarioCard({
 									<CardItem
 										as="button"
 										onClick={() => {
-											handleAddBookmark(bookmark)
+											handleAddBookmark()
 										}}
 										style={{ borderRadius: "1em" }}
 										className="text-xs font-bold bg-transparent rounded-x hover:bg-white/20"
@@ -230,26 +224,27 @@ export function ScenarioCard({
 										<TooltipProvider delayDuration={300}>
 											<Tooltip>
 												<TooltipTrigger>
-													{bookmark ? (
-														isLoading ? (
-															<Loader2 className="w-4 h-4 mx-4 my-2 animate-spin" />
-														) : (
-															<Trash className="mx-4 my-2 size-4" />
-														)
-													) : isLoading ? (
-														<Loader2 className="w-4 h-4 mx-4 my-2 animate-spin" />
+													{isBookmarked ? (
+														<>
+															<Bookmark
+																className="mx-4 my-2 size-4"
+																fill="white"
+															/>
+															{fakeBmrkCount}
+														</>
 													) : (
-														<Bookmark className="mx-4 my-2 size-4"></Bookmark>
+														<>
+															<Bookmark className="mx-4 my-2 size-4" />
+															{fakeBmrkCount}
+														</>
 													)}
 												</TooltipTrigger>
 												<TooltipContent
 													className="p-0 m-0 font-mono text-xs bg-transparent border-none outline-none font-extralight"
 													side="bottom"
 												>
-													{bookmark ? (
+													{isBookmarked ? (
 														<p>Remove from bookmarks</p>
-													) : isLoading ? (
-														<span></span>
 													) : (
 														<p>Add to bookmarks</p>
 													)}
