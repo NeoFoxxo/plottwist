@@ -3,7 +3,7 @@ import { story } from "./DashboardMobile"
 import { ScenarioCard } from "./ScenarioCard"
 import { getScenarioData } from "@/utils/getScenarioData"
 import ShowMoreButton from "./ShowMoreButton"
-  
+
 export default async function DashboardDesktop({
 	mostPopular,
 	recentStories,

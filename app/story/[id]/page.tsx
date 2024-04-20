@@ -19,12 +19,13 @@ import {
 	TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { TracingBeam } from "@/components/ui/tracing-beam"
+import { cn } from "@/lib/utils"
 import { getBookmarksId } from "@/utils/actions/database/getBookmarksId"
 import { getReviews } from "@/utils/actions/database/getReviews"
 import getSession from "@/utils/actions/database/getSession"
 import { getStory, getStoryReturnType } from "@/utils/actions/database/getStory"
 import getStoryBookmarkCount from "@/utils/actions/database/getStoryBookmarkCount"
-import getUserInfo from "@/utils/actions/database/getUserinfo"
+import getUserInfo from "@/utils/actions/database/getUserInfo"
 import { createClient } from "@/utils/supabase/server"
 import { MessageSquareText } from "lucide-react"
 import Image from "next/image"
@@ -59,10 +60,11 @@ export default async function StoryDetails({
 	if (story?.published === false && author.data.user_id != user_id)
 		return <NotFound />
 
-	const accountInfo = [author.stories!!, 20, 570]
-
 	const bookmarks = await getBookmarksId(user_id)
+	const bookmarkCount = await getStoryBookmarkCount(story!!.id)
 	const isBookmarked = bookmarks.includes(story!!?.id) ? true : false
+
+	const accountInfo = [author.stories!!, author.data.star_count, bookmarkCount];
 
 	const icons = ["/icons/book.png", "/icons/star.png", "/icons/bookmark.png"]
 
@@ -73,7 +75,15 @@ export default async function StoryDetails({
 
 	const currentUser = await getSession()
 
-	const bookmarkCount = await getStoryBookmarkCount(story.id)
+	function simplifyNumber(number: number) {
+		if (number >= 1000000) {
+			return (number / 1000000).toFixed(1) + "M"
+		} else if (number >= 1000) {
+			return (number / 1000).toFixed(1) + "K"
+		} else {
+			return number
+		}
+	}
 
 	return (
 		<main className="flex flex-col w-full gap-2 py-8 mx-auto my-12">
@@ -126,7 +136,7 @@ export default async function StoryDetails({
 											}}
 											className="mr-2 text-xs font-bold"
 										>
-											{info}
+											{simplifyNumber(info)}
 										</span>
 									</div>
 								))}
@@ -137,7 +147,7 @@ export default async function StoryDetails({
 						<TooltipProvider delayDuration={300}>
 							<Tooltip>
 								<TooltipTrigger>
-									<RemixButton storyId={story.id} />
+									<RemixButton storyId={story!!.id} />
 								</TooltipTrigger>
 								<TooltipContent
 									className="p-0 m-0 font-mono text-xs bg-transparent border-none outline-none font-extralight"
@@ -153,75 +163,73 @@ export default async function StoryDetails({
 								</TooltipContent>
 							</Tooltip>
 						</TooltipProvider>
-						{story?.user_id != currentUser.user?.id ||
-							(user_id != "no user" && (
-								<>
-									<TooltipProvider delayDuration={300}>
-										<Tooltip>
-											<TooltipTrigger>
-												<Dialog defaultOpen={searchParams.isReview}>
-													<DialogTrigger asChild>
-														<Link
-															className={buttonVariants({
-																variant: "outline",
-															})}
-															href={""}
-														>
-															<MessageSquareText className="mx-4 my-2 size-4"></MessageSquareText>
-														</Link>
-													</DialogTrigger>
-													<DialogContent className="sm:max-w-[425px]">
-														<DialogHeader>
-															<DialogTitle>Add a review</DialogTitle>
-														</DialogHeader>
-														<CreateReview
-															storyId={story?.id!!}
-															authorId={currentUser!!.user!!.id}
-														/>
-													</DialogContent>
-												</Dialog>
-											</TooltipTrigger>
-											<TooltipContent
-												className="p-0 m-0 font-mono text-xs bg-transparent border-none outline-none z-2 font-extralight"
-												side="bottom"
+						{story?.user_id != currentUser.user?.id && user_id != "no user" && (
+							<>
+								<TooltipProvider delayDuration={300}>
+									<Tooltip>
+										<TooltipTrigger>
+											<Dialog defaultOpen={searchParams.isReview}>
+												<DialogTrigger asChild>
+													<Link
+														className={cn(buttonVariants({ variant: "outline", }), "flex gap-2.5 px-8")}
+														href={""}
+													>
+														<MessageSquareText className="size-4"></MessageSquareText>
+														{simplifyNumber(reviews.length!!)}
+													</Link>
+												</DialogTrigger>
+												<DialogContent className="sm:max-w-[425px]">
+													<DialogHeader>
+														<DialogTitle>Add a review</DialogTitle>
+													</DialogHeader>
+													<CreateReview
+														storyId={story?.id!!}
+														authorId={currentUser!!.user!!.id}
+													/>
+												</DialogContent>
+											</Dialog>
+										</TooltipTrigger>
+										<TooltipContent
+											className="p-0 m-0 font-mono text-xs bg-transparent border-none outline-none z-2 font-extralight"
+											side="bottom"
+										>
+											<p
+												style={{
+													textShadow: "0em 0em 0.3em white",
+												}}
 											>
-												<p
-													style={{
-														textShadow: "0em 0em 0.3em white",
-													}}
-												>
-													Add a review
-												</p>
-											</TooltipContent>
-										</Tooltip>
-									</TooltipProvider>
-									<TooltipProvider delayDuration={300}>
-										<Tooltip>
-											<TooltipTrigger>
-												<BookmarkedButton
-													storyId={story!!.id}
-													isBookmarked={isBookmarked}
-													bookmarkCount={bookmarkCount}
-												/>
-											</TooltipTrigger>
-											<TooltipContent
-												className="p-0 m-0 font-mono text-xs bg-transparent border-none outline-none font-extralight"
-												side="bottom"
+												Add a review
+											</p>
+										</TooltipContent>
+									</Tooltip>
+								</TooltipProvider>
+								<TooltipProvider delayDuration={300}>
+									<Tooltip>
+										<TooltipTrigger>
+											<BookmarkedButton
+												storyId={story!!.id}
+												isBookmarked={isBookmarked}
+												bookmarkCount={bookmarkCount}
+											/>
+										</TooltipTrigger>
+										<TooltipContent
+											className="p-0 m-0 font-mono text-xs bg-transparent border-none outline-none font-extralight"
+											side="bottom"
+										>
+											<p
+												style={{
+													textShadow: "0em 0em 0.3em white",
+												}}
 											>
-												<p
-													style={{
-														textShadow: "0em 0em 0.3em white",
-													}}
-												>
-													{isBookmarked
-														? "Remove from library"
-														: "Add to library"}
-												</p>
-											</TooltipContent>
-										</Tooltip>
-									</TooltipProvider>
-								</>
-							))}
+												{isBookmarked
+													? "Remove from library"
+													: "Add to library"}
+											</p>
+										</TooltipContent>
+									</Tooltip>
+								</TooltipProvider>
+							</>
+						)}
 					</div>
 					<p className="mb-2 font-mono text-sm text-white/60">Reviews</p>
 					<div className="container h-[30vh] overflow-y-auto overflow-x-hidden border border-white/15 bg-black/10 border-solid rounded-lg p-5 flex flex-col items-start gap-3 w-full pt-4">

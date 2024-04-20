@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 
-export default async function getUsersStories(user_id: string) {
+export default async function getPinnedStories(user_id: string) {
     const supabase = createClient();
 
     let { data: userStories, error } = await supabase
