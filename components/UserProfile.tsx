@@ -49,7 +49,6 @@ export default function UserProfile({
 		simplifyNumber(0),
 	]
 	const texts = ["Stories", "Stars", "Bookmarks"]
-	const defaultImage = `/icons/pfp${Math.floor(Math.random() * 5) + 1}.png`
 	const linkRegex = /^https?:\/\//
 
 	function makeLink(link: string) {
@@ -70,8 +69,8 @@ export default function UserProfile({
 						<div className="flex items-center justify-start gap-6">
 							<CardItem translateZ="50">
 								<img
-									src={image ? image!! : defaultImage!!}
-									alt="default-user"
+									src={image!!}
+									alt="User Profile Image"
 									className={
 										"rounded-full w-10 h-10 md:w-28 md:h-28 transition-all hover:shadow-[0em_0em_1em_rgba(255,255,255,0.8)]"
 									}
@@ -143,25 +142,30 @@ export default function UserProfile({
 								disabled
 							/>
 						</CardItem>
-						<CardItem translateZ={"60"}>
-							<h3 className="text-[1.2rem] md:text-xl font-bold pb-1">
-								Links:
-							</h3>
-							<div className="grid grid-cols-1 gap-6 py-4 mx-auto md:grid-cols-2">
-								{links?.map((singleLink, index) => {
-									const cleanLink = makeLink(singleLink)
-									return (
-										<a
-											key={index}
-											href={cleanLink}
-											className="w-full p-2 text-xs bg-transparent border rounded-md hover:text-green-400 border-input md:text-sm"
-										>
-											{cleanLink}
-										</a>
-									)
-								})}
-							</div>
-						</CardItem>
+						{links!![0] ? (
+							<CardItem translateZ={"60"}>
+								<h3 className="text-[1.2rem] md:text-xl font-bold pb-1">
+									Links:
+								</h3>
+								<div className="grid grid-cols-1 gap-6 py-4 mx-auto md:grid-cols-2">
+									{links?.map((singleLink, index) => {
+										const cleanLink = makeLink(singleLink)
+										return (
+											<a
+												key={index}
+												href={cleanLink}
+												className="w-full p-2 text-xs bg-transparent border rounded-md hover:text-green-400 border-input md:text-sm"
+											>
+												{cleanLink}
+											</a>
+										)
+									})}
+								</div>
+							</CardItem>
+						) : (
+							<div className="w-full md:w-[453px]"></div>
+						)}
+
 						<CardItem translateZ={"40"}>
 							<EditProfileModal profileData={profileData} userId={userId} />
 						</CardItem>
