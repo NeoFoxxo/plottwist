@@ -8,9 +8,9 @@ export async function addStar({ userId, authorId }: { userId: string, authorId: 
 
     if (error) return console.log(error)
 
-    let new_int: number = ++data[0].star_count
+    let new_int: number = data[0].star_count
 
-    const { error: error2 } = await supabase.from('profiles').update({ 'star_count': new_int }).eq('user_id', userId!!)
+    const { error: error2 } = await supabase.from('profiles').update({ 'star_count': new_int + 1 }).eq('user_id', userId!!)
 
     if (error2) return console.log(error2)
 
