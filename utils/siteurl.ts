@@ -1,3 +1,3 @@
 export const siteurl = process.env.VERCEL_URL
-	? `https://${process.env.VERCEL_URL}`
-	: "http://localhost:3000"
+  ? `https://${process.env.NEXT_VERCEL_URL}`
+  : "http://localhost:3000";
