@@ -1,13 +1,12 @@
-import { Sidebar } from "@/components/Sidebar";
+import { Sidebar } from "@/components/Sidebar"
 
-const AppLayout = async ({ children }: { children: React.ReactNode }) => {
+const AppLayout = ({ children }: { children: React.ReactNode }) => {
+	return (
+		<div className="w-full mt-20 flex justify-start items-start min-h-[84vh] pl-[70px]">
+			<Sidebar />
+			{children}
+		</div>
+	)
+}
 
-    return (
-        <div className="w-full mt-20 flex justify-start items-start min-h-[84vh] pl-[70px]">
-            <Sidebar />
-            {children}
-        </div>
-    );
-};
-
-export default AppLayout;
+export default AppLayout
