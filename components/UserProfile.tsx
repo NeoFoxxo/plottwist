@@ -142,7 +142,7 @@ export default function UserProfile({
 								disabled
 							/>
 						</CardItem>
-						{links!![0] && (
+						{links!![0] ? (
 							<CardItem translateZ={"60"}>
 								<h3 className="text-[1.2rem] md:text-xl font-bold pb-1">
 									Links:
@@ -162,6 +162,8 @@ export default function UserProfile({
 									})}
 								</div>
 							</CardItem>
+						) : (
+							<div className="w-full md:w-[453px]"></div>
 						)}
 
 						<CardItem translateZ={"40"}>
