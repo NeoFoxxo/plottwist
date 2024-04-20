@@ -1,7 +1,7 @@
 import { story } from "@/components/DashboardMobile";
 import getCommentCount from "./actions/database/getCommentCount";
 import getStoryBookmarkCount from "./actions/database/getStoryBookmarkCount";
-import getUserInfo from "./actions/database/getUserInfo";
+import getUserInfo from "./actions/database/getUserinfo";
 
 export async function getScenarioData(
   mostPopular: story[],
