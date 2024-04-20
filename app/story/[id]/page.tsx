@@ -23,6 +23,7 @@ import { getBookmarksId } from "@/utils/actions/database/getBookmarksId"
 import { getReviews } from "@/utils/actions/database/getReviews"
 import getSession from "@/utils/actions/database/getSession"
 import { getStory, getStoryReturnType } from "@/utils/actions/database/getStory"
+import getStoryBookmarkCount from "@/utils/actions/database/getStoryBookmarkCount"
 import getUserInfo from "@/utils/actions/database/getUserinfo"
 import { createClient } from "@/utils/supabase/server"
 import { MessageSquareText } from "lucide-react"
@@ -72,7 +73,7 @@ export default async function StoryDetails({
 
 	const currentUser = await getSession()
 
-	if (!story) return <div>Story not found!</div>
+	const bookmarkCount = await getStoryBookmarkCount(story.id)
 
 	return (
 		<main className="flex flex-col w-full mx-auto gap-2 py-8 my-12">
@@ -200,6 +201,7 @@ export default async function StoryDetails({
 												<BookmarkedButton
 													storyId={story!!.id}
 													isBookmarked={isBookmarked}
+													bookmarkCount={bookmarkCount}
 												/>
 											</TooltipTrigger>
 											<TooltipContent
