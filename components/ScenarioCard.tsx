@@ -132,7 +132,10 @@ export function ScenarioCard({
 									className="rounded-full w-7 h-7"
 									src={data.data!!.image!!}
 								></img>
-								<p className="ml-2 text-sm hover:underline">{data.data.name}</p>
+								<p className="ml-2 text-sm hover:underline flex">{data.data.name} {data.data.admin && (<img
+									src="/icons/admin.png"
+									className="w-3.5 h-3.5 flex ml-[0.4rem] my-auto"></img>
+								)}</p>
 							</Link>
 						</div>
 					</CardItem>

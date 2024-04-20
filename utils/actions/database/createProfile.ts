@@ -20,9 +20,7 @@ export async function createProfile() {
 		.eq("user_id", user_id)
 	if (existingError) throw new Error("Existing profile check failed!")
 
-	const picture = `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL}/pfp${
-		Math.floor(Math.random() * 5) + 1
-	}.png`
+	const picture = `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_URL}/pfp${Math.floor(Math.random() * 5) + 1}.png`
 
 	if (existingUser.length === 0) {
 		if (!email) throw new Error("Email not found for user!")
