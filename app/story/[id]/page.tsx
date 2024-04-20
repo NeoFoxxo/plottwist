@@ -1,23 +1,23 @@
-import NotFound from "@/app/not-found"
-import AnimateStory from "@/components/AnimateStory"
-import BookmarkedButton from "@/components/BookmarkedButton"
-import CreateReview from "@/components/CreateReview"
-import DeleteReview from "@/components/DeleteReview"
-import RemixButton from "@/components/RemixButton"
-import { buttonVariants } from "@/components/ui/button"
+import NotFound from "@/app/not-found";
+import AnimateStory from "@/components/AnimateStory";
+import BookmarkedButton from "@/components/BookmarkedButton";
+import CreateReview from "@/components/CreateReview";
+import DeleteReview from "@/components/DeleteReview";
+import RemixButton from "@/components/RemixButton";
+import { buttonVariants } from "@/components/ui/button";
 import {
 	Dialog,
 	DialogContent,
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
 import {
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
 	TooltipTrigger,
-} from "@/components/ui/tooltip"
+} from "@/components/ui/tooltip";
 import { TracingBeam } from "@/components/ui/tracing-beam"
 import { cn } from "@/lib/utils"
 import { getBookmarksId } from "@/utils/actions/database/getBookmarksId"
@@ -25,7 +25,7 @@ import { getReviews } from "@/utils/actions/database/getReviews"
 import getSession from "@/utils/actions/database/getSession"
 import { getStory, getStoryReturnType } from "@/utils/actions/database/getStory"
 import getStoryBookmarkCount from "@/utils/actions/database/getStoryBookmarkCount"
-import getUserInfo from "@/utils/actions/database/getUserInfo"
+import getUserInfo from "@/utils/actions/database/getUserinfo";
 import { createClient } from "@/utils/supabase/server"
 import { MessageSquareText } from "lucide-react"
 import Link from "next/link"
@@ -34,53 +34,53 @@ export default async function StoryDetails({
 	params,
 	searchParams,
 }: {
-	params: { id: string }
-	searchParams: { isReview: boolean }
+	params: { id: string };
+	searchParams: { isReview: boolean };
 }) {
-	const supabase = createClient()
+	const supabase = createClient();
 	const {
 		data: { user },
-	} = await supabase.auth.getUser()
+	} = await supabase.auth.getUser();
 
-	let user_id = user?.id
-	if (!user_id) user_id = "no user"
+	let user_id = user?.id;
+	if (!user_id) user_id = "no user";
 
-	let story: getStoryReturnType | null
+	let story: getStoryReturnType | null;
 
 	try {
-		story = await getStory(params.id)
+		story = await getStory(params.id);
 	} catch (error) {
-		return <NotFound />
+		return <NotFound />;
 	}
 
-	let author = await getUserInfo(story?.user_id!!)
+	let author = await getUserInfo(story?.user_id!!);
 
 	// if the story is private and the current user is not the author, 404 since its nun of their business
 	if (story?.published === false && author.data.user_id != user_id)
-		return <NotFound />
+		return <NotFound />;
 
-	const bookmarks = await getBookmarksId(user_id)
-	const bookmarkCount = await getStoryBookmarkCount(story!!.id)
-	const isBookmarked = bookmarks.includes(story!!?.id) ? true : false
+	const bookmarks = await getBookmarksId(user_id);
+	const bookmarkCount = await getStoryBookmarkCount(story!!.id);
+	const isBookmarked = bookmarks.includes(story!!?.id) ? true : false;
 
 	const accountInfo = [author.stories!!, author.data.star_count, bookmarkCount];
 
-	const icons = ["/icons/book.png", "/icons/star.png", "/icons/bookmark.png"]
+	const icons = ["/icons/book.png", "/icons/star.png", "/icons/bookmark.png"];
 
 	const reviews = await getReviews({
 		storyId: Number(params.id),
 		commentsCount: 20,
-	})
+	});
 
-	const currentUser = await getSession()
+	const currentUser = await getSession();
 
 	function simplifyNumber(number: number) {
 		if (number >= 1000000) {
-			return (number / 1000000).toFixed(1) + "M"
+			return (number / 1000000).toFixed(1) + "M";
 		} else if (number >= 1000) {
-			return (number / 1000).toFixed(1) + "K"
+			return (number / 1000).toFixed(1) + "K";
 		} else {
-			return number
+			return number;
 		}
 	}
 
@@ -285,5 +285,5 @@ export default async function StoryDetails({
 				</div>
 			</div>
 		</main>
-	)
+	);
 }
