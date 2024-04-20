@@ -25,7 +25,7 @@ export function useRegeneratePrompt({
 			setStoryParts([data.currentPart])
 		},
 		onError: (error) => {
-			setErrorMessage(`Could not regenerate story: ${error}`)
+			setErrorMessage(`${error}`)
 		},
 		retry: 4,
 	})

@@ -98,8 +98,9 @@ export type Database = {
           links: string[] | null
           name: string
           normalised_name: string | null
-          star_array: string[] | null
+          star_array: string[]
           star_count: number
+          stories_created_today: number
           user_id: string
         }
         Insert: {
@@ -112,8 +113,9 @@ export type Database = {
           links?: string[] | null
           name: string
           normalised_name?: string | null
-          star_array?: string[] | null
+          star_array?: string[]
           star_count?: number
+          stories_created_today?: number
           user_id?: string
         }
         Update: {
@@ -126,8 +128,9 @@ export type Database = {
           links?: string[] | null
           name?: string
           normalised_name?: string | null
-          star_array?: string[] | null
+          star_array?: string[]
           star_count?: number
+          stories_created_today?: number
           user_id?: string
         }
         Relationships: [
@@ -219,6 +222,26 @@ export type Database = {
           finished: boolean
           pinned: boolean
         }[]
+      }
+      increment_star: {
+        Args: {
+          current_user_id: string
+          author_id: string
+        }
+        Returns: undefined
+      }
+      increment_stories_created_today: {
+        Args: {
+          current_user_id: string
+        }
+        Returns: undefined
+      }
+      remove_star: {
+        Args: {
+          current_user_id: string
+          author_id: string
+        }
+        Returns: undefined
       }
     }
     Enums: {

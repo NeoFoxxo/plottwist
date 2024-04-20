@@ -29,7 +29,7 @@ export function useContinuePrompt({
 			setStoryParts((storyParts) => [...storyParts, data.currentPart])
 		},
 		onError: (error) => {
-			setErrorMessage(`Could not continue story: ${error}`)
+			setErrorMessage(`${error}`)
 		},
 		retry: 4,
 	})
