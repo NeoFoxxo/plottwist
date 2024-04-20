@@ -19,7 +19,7 @@ import {
 	Trash,
 } from "lucide-react"
 import Link from "next/link"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card"
 import { removeBookmark } from "@/utils/actions/database/removeBookmark"
 
@@ -51,12 +51,12 @@ type SCENARIO_TYPES = {
 		}
 	}
 	currentUser:
-	| {
-		user: any
-	}
-	| {
-		user: null
-	}
+		| {
+				user: any
+		  }
+		| {
+				user: null
+		  }
 }
 
 function truncateString(str: string, maxl: number) {
