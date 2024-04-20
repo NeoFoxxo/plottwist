@@ -1,21 +1,14 @@
 import { createClient } from "@/utils/supabase/server";
 
 export async function getBookmarks(user_id: string | null) {
-    const supabase = createClient();
+  const supabase = createClient();
+  if (!user_id) throw Error("User not found!");
 
-    const { data: bookmarks, error: bookmarksError } = await supabase
-        .from("bookmarks")
-        .select("*")
-        .eq("user_id", user_id!!);
-    if (bookmarksError) throw Error("Bookmarks fetch failed!");
+  // RPC Call
+  const { data: scenarios, error } = await supabase.rpc("get_bookmark_rpc", {
+    b_user_id: user_id,
+  });
 
-    const bookmarkedStories = bookmarks.map((bookmark) => bookmark.scenario_id);
-
-    const { data: scenarios, error } = await supabase
-        .from("scenarios")
-        .select("*")
-        .in("id", bookmarkedStories);
-    if (error) throw Error("Scenarios fetch failed in bookmarks!");
-
-    return scenarios;
+  if (error) throw Error("Scenarios fetch failed in bookmarks!");
+  return scenarios;
 }

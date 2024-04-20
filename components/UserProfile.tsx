@@ -28,7 +28,7 @@ export default function UserProfile({
     storyCount,
     userId
 }: UserProfileProps) {
-    const { name, image, email, bio, links } = profileData;
+    const { name, image, email, bio, links, admin } = profileData;
 
     function simplifyNumber(number: number) {
         if (number >= 1000000) {
@@ -65,18 +65,26 @@ export default function UserProfile({
                                 <img
                                     src={image ? image!! : defaultImage!!}
                                     alt="default-user"
-                                    className={profileData.user_id == userId ? "rounded-full w-10 h-10 md:w-28 md:h-28 transition-all hover:shadow-[0em_0em_1em_rgba(255,255,255,0.8)] cursor-pointer" : "rounded-full w-10 h-10 md:w-28 md:h-28 transition-all hover:shadow-[0em_0em_1em_rgba(255,255,255,0.8)]"}
+                                    className={"rounded-full w-10 h-10 md:w-28 md:h-28 transition-all hover:shadow-[0em_0em_1em_rgba(255,255,255,0.8)]"}
                                 />
                             </CardItem>
                             <CardItem translateZ="60">
-                                <h4
-                                    style={{
-                                        textShadow: "0em 0em 0.4em white",
-                                    }}
-                                    className="text-3xl font-bold"
-                                >
-                                    {name ? name : "Default Name"}
-                                </h4>
+                                <div className="flex flex-row">
+                                    <h4
+                                        style={{
+                                            textShadow: "0em 0em 0.4em white",
+                                        }}
+                                        className="text-3xl font-bold"
+                                    >
+                                        {name ? name : "Default Name"}
+                                    </h4>
+                                    {
+                                        admin && (
+                                            <img src="/icons/admin.png" className="w-5 h-5 m-auto">
+                                            </img>
+                                        )
+                                    }
+                                </div>
                                 <p className="text-sm md:text-[1.15rem] text-gray-500">
                                     {email}
                                 </p>
