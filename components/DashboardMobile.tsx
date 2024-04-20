@@ -1,9 +1,8 @@
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Link } from "lucide-react"
 import { ScenarioCard } from "./ScenarioCard"
-import { Button } from "./ui/button"
 import { getScenarioData } from "@/utils/getScenarioData"
+import ShowMoreButton from "./ShowMoreButton"
 
 export interface story {
 	choices: string[] | null
@@ -58,11 +57,7 @@ export default async function DashboardMobile({
 									commentCount={data.commentCount}
 								/>
 							))}
-							<Link href={`/app?stories=${storyCount + 20}`}>
-								<div className="flex mt-5">
-									<Button className="mx-auto">Show More</Button>
-								</div>
-							</Link>
+							<ShowMoreButton storyCount={storyCount} />
 							<div className="pb-20"></div>
 						</div>
 					</ScrollArea>
@@ -81,11 +76,7 @@ export default async function DashboardMobile({
 									commentCount={data.commentCount}
 								/>
 							))}
-							<Link href={`/app?stories=${storyCount + 20}`}>
-								<div className="flex mt-5">
-									<Button className="mx-auto">Show More</Button>
-								</div>
-							</Link>
+							<ShowMoreButton storyCount={storyCount} />
 							<div className="pb-20"></div>
 						</div>
 					</ScrollArea>

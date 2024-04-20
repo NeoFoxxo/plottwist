@@ -12,6 +12,7 @@ export default async function getUserInfo(user_id: string) {
 		.from("scenarios")
 		.select("*", { count: "exact", head: true })
 		.eq("user_id", user_id)
+		.eq("published", "true")
 
 	// TODO: figure out why these throw on the dashboard
 	if (dataerr)

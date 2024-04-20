@@ -1,10 +1,9 @@
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Link } from "lucide-react"
 import { story } from "./DashboardMobile"
 import { ScenarioCard } from "./ScenarioCard"
-import { Button } from "./ui/button"
 import { getScenarioData } from "@/utils/getScenarioData"
-
+import ShowMoreButton from "./ShowMoreButton"
+  
 export default async function DashboardDesktop({
 	mostPopular,
 	recentStories,
@@ -25,7 +24,7 @@ export default async function DashboardDesktop({
 	)
 
 	return (
-		<div className="container h-[90vh] overflow-hidden p-4 flex flex-row max-lg:flex-col mx-auto text-2xl">
+		<div className="container h-[90vh] overflow-hidden p-4 gap-8 flex flex-row max-lg:flex-col mx-auto text-2xl">
 			<div className="flex flex-col w-full mx-auto">
 				<h2
 					style={{ textShadow: "0em 0em 0.6em white" }}
@@ -46,11 +45,7 @@ export default async function DashboardDesktop({
 								commentCount={data.commentCount}
 							/>
 						))}
-						<Link href={`/app?stories=${storyCount + 20}`}>
-							<div className="flex mt-5">
-								<Button className="mx-auto">Show More</Button>
-							</div>
-						</Link>
+						<ShowMoreButton storyCount={storyCount} />
 						<div className="pb-20"></div>
 					</div>
 				</ScrollArea>
@@ -75,11 +70,7 @@ export default async function DashboardDesktop({
 								commentCount={data.commentCount}
 							/>
 						))}
-						<Link href={`/app?stories=${storyCount + 20}`}>
-							<div className="flex mt-5">
-								<Button className="mx-auto">Show More</Button>
-							</div>
-						</Link>
+						<ShowMoreButton storyCount={storyCount} />
 						<div className="pb-20"></div>
 					</div>
 				</ScrollArea>
