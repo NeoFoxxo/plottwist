@@ -1,12 +1,12 @@
 "use client"
 import { story } from "@/components/DashboardMobile"
 import { Input } from "@/components/ui/input"
-import Image from "next/image"
 import Link from "next/link"
 import EditProfileModal from "./EditProfileModal"
 import StarButton from "./StarButton"
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card"
 import { Textarea } from "./ui/textarea"
+import { ProfileCard } from "./ProfileCard"
 
 interface UserProfileProps {
 	profileData: {
@@ -69,14 +69,14 @@ export default function UserProfile({
 	return (
 		<div className="overflow-hidden">
 			<div className="container flex items-start justify-center w-full gap-4 max-lg:flex-col">
-				<CardContainer className="py-0 md:py-20 inter-var">
+				<CardContainer className="py-0 md:py-10 inter-var">
 					<CardBody className="w-auto bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black/30 dark:border-white/[0.2] border-black/[0.1] h-auto rounded-xl p-9 border ">
 						<div className="flex items-center justify-start gap-6">
 							<CardItem translateZ="50">
-								<Image
+								<img
 									src={image!!}
-									width={0}
-									height={0}
+									width={250}
+									height={250}
 									alt="User Profile Image"
 									className={
 										"rounded-full w-10 h-10 md:w-28 md:h-28 transition-all hover:shadow-[0em_0em_1em_rgba(255,255,255,0.8)]"
@@ -94,12 +94,12 @@ export default function UserProfile({
 										{name ? name : "Default Name"}
 									</h4>
 									{admin && (
-										<Image
+										<img
 											src="/icons/admin.png"
-											width={0}
-											height={0}
+											width={25}
+											height={25}
 											alt="admin icon"
-											className="w-5 h-5 m-auto"
+											className="w-5 h-5 ml-2 my-auto"
 										/>
 									)}
 								</div>
@@ -136,7 +136,7 @@ export default function UserProfile({
 						</div>
 					</CardBody>
 				</CardContainer>
-				<CardContainer className="py-0 md:py-20 inter-var">
+				<CardContainer className="py-0 md:py-10 inter-var flex w-full">
 					<CardBody className="flex flex-1 flex-col gap-4 w-full h-auto bg-gray-50 relative dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black/30 dark:border-white/[0.2] border-black/[0.1] rounded-xl p-7 border">
 						<CardItem translateZ={"60"} className="w-full">
 							<h3 className="text-[1.2rem] md:text-xl font-bold pb-1">
@@ -182,9 +182,8 @@ export default function UserProfile({
 					</CardBody>
 				</CardContainer>
 			</div>
-
 			{stories.map((story: story) => (
-				<div>sada</div>
+				<ProfileCard scenario={story} ></ProfileCard>
 			))}
 		</div>
 	)
