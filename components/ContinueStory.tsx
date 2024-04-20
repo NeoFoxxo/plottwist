@@ -111,20 +111,10 @@ export default function ContinueStory({ scenarioData }: CONTINUE_STORY_TYPES) {
 				))}
 			</article>
 
-			{storyPartCount === 0 ? (
-				<Button
-					onClick={regenerate}
-					className="flex items-center justify-center gap-2 font-semibold"
-				>
-					{pending ? <Loader2 className="animate-spin" /> : <Bot />}
-					Regenerate
-				</Button>
-			) : (
-				pending && (
-					<h5 className="flex items-center justify-center gap-2 font-semibold">
-						Selecting Choice <Loader2 className="animate-spin" />
-					</h5>
-				)
+			{pending && (
+				<h5 className="flex items-center justify-center gap-2 font-semibold">
+					Selecting Choice <Loader2 className="animate-spin" />
+				</h5>
 			)}
 			<div className="flex flex-col flex-wrap gap-2">
 				{storyPartCount >= 9 ? (
@@ -141,20 +131,22 @@ export default function ContinueStory({ scenarioData }: CONTINUE_STORY_TYPES) {
 						)}
 					</>
 				) : (
-					<>
-						<h4 className="font-semibold">Make your choice:</h4>
-						{scenario!!.choices!!.map((choice, index) => {
-							return (
-								<div
-									key={index}
-									onClick={async () => await generateFromChoice(choice)}
-									className="px-4 py-2 rounded-md cursor-pointer bg-neutral-800 hover:bg-neutral-900 w-fit"
-								>
-									{choice}
-								</div>
-							)
-						})}
-					</>
+					!pending && (
+						<>
+							<h4 className="font-semibold">Make your choice:</h4>
+							{scenario!!.choices!!.map((choice, index) => {
+								return (
+									<div
+										key={index}
+										onClick={async () => await generateFromChoice(choice)}
+										className="px-4 py-2 rounded-md cursor-pointer bg-neutral-800 hover:bg-neutral-900 w-fit"
+									>
+										{choice}
+									</div>
+								)
+							})}
+						</>
+					)
 				)}
 				{errorMessage && (
 					<p style={{ color: "rgba(255,50,105,0.600)" }}>{errorMessage}</p>

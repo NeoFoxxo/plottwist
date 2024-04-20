@@ -220,18 +220,24 @@ export default function CreatePrompt({
 							</>
 						) : (
 							<>
-								<h4 className="font-semibold">Make your choice:</h4>
-								{scenario!!.choices!!.map((choice, index) => {
-									return (
-										<div
-											key={index}
-											onClick={async () => await generateFromChoice(choice)}
-											className="px-4 py-2 rounded-md cursor-pointer bg-neutral-800 hover:bg-neutral-900 w-fit"
-										>
-											{choice}
-										</div>
+								{
+									!pending && (
+										<>
+											<h4 className="font-semibold">Make your choice:</h4>
+											{scenario!!.choices!!.map((choice, index) => {
+												return (
+													<div
+														key={index}
+														onClick={async () => await generateFromChoice(choice)}
+														className="px-4 py-2 rounded-md cursor-pointer bg-neutral-800 hover:bg-neutral-900 w-fit"
+													>
+														{choice}
+													</div>
+												)
+											})}
+										</>
 									)
-								})}
+								}
 							</>
 						)}
 						{errorMessage && (
