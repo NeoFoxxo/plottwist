@@ -5,10 +5,12 @@ import { getMaxStories } from "../database/getMaxStories"
 import insertStory from "../database/insertStory"
 
 export async function submitPrompt({ prompt }: { prompt: string }) {
-
 	const stories = await getMaxStories()
 
-	if (stories!! >= 10) throw new Error("You've reached your story limit for today. Come back tomorrow!")
+	if (stories!!.storyCount!! >= 10)
+		throw new Error(
+			"You've reached your story limit for today. Come back tomorrow!"
+		)
 
 	const res = await fetch(`${process.env.AI_API_URL}/start`, {
 		method: "POST",

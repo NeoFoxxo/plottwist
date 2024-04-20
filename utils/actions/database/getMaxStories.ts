@@ -1,17 +1,19 @@
 import { createClient } from "@/utils/supabase/server"
 
 export async function getMaxStories() {
-    const supabase = createClient()
+	const supabase = createClient()
 
-    let u = (await supabase.auth.getUser()).data.user?.id
+	let userId = (await supabase.auth.getUser()).data.user?.id
 
-    let { data: story, error } = await supabase
-        .from("profiles")
-        .select('stories_created_today')
-        .eq("user_id", u!!)
-        .single()
+	let { data: story, error } = await supabase
+		.from("profiles")
+		.select("stories_created_today")
+		.eq("user_id", userId!!)
+		.single()
 
-    if (error) console.log(error.message)
+	if (error) console.log(error.message)
 
-    return story?.stories_created_today
+	const storyCount = story?.stories_created_today
+
+	return { storyCount, userId }
 }
