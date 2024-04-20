@@ -19,7 +19,7 @@ export default async function Dashboard({
 		data = {
 			//@ts-expect-error
 			user: {
-				id: "unauthenticated user",
+				id: "no user",
 			},
 		}
 	}
