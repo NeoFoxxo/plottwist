@@ -1,9 +1,9 @@
-import getUserInfo from "@/utils/actions/database/getUserinfo"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Link } from "lucide-react"
 import { ScenarioCard } from "./ScenarioCard"
 import { Button } from "./ui/button"
+import { getScenarioData } from "@/utils/getScenarioData"
 
 export interface story {
 	choices: string[] | null
@@ -19,7 +19,7 @@ export interface story {
 	user_id: string
 }
 
-export default function DashboardMobile({
+export default async function DashboardMobile({
 	mostPopular,
 	recentStories,
 	userData,
@@ -32,6 +32,11 @@ export default function DashboardMobile({
 	bookmark: number[]
 	storyCount: number
 }) {
+	// fetch all data at once so that we dont have any undefined errors
+	const { mostPopularData, recentStoriesData } = await getScenarioData(
+		mostPopular,
+		recentStories
+	)
 	return (
 		<div className="md:hidden container flex flex-row justify-end p-4 text-2xl gap-x-20 max-xl:gap-x-8 max-lg:flex-col">
 			<Tabs defaultValue="popular">
@@ -42,13 +47,15 @@ export default function DashboardMobile({
 				<TabsContent value="new">
 					<ScrollArea className="w-full mt-2">
 						<div className="flex flex-col top-0 h-[80vh]">
-							{mostPopular?.map(async (scenario) => (
+							{mostPopularData?.map((data, index) => (
 								<ScenarioCard
-									key={scenario.id}
+									key={mostPopular[index].id}
 									currentUser={userData}
-									data={await getUserInfo(scenario?.user_id)}
-									scenario={scenario}
-									bookmark={bookmark.includes(scenario.id) ? true : false}
+									data={data.userInfo}
+									scenario={mostPopular[index]}
+									bookmark={bookmark.includes(mostPopular[index].id)}
+									bookmarkCount={data.bookmarkCount}
+									commentCount={data.commentCount}
 								/>
 							))}
 							<Link href={`/app?stories=${storyCount + 20}`}>
@@ -63,13 +70,15 @@ export default function DashboardMobile({
 				<TabsContent value="popular">
 					<ScrollArea className="w-full mt-2">
 						<div className="py-5 top-0 h-[80vh]">
-							{recentStories?.map(async (scenario) => (
+							{recentStoriesData?.map((data, index) => (
 								<ScenarioCard
+									key={recentStories[index].id}
 									currentUser={userData}
-									data={await getUserInfo(scenario.user_id)}
-									key={scenario.id}
-									scenario={scenario}
-									bookmark={bookmark.includes(scenario.id) ? true : false}
+									data={data.userInfo}
+									scenario={recentStories[index]}
+									bookmark={bookmark.includes(recentStories[index].id)}
+									bookmarkCount={data.bookmarkCount}
+									commentCount={data.commentCount}
 								/>
 							))}
 							<Link href={`/app?stories=${storyCount + 20}`}>

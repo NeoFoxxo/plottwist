@@ -3,6 +3,7 @@ import { getScenarios } from "@/utils/actions/database/getScenarios"
 import { getBookmarksId } from "@/utils/actions/database/getBookmarksId"
 import DashboardMobile from "@/components/DashboardMobile"
 import DashboardDesktop from "@/components/DashboardDesktop"
+import { getDashboardData } from "@/utils/getDashboardData"
 
 export default async function Dashboard({
 	searchParams,
@@ -30,9 +31,8 @@ export default async function Dashboard({
 	let storyCount = parseInt(searchParams.stories) // make sure its an int
 
 	if (!storyCount) {
-		storyCount = 20
+		storyCount = 10
 	}
-
 	const { mostPopular, recentStories } = await getScenarios({ storyCount })
 
 	return (

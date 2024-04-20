@@ -1,11 +1,11 @@
-import getUserInfo from "@/utils/actions/database/getUserinfo"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Link } from "lucide-react"
 import { story } from "./DashboardMobile"
 import { ScenarioCard } from "./ScenarioCard"
 import { Button } from "./ui/button"
+import { getScenarioData } from "@/utils/getScenarioData"
 
-export default function DashboardDesktop({
+export default async function DashboardDesktop({
 	mostPopular,
 	recentStories,
 	userData,
@@ -18,6 +18,12 @@ export default function DashboardDesktop({
 	bookmark: number[]
 	storyCount: number
 }) {
+	// fetch all data at once so that we dont have any undefined errors
+	const { mostPopularData, recentStoriesData } = await getScenarioData(
+		mostPopular,
+		recentStories
+	)
+
 	return (
 		<div className="container h-[90vh] overflow-hidden p-4 flex flex-row max-lg:flex-col mx-auto text-2xl">
 			<div className="flex flex-col w-full mx-auto">
@@ -29,13 +35,15 @@ export default function DashboardDesktop({
 				</h2>
 				<ScrollArea className="w-full mt-2">
 					<div className="py-5 top-0 h-[80vh]">
-						{mostPopular?.map(async (scenario) => (
+						{mostPopularData?.map((data, index) => (
 							<ScenarioCard
-								key={scenario.id}
+								key={mostPopular[index].id}
 								currentUser={userData}
-								data={await getUserInfo(scenario?.user_id)}
-								scenario={scenario}
-								bookmark={bookmark.includes(scenario.id) ? true : false}
+								data={data.userInfo}
+								scenario={mostPopular[index]}
+								bookmark={bookmark.includes(mostPopular[index].id)}
+								bookmarkCount={data.bookmarkCount}
+								commentCount={data.commentCount}
 							/>
 						))}
 						<Link href={`/app?stories=${storyCount + 20}`}>
@@ -56,13 +64,15 @@ export default function DashboardDesktop({
 				</h2>
 				<ScrollArea className="w-full mt-2">
 					<div className="py-5 top-0 h-[80vh]">
-						{recentStories?.map(async (scenario, index) => (
+						{recentStoriesData?.map((data, index) => (
 							<ScenarioCard
+								key={recentStories[index].id}
 								currentUser={userData}
-								data={await getUserInfo(scenario.user_id)}
-								key={scenario.id}
-								scenario={scenario}
-								bookmark={bookmark.includes(scenario.id) ? true : false}
+								data={data.userInfo}
+								scenario={recentStories[index]}
+								bookmark={bookmark.includes(recentStories[index].id)}
+								bookmarkCount={data.bookmarkCount}
+								commentCount={data.commentCount}
 							/>
 						))}
 						<Link href={`/app?stories=${storyCount + 20}`}>
