@@ -4,8 +4,8 @@ export async function addStar({
 	current_user_id,
 	author_id,
 }: {
-	current_user_id: string | undefined
-	author_id: string | undefined
+	current_user_id: string
+	author_id: string
 }) {
 	const supabase = createClient()
 

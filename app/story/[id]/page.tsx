@@ -73,7 +73,7 @@ export default async function StoryDetails({
 
 	const currentUser = await getSession()
 
-	const bookmarkCount = await getStoryBookmarkCount(story.id)
+	const bookmarkCount = await getStoryBookmarkCount(story!!.id)
 
 	return (
 		<main className="flex flex-col w-full gap-2 py-8 mx-auto my-12">
