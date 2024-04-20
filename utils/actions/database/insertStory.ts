@@ -46,13 +46,14 @@ export default async function insertStory({
 	if (error) throw new Error(error.message)
 	const scenario = insertedStory[0]
 
-	let { data: data2, error: error2 } = await supabase
-		.rpc('increment_stories_created_today', {
-			current_user_id: user_id!!
-		})
+	let { error: incrementStoryErr } = await supabase.rpc(
+		"increment_stories_created_today",
+		{
+			current_user_id: user_id!!,
+		}
+	)
 
-	if (error) console.error(error2)
-	else console.log(data2)
+	if (error) console.error(incrementStoryErr)
 
 	return scenario
 }

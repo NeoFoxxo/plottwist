@@ -15,7 +15,9 @@ export async function getStars({
 		.eq("user_id", userId!!)
 
 	if (error) {
-		console.log("error occured when seeing if user has starred author " + error)
+		console.log(
+			"Error occured when checking if user has starred author " + error
+		)
 		return false
 	}
 
