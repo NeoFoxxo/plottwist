@@ -211,7 +211,7 @@ export default function EditProfileModal({
 									<FormControl>
 										<Textarea
 											onKeyDown={() => {
-												;("")
+												; ("")
 											}}
 											className="w-full text-left resize-none"
 											{...field}
