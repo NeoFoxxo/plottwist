@@ -14,6 +14,7 @@ export default async function getUserInfoByName(username: string) {
 		.from("scenarios")
 		.select("*", { count: "exact", head: true })
 		.eq("user_id", user[0].user_id)
+		.eq("published", "true")
 
 	if (infoerr) return 404
 
