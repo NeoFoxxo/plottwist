@@ -111,10 +111,8 @@ export default function EditProfileModal({
 		setSuccessMessage("")
 		try {
 			if (file) {
-				let existingImage = false
-				if (image) existingImage = true
 				try {
-					const path = await imageUpload(file, user_id, existingImage)
+					const path = await imageUpload(file, user_id)
 					if (path) imgUrl = path
 				} catch (error) {
 					setPending(false)
