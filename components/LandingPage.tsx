@@ -1,12 +1,80 @@
 "use client"
 
 import { motion } from "framer-motion"
+
 import { HoverEffect } from "./ui/card-hover-effect"
 import { HeroHighlight } from "./ui/hero-highlight"
 import { AnimatedTooltip } from "./ui/animated-tooltip"
+import { ContainerScroll } from "./ui/container-scroll-animation"
+
 import Link from "next/link"
+import Image from "next/image"
+
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "./ui/carousel"
+import Autoplay from "embla-carousel-autoplay"
+import { useRef } from "react"
+import { Card, CardContent } from "./ui/card"
 
 export function LandingPage() {
+	const content = [
+		{
+			title: "Create",
+			description:
+				"Our intuitive interface makes creating a breeze, letting you focus on your story idea you got in mind. You can start off and continue a journey whenever you want!",
+			content: (
+				<Image
+					src="/create.png"
+					width={300}
+					height={300}
+					className="object-cover w-9/12"
+					alt="create page"
+				/>
+			),
+		},
+		{
+			title: "Dashboard",
+			description:
+				"Find stories from endless topics, save/remove them to your bookmarks, add a review or remix if you are the author.",
+			content: (
+				<Image
+					src="/dashboard.png"
+					width={300}
+					height={300}
+					className="object-cover w-8/12"
+					alt="linear board demo"
+				/>
+			),
+		},
+		{
+			title: "Story Details",
+			description:
+				"This page shows off the whole story, its author and the reviews it has. You",
+			content: (
+				<Image
+					src="/story-details.png"
+					width={300}
+					height={300}
+					className="object-cover w-9/12"
+					alt="linear board demo"
+				/>
+			),
+		},
+		{
+			title: "Profile",
+			description:
+				"Here you see all the data related to your account like username, social links and etc.",
+			content: (
+				<Image
+					src="/profile.png"
+					width={300}
+					height={300}
+					className="object-cover w-9/12"
+					alt="linear board demo"
+				/>
+			),
+		},
+	];
+
 	const people = [
 		{
 			id: 1,
@@ -71,9 +139,13 @@ export function LandingPage() {
 		},
 	]
 
+	const plugin = useRef(
+		Autoplay({ delay: 5000, stopOnInteraction: true })
+	)
+
 	return (
-		<div className="bg-[url('/gif4.gif')] bg-background bg-cover bg-fixed bg-no-repeat bg-center flex flex-col items-center justify-center text-center w-full h-full py-10">
-			<HeroHighlight>
+		<div className="bg-[url('/gif4.gif')]  bg-cover bg-fixed bg-no-repeat bg-center flex flex-col items-center justify-center text-center w-full h-full py-24">
+			<HeroHighlight className="pt-36">
 				<motion.h1
 					initial={{
 						opacity: 0,
@@ -109,11 +181,11 @@ export function LandingPage() {
 					className="mt-[-4rem]"
 				>
 					<div className="flex flex-col overflow-hidden pb-7">
-						<h2 className="text-xl pt-0">
+						<h2 className="pt-0 text-xl">
 							Generate interactive stories where{" "}
 							<b>your choices shape the narrative</b>.
 						</h2>
-						<h3 className="text-xl pt-2">
+						<h3 className="pt-2 text-xl">
 							Start with a prompt, and let our custom AI generate the story and
 							choices you can make
 						</h3>
@@ -139,7 +211,7 @@ export function LandingPage() {
 					{" "}
 					<Link href="/app">
 						<button className="p-[3px] relative">
-							<div className="absolute inset-0 bg-gradient-to-r from-emerald-700 to-lime-700 rounded-lg" />
+							<div className="absolute inset-0 rounded-lg bg-gradient-to-r from-emerald-700 to-lime-700" />
 							<div className="px-8 py-2  bg-black rounded-[6px]  relative group transition duration-200 text-white hover:bg-transparent">
 								Create your own interactive story →
 							</div>
@@ -147,31 +219,56 @@ export function LandingPage() {
 					</Link>
 				</motion.h4>
 			</HeroHighlight>
-			<HeroHighlight>
-				<motion.h2
-					initial={{
-						opacity: 0,
-						y: 0,
-					}}
-					animate={{
-						opacity: 1,
-						y: [40, 0, 0],
-					}}
-					transition={{
-						duration: 0.5,
-						ease: [0.4, 0.0, 0.2, 1],
-					}}
-					className="mt-[-5rem]"
+			<h1 className="py-16 pt-40 mb-12 text-6xl font-bold">Features</h1>
+			<Carousel
+				plugins={[plugin.current]}
+				className="max-md:max-w-lg max-sm:max-w-sm"
+				onMouseEnter={plugin.current.stop}
+				onMouseLeave={plugin.current.reset}
+				orientation="vertical"
+			>
+				<CarouselContent className="h-[560px]">
+					{content.map((page, index) => (
+						<CarouselItem key={index}>
+							<div className="p-1">
+								<Card>
+									<CardContent className="flex flex-col items-center justify-center py-6">
+										<div className="flex flex-col w-full max-w-lg gap-4 mb-4">
+											<span className="text-4xl font-semibold">{page.title}</span>
+											<p className="pb-5 text-xl font-medium">{page.description}</p>
+										</div>
+										{page.content}
+									</CardContent>
+								</Card>
+							</div>
+						</CarouselItem>
+					))}
+				</CarouselContent>
+				<CarouselPrevious />
+				<CarouselNext />
+			</Carousel>
+			<div className="flex flex-col mt-20 overflow-hidden">
+				<ContainerScroll
+					titleComponent={
+						<>
+							<h1 className="text-4xl font-semibold text-black dark:text-white">
+								Unleash the power of <br />
+								<span className="text-4xl md:text-[6rem] font-bold mt-1 leading-none">
+									Stories
+								</span>
+							</h1>
+						</>
+					}
 				>
-					{" "}
-					<div className="justify-center pb-20">
-						<h2 className="pb-2">Meet our team!</h2>
-						<div className="ml-[-1rem] flex flex-row">
-							<AnimatedTooltip items={people} />
-						</div>
-					</div>
-				</motion.h2>
-			</HeroHighlight>
+					<Image
+						src={`/dashboard.png`}
+						alt="hero"
+						height={700}
+						width={1800}
+						className="object-fill h-full"
+					/>
+				</ContainerScroll>
+			</div>
 			<HeroHighlight>
 				<motion.footer
 					initial={{
@@ -190,7 +287,7 @@ export function LandingPage() {
 					<div className="max-w-5xl px-8 mx-auto">
 						<h2 className="pb-6 text-5xl font-bold text-center">Our tools</h2>
 						<div className="pb-8">
-							<h4 className="text-lg text-center pt-2">
+							<h4 className="pt-2 text-lg text-center">
 								Made for the Supabase{" "}
 								<a
 									className="text-green-300 hover:underline"
@@ -221,6 +318,31 @@ export function LandingPage() {
 					</div>
 				</motion.footer>
 			</HeroHighlight>
-		</div>
+			<HeroHighlight>
+				<motion.h2
+					initial={{
+						opacity: 0,
+						y: 0,
+					}}
+					animate={{
+						opacity: 1,
+						y: [40, 0, 0],
+					}}
+					transition={{
+						duration: 0.5,
+						ease: [0.4, 0.0, 0.2, 1],
+					}}
+					className="mt-[-5rem]"
+				>
+					{" "}
+					<div className="justify-center mt-8">
+						<h2 className="pb-2">Meet our team!</h2>
+						<div className="ml-[-1rem] flex flex-row">
+							<AnimatedTooltip items={people} />
+						</div>
+					</div>
+				</motion.h2>
+			</HeroHighlight>
+		</div >
 	)
 }
