@@ -17,11 +17,8 @@ export default async function Library() {
 	return (
 		<main className="flex flex-col flex-1 my-4 md:p-5 justify-start items-center w-full md:w-fit">
 			<h1
-				style={{
-					fontFamily: '"Poppins", sans-serif',
-					textShadow: "0em 0em 0.3em rgba(100,240,230,1)",
-				}}
-				className="text-4xl font-bold text-center"
+				style={{ textShadow: "0em 0em 0.6em white" }}
+				className="text-3xl font-bold text-center"
 			>
 				Your Stories
 			</h1>
