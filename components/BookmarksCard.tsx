@@ -101,14 +101,17 @@ export default function BookmarksCard({
 			>
 				<CardItem translateZ="30">
 					<div className="flex flex-row mb-2">
-						<a href="" className="h-[fit-content] w-[fit-content] m-auto p-0">
+						<a href={`/profile/${data.data.name}`} className="h-[fit-content] w-[fit-content] m-auto p-0">
 							<img
 								className="rounded-full w-7 h-7"
 								src={data.data!!.image!!}
 							></img>
 						</a>
-						<a href="" className="h-auto w-[fit-content] m-auto p-0">
-							<p className="text-sm ml-2 hover:underline">{data.data.name}</p>
+						<a href={`/profile/${data.data.name}`} className="h-auto w-[fit-content] m-auto p-0">
+							<p className="text-sm ml-2 hover:underline flex">{data.data.name} {data.data.admin && (<img
+								src="/icons/admin.png"
+								className="w-4 h-4 flex ml-[0.3rem] my-auto"></img>
+							)}</p>
 						</a>
 					</div>
 				</CardItem>
