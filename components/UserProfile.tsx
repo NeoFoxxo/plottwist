@@ -65,7 +65,7 @@ export default function UserProfile({
 	return (
 		<div className="overflow-hidden">
 			<div className="container flex items-start justify-center w-full gap-4 max-lg:flex-col">
-				<CardContainer className="py-0 inter-var">
+				<CardContainer className="py-0 md:py-20  inter-var">
 					<CardBody className="w-auto bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black/30 dark:border-white/[0.2] border-black/[0.1] h-auto rounded-xl p-9 border ">
 						<div className="flex items-center justify-start gap-6">
 							<CardItem translateZ="50">
@@ -127,7 +127,7 @@ export default function UserProfile({
 						</div>
 					</CardBody>
 				</CardContainer>
-				<CardContainer className="py-0 inter-var">
+				<CardContainer className="py-0 md:py-20 inter-var">
 					<CardBody className="flex flex-1 flex-col gap-4 w-full h-auto bg-gray-50 relative dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black/30 dark:border-white/[0.2] border-black/[0.1] rounded-xl p-7 border">
 						<CardItem translateZ={"60"} className="w-full">
 							<h3 className="text-[1.2rem] md:text-xl font-bold pb-1">

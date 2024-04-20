@@ -189,6 +189,34 @@ export function LandingPage() {
 				>
 					<div className="max-w-5xl px-8 mx-auto">
 						<h2 className="pb-6 text-5xl font-bold text-center">Our tools</h2>
+						<div className="pb-8">
+							<h4 className="text-lg text-center pt-2">
+								Made for the Supabase{" "}
+								<a
+									className="text-green-300 hover:underline"
+									href="https://supabase.com/blog/supabase-oss-hackathon"
+								>
+									#hackathon
+								</a>{" "}
+								contest
+							</h4>
+							<h5>
+								Powered by{" "}
+								<a
+									className="text-green-300 hover:underline"
+									href="https://smythos.com"
+								>
+									SmythOS
+								</a>{" "}
+								and{" "}
+								<a
+									className="text-green-300 hover:underline"
+									href="https://supabase.com/"
+								>
+									Supabase
+								</a>
+							</h5>
+						</div>
 						<HoverEffect items={projects} />
 					</div>
 				</motion.footer>
