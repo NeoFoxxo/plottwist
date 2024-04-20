@@ -1,5 +1,5 @@
 import { LibraryCard } from "@/components/LibraryCard"
-import getUsersStories from "@/utils/actions/database/getUsersStories"
+import getPinnedStories from "@/utils/actions/database/getPinnedStories"
 import { createClient } from "@/utils/supabase/server"
 import { redirect } from "next/navigation"
 
@@ -12,10 +12,10 @@ export default async function Library() {
 	const user_id = user?.id
 	if (!user_id) redirect("/login")
 
-	const userStories = await getUsersStories(user_id)
+	const userStories = await getPinnedStories(user_id)
 
 	return (
-		<main className="flex flex-col flex-1 my-4 md:p-5 justify-start items-center w-full md:w-fit">
+		<main className="flex flex-col items-center justify-start flex-1 w-full my-4 md:p-5 md:w-fit">
 			<h1
 				style={{ textShadow: "0em 0em 0.6em white" }}
 				className="text-3xl font-bold text-center"

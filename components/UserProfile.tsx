@@ -1,9 +1,12 @@
 "use client"
+import { story } from "@/components/DashboardMobile"
 import { Input } from "@/components/ui/input"
+import Image from "next/image"
+import Link from "next/link"
 import EditProfileModal from "./EditProfileModal"
+import StarButton from "./StarButton"
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card"
 import { Textarea } from "./ui/textarea"
-import StarButton from "./StarButton"
 
 interface UserProfileProps {
 	profileData: {
@@ -22,6 +25,7 @@ interface UserProfileProps {
 	storyCount: number | null
 	userId: string | undefined
 	hasStarred: boolean
+	stories: story[]
 }
 
 export default function UserProfile({
@@ -30,8 +34,9 @@ export default function UserProfile({
 	hasStarred,
 	storyCount,
 	userId,
+	stories
 }: UserProfileProps) {
-	const { name, image, email, bio, links, admin } = profileData
+	const { name, image, email, bio, links, admin, user_id } = profileData
 
 	function simplifyNumber(number: number) {
 		if (number >= 1000000) {
@@ -64,12 +69,14 @@ export default function UserProfile({
 	return (
 		<div className="overflow-hidden">
 			<div className="container flex items-start justify-center w-full gap-4 max-lg:flex-col">
-				<CardContainer className="py-0 md:py-20  inter-var">
+				<CardContainer className="py-0 md:py-20 inter-var">
 					<CardBody className="w-auto bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black/30 dark:border-white/[0.2] border-black/[0.1] h-auto rounded-xl p-9 border ">
 						<div className="flex items-center justify-start gap-6">
 							<CardItem translateZ="50">
-								<img
+								<Image
 									src={image!!}
+									width={0}
+									height={0}
 									alt="User Profile Image"
 									className={
 										"rounded-full w-10 h-10 md:w-28 md:h-28 transition-all hover:shadow-[0em_0em_1em_rgba(255,255,255,0.8)]"
@@ -87,10 +94,13 @@ export default function UserProfile({
 										{name ? name : "Default Name"}
 									</h4>
 									{admin && (
-										<img
+										<Image
 											src="/icons/admin.png"
+											width={0}
+											height={0}
+											alt="admin icon"
 											className="w-5 h-5 m-auto"
-										></img>
+										/>
 									)}
 								</div>
 								<p className="text-sm md:text-[1.15rem] text-gray-500">
@@ -116,7 +126,7 @@ export default function UserProfile({
 									</div>
 								</CardItem>
 							))}
-							{userId != profileData.user_id && (
+							{userId !== user_id && (
 								<StarButton
 									hasStarred={hasStarred}
 									authorId={profileData.user_id!!}
@@ -151,13 +161,13 @@ export default function UserProfile({
 									{links?.map((singleLink, index) => {
 										const cleanLink = makeLink(singleLink)
 										return (
-											<a
+											<Link
 												key={index}
 												href={cleanLink}
 												className="w-full p-2 text-xs bg-transparent border rounded-md hover:text-green-400 border-input md:text-sm"
 											>
 												{cleanLink}
-											</a>
+											</Link>
 										)
 									})}
 								</div>
@@ -172,6 +182,10 @@ export default function UserProfile({
 					</CardBody>
 				</CardContainer>
 			</div>
+
+			{stories.map((story: story) => (
+				<div>sada</div>
+			))}
 		</div>
 	)
 }
