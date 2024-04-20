@@ -21,7 +21,7 @@ export default async function Header(
 	return (
 		<nav className="fixed z-30 flex items-center justify-center w-full h-16 border-b bg-zinc-950 border-secondary">
 			<div className="flex items-center justify-between w-full px-[5vw] text-sm">
-				<Link href="/app">
+				<Link href="/">
 					<div className="font-semibold text-md">
 						<p
 							style={{ fontFamily: "Cabin, sans-serif" }}
