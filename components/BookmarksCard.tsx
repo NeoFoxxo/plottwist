@@ -7,12 +7,14 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from "@radix-ui/react-tooltip"
-import { Loader2, MessageSquareText, Trash } from "lucide-react"
+import { CalendarDays, Loader2, MessageSquareText, Trash } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card"
 import { truncateString } from "@/utils/truncateString"
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card"
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 
 type BOOKMARK_INPUT_TYPES = {
 	scenario: {
@@ -94,25 +96,64 @@ export default function BookmarksCard({
 
 	const r = Math.floor(Math.random() * shadowcolor.length)
 
+	const dateObj = new Date(data.data.created_at as string);
+	const date = dateObj.toLocaleString('en-US', { month: 'long', year: 'numeric' })
+
 	return (
 		<CardContainer className="inter-var h-[10rem] p-4 my-7">
 			<CardBody
 				className={`transition-all bg-gray-50 relative group/card shadow-2xl dark:bg-black/50 ${bordercolor[r]} ${shadowcolor[r]} hover:border-white w-auto h-auto max-md:h-auto my-auto sm:w-[25rem] max-w-[25rem] rounded-xl p-7 m-10 border flex flex-col`}
 			>
-				<CardItem translateZ="30">
+				<CardItem translateZ="80">
 					<div className="flex flex-row mb-2">
-						<a href={`/profile/${data.data.name}`} className="h-[fit-content] w-[fit-content] m-auto p-0">
-							<img
-								className="rounded-full w-7 h-7"
-								src={data.data!!.image!!}
-							></img>
-						</a>
-						<a href={`/profile/${data.data.name}`} className="h-auto w-[fit-content] m-auto p-0">
-							<p className="text-sm ml-2 hover:underline flex">{data.data.name} {data.data.admin && (<img
-								src="/icons/admin.png"
-								className="w-4 h-4 flex ml-[0.3rem] my-auto"></img>
-							)}</p>
-						</a>
+						<HoverCard>
+							<HoverCardTrigger asChild>
+								<Link href={`/profile/${data.data.name}`} className="flex items-center">
+									<img
+										alt="User profile"
+										width={0}
+										height={0}
+										className="rounded-full w-7 h-7"
+										src={data.data!!.image!!}
+									></img>
+									<p className="flex ml-2 text-sm hover:underline">{data.data.name}
+										{data.data.admin && (
+											<img
+												src="/icons/admin.png"
+												className="w-3.5 h-3.5 flex ml-[0.4rem] my-auto">
+											</img>
+										)}</p>
+								</Link>
+							</HoverCardTrigger>
+							<HoverCardContent className="ml-36">
+								<div className="flex justify-between space-x-4">
+									<div>
+										<Avatar>
+											<AvatarImage src={data.data!!.image!!} />
+											<AvatarFallback>VC</AvatarFallback>
+										</Avatar>
+										<div className="pt-1.5 space-y-1">
+											<h4 className="text-sm font-semibold">@{data.data.name}</h4>
+											<p className="text-sm">
+												{truncateString(data.data.bio as string, 60)}
+											</p>
+											<div className="flex items-center pt-2">
+												<CalendarDays className="w-4 h-4 mr-2 opacity-70" />
+												<span className="text-xs text-muted-foreground">
+													{date}
+												</span>
+											</div>
+										</div>
+									</div>
+									{data.data.admin && (
+										<img
+											src="/icons/admin.png"
+											className="w-3.5 h-3.5 flex ml-[0.4rem] mb-auto">
+										</img>
+									)}
+								</div>
+							</HoverCardContent>
+						</HoverCard>
 					</div>
 				</CardItem>
 				<CardItem
@@ -127,7 +168,7 @@ export default function BookmarksCard({
 				<CardItem
 					as="p"
 					translateZ="60"
-					className="text-neutral-400 text-xs max-w-sm mt-2 dark:text-neutral-400/80 hover:dark:text-neutral-400/100"
+					className="max-w-sm mt-2 text-xs text-neutral-400 dark:text-neutral-400/80 hover:dark:text-neutral-400/100"
 				>
 					{truncateString(scenario.story!!, 180)}
 				</CardItem>
@@ -144,13 +185,13 @@ export default function BookmarksCard({
 				>
 					Prompt: {scenario.prompt}
 				</CardItem>
-				<div className="flex justify-between items-center mt-auto">
+				<div className="flex items-center justify-between mt-auto">
 					<CardItem
 						translateZ={74}
 						as={Link}
 						href={`/story/${scenario.id}`}
 						style={{ borderRadius: "1em" }}
-						className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white bg-transparent hover:bg-white/20 "
+						className="px-4 py-2 text-xs font-normal bg-transparent rounded-xl dark:text-white hover:bg-white/20 "
 					>
 						Remix →
 					</CardItem>
@@ -160,15 +201,15 @@ export default function BookmarksCard({
 								as="a"
 								href="/b"
 								style={{ borderRadius: "1em" }}
-								className="mr-2 rounded-x bg-transparent hover:bg-white/20 text-xs font-bold"
+								className="mr-2 text-xs font-bold bg-transparent rounded-x hover:bg-white/20"
 							>
 								<TooltipProvider delayDuration={300}>
 									<Tooltip>
 										<TooltipTrigger>
-											<MessageSquareText className="size-4 mx-4 my-2"></MessageSquareText>
+											<MessageSquareText className="mx-4 my-2 size-4"></MessageSquareText>
 										</TooltipTrigger>
 										<TooltipContent
-											className="p-0 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight"
+											className="p-0 m-0 font-mono text-xs bg-transparent border-none outline-none font-extralight"
 											side="bottom"
 										>
 											<p>Add a review</p>
@@ -179,19 +220,19 @@ export default function BookmarksCard({
 							<CardItem
 								as="a"
 								style={{ borderRadius: "1em" }}
-								className=" rounded-x bg-transparent hover:bg-white/20 text-xs font-bold"
+								className="text-xs font-bold bg-transparent rounded-x hover:bg-white/20"
 							>
 								<TooltipProvider delayDuration={300}>
 									<Tooltip>
 										{isLoading ? (
-											<Loader2 className="animate-spin mx-4 my-2 h-4 w-4" />
+											<Loader2 className="w-4 h-4 mx-4 my-2 animate-spin" />
 										) : (
 											<TooltipTrigger onClick={handleRemoveBookmark}>
-												<Trash className="size-4 mx-4 my-2" />
+												<Trash className="mx-4 my-2 size-4" />
 											</TooltipTrigger>
 										)}
 										<TooltipContent
-											className="p-0 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight"
+											className="p-0 m-0 font-mono text-xs bg-transparent border-none outline-none font-extralight"
 											side="bottom"
 										>
 											<p>Remove bookmark</p>
