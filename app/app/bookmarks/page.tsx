@@ -1,6 +1,6 @@
 import BookmarksCard from "@/components/BookmarksCard"
 import { getBookmarks } from "@/utils/actions/database/getBookmarks"
-import getUserInfo from "@/utils/actions/database/getUserinfo"
+import getUserInfo from "@/utils/actions/database/getUserInfo"
 import { createClient } from "@/utils/supabase/server"
 import { redirect } from "next/navigation"
 
