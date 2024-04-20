@@ -50,12 +50,12 @@ type SCENARIO_TYPES = {
 		}
 	}
 	currentUser:
-		| {
-				user: any
-		  }
-		| {
-				user: null
-		  }
+	| {
+		user: any
+	}
+	| {
+		user: null
+	}
 	bookmarkCount: number
 	commentCount: number
 }
@@ -103,6 +103,16 @@ export function ScenarioCard({
 			setFakeBmrkCount((fakeBmrkCount) => fakeBmrkCount + 1)
 			setisBookmarked(true)
 			await addBookmark(scenario.id)
+		}
+	}
+
+	function simplifyNumber(number: number) {
+		if (number >= 1000000) {
+			return (number / 1000000).toFixed(1) + "M"
+		} else if (number >= 1000) {
+			return (number / 1000).toFixed(1) + "K"
+		} else {
+			return number
 		}
 	}
 
@@ -198,7 +208,7 @@ export function ScenarioCard({
 												) : (
 													<>
 														<MessageSquareText className="mx-4 my-2 size-4" />
-														{commentCount}
+														{simplifyNumber(commentCount)}
 													</>
 												)}
 											</TooltipTrigger>
@@ -229,12 +239,12 @@ export function ScenarioCard({
 																className="mx-4 my-2 size-4"
 																fill="white"
 															/>
-															{fakeBmrkCount}
+															{simplifyNumber(fakeBmrkCount)}
 														</>
 													) : (
 														<>
 															<Bookmark className="mx-4 my-2 size-4" />
-															{fakeBmrkCount}
+															{simplifyNumber(fakeBmrkCount)}
 														</>
 													)}
 												</TooltipTrigger>
