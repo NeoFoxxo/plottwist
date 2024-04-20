@@ -2,6 +2,7 @@ import { buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { Bookmark, LayoutDashboard, LibraryBig, SquarePen } from "lucide-react"
 import Link from "next/link"
+import MaxStory from "./MaxStory"
 
 export function Sidebar() {
 	const links = [
@@ -46,6 +47,9 @@ export function Sidebar() {
 					</Link>
 				))}
 			</nav>
+			<div className="transition-all overflow-hidden mb-auto mt-10 group-hover:my-auto">
+				<MaxStory></MaxStory>
+			</div>
 		</div>
 	)
 }

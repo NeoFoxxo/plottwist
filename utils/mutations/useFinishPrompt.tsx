@@ -29,7 +29,7 @@ export function useFinishPrompt({
 			setStoryParts((storyParts) => [...storyParts, data.currentPart])
 		},
 		onError: (error) => {
-			setErrorMessage(`Could not finish story: ${error}`)
+			setErrorMessage(`${error}`)
 		},
 		retry: 4,
 	})

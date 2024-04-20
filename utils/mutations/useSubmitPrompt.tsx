@@ -28,7 +28,7 @@ export function useSubmitPrompt({
 			setPrompt(data.scenario.prompt ? data.scenario.prompt : "")
 		},
 		onError: (error) => {
-			setErrorMessage(`Could not create story: ${error}`)
+			setErrorMessage(`${error}`)
 		},
 		retry: 4,
 	})
