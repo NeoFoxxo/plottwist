@@ -6,7 +6,6 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from "@/components/ui/tooltip"
-
 import { addBookmark } from "@/utils/actions/database/addBookmark"
 import unPublish from "@/utils/actions/database/privateStory"
 import publish from "@/utils/actions/database/publishStory"
@@ -16,7 +15,6 @@ import {
 	Loader2,
 	Lock,
 	MessageSquareText,
-	Trash,
 } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
@@ -116,15 +114,16 @@ export function ScenarioCard({
 				<div className="flex items-center justify-between">
 					<CardItem translateZ="30">
 						<div className="flex flex-row mb-2">
-							<a href="" className="h-[fit-content] w-[fit-content] m-auto p-0">
+							<Link href={`/profile/${data.data.name}`} className="flex items-center">
 								<img
+									alt="User profile"
+									width={0}
+									height={0}
 									className="rounded-full w-7 h-7"
 									src={data.data!!.image!!}
 								></img>
-							</a>
-							<a href="" className="h-auto w-[fit-content] m-auto p-0">
 								<p className="ml-2 text-sm hover:underline">{data.data.name}</p>
-							</a>
+							</Link>
 						</div>
 					</CardItem>
 					{data.data.user_id == currentUser.user.id && (
