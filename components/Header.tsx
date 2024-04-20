@@ -6,14 +6,18 @@ import { cn } from "@/lib/utils"
 import { AlignRight } from "lucide-react"
 import { links } from "./Sidebar"
 import { Button, buttonVariants } from "./ui/button"
-import { Sheet, SheetClose, SheetContent, SheetTrigger } from "./ui/sheet"
+import { Sheet, SheetClose, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import CardForLimit from "@/components/CardForLimit";
+import { getMaxStories } from "@/utils/actions/database/getMaxStories"
 
-export default function Header(
+export default async function Header(
 	{
 		email,
 		userId,
 		username
 	}: { email: string | undefined, username: string | any, userId: string | undefined }) {
+	const storiesData = await getMaxStories()
+
 	return (
 		<nav className="fixed z-30 flex items-center justify-center w-full h-16 border-b bg-zinc-950 border-secondary">
 			<div className="flex items-center justify-between w-full px-[5vw] text-sm">
@@ -30,11 +34,11 @@ export default function Header(
 				<div className="flex gap-3">
 					<Sheet>
 						<SheetTrigger asChild>
-							<Button variant="ghost" className="hidden max-sm:block">
+							<Button variant="ghost" className="hidden max-lg:block">
 								<AlignRight />
 							</Button>
 						</SheetTrigger>
-						<SheetContent>
+						<SheetContent className="flex flex-col justify-between h-full pb-40">
 							<nav className="flex flex-col mt-4 gap-9">
 								{links.map((link, index) => (
 									<SheetClose asChild>
@@ -47,7 +51,6 @@ export default function Header(
 											)}
 										>
 											<span className="block">{link.icon}</span>
-
 											<span>
 												{link.text}
 											</span>
@@ -55,6 +58,7 @@ export default function Header(
 									</SheetClose>
 								))}
 							</nav>
+							<CardForLimit stories={storiesData!!.storyCount!!} />
 						</SheetContent>
 					</Sheet>
 					{email && userId ? <ProfileDropdown email={email} username={username} /> : <AuthButton />}
