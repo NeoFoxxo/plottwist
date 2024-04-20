@@ -155,7 +155,7 @@ export function LandingPage() {
 					}}
 					className="mt-[-7rem]"
 				>
-					<Button onClick={() => { window.location.assign('./login') }} className="w-40 h-10 text-xl" variant='default'>Try it out →</Button>
+					<Button onClick={() => { window.location.assign('./app') }} className="w-40 h-10 text-xl" variant='default'>Try it out →</Button>
 				</motion.h2>
 			</HeroHighlight>
 			<HeroHighlight>
