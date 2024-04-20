@@ -22,6 +22,8 @@ import Link from "next/link"
 import { useState } from "react"
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card"
 import { removeBookmark } from "@/utils/actions/database/removeBookmark"
+import Image from "next/image"
+import { userInfo } from "os"
 
 type SCENARIO_TYPES = {
 	scenario: {
@@ -51,12 +53,12 @@ type SCENARIO_TYPES = {
 		}
 	}
 	currentUser:
-		| {
-				user: any
-		  }
-		| {
-				user: null
-		  }
+	| {
+		user: any
+	}
+	| {
+		user: null
+	}
 }
 
 function truncateString(str: string, maxl: number) {
@@ -125,15 +127,16 @@ export function ScenarioCard({
 				<div className="flex items-center justify-between">
 					<CardItem translateZ="30">
 						<div className="flex flex-row mb-2">
-							<a href="" className="h-[fit-content] w-[fit-content] m-auto p-0">
-								<img
+							<Link href={`/profile/${data.data.name}`} className="flex items-center">
+								<Image
+									alt="User profile"
+									width={0}
+									height={0}
 									className="rounded-full w-7 h-7"
 									src={data.data!!.image!!}
-								></img>
-							</a>
-							<a href="" className="h-auto w-[fit-content] m-auto p-0">
+								/>
 								<p className="ml-2 text-sm hover:underline">{data.data.name}</p>
-							</a>
+							</Link>
 						</div>
 					</CardItem>
 					{data.data.user_id == currentUser.user.id && (
