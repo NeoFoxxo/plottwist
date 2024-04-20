@@ -218,44 +218,46 @@ export function ScenarioCard({
 										</Tooltip>
 									</TooltipProvider>
 								</CardItem>
-								<CardItem
-									as="button"
-									onClick={() => {
-										handleAddBookmark(bookmark)
-									}}
-									style={{ borderRadius: "1em" }}
-									className="text-xs font-bold bg-transparent rounded-x hover:bg-white/20"
-								>
-									<TooltipProvider delayDuration={300}>
-										<Tooltip>
-											<TooltipTrigger>
-												{bookmark ? (
-													isLoading ? (
+								{currentUser.user.id != "no user" && (
+									<CardItem
+										as="button"
+										onClick={() => {
+											handleAddBookmark(bookmark)
+										}}
+										style={{ borderRadius: "1em" }}
+										className="text-xs font-bold bg-transparent rounded-x hover:bg-white/20"
+									>
+										<TooltipProvider delayDuration={300}>
+											<Tooltip>
+												<TooltipTrigger>
+													{bookmark ? (
+														isLoading ? (
+															<Loader2 className="w-4 h-4 mx-4 my-2 animate-spin" />
+														) : (
+															<Trash className="mx-4 my-2 size-4" />
+														)
+													) : isLoading ? (
 														<Loader2 className="w-4 h-4 mx-4 my-2 animate-spin" />
 													) : (
-														<Trash className="mx-4 my-2 size-4" />
-													)
-												) : isLoading ? (
-													<Loader2 className="w-4 h-4 mx-4 my-2 animate-spin" />
-												) : (
-													<Bookmark className="mx-4 my-2 size-4"></Bookmark>
-												)}
-											</TooltipTrigger>
-											<TooltipContent
-												className="p-0 m-0 font-mono text-xs bg-transparent border-none outline-none font-extralight"
-												side="bottom"
-											>
-												{bookmark ? (
-													<p>Remove from bookmarks</p>
-												) : isLoading ? (
-													<span></span>
-												) : (
-													<p>Add to bookmarks</p>
-												)}
-											</TooltipContent>
-										</Tooltip>
-									</TooltipProvider>
-								</CardItem>
+														<Bookmark className="mx-4 my-2 size-4"></Bookmark>
+													)}
+												</TooltipTrigger>
+												<TooltipContent
+													className="p-0 m-0 font-mono text-xs bg-transparent border-none outline-none font-extralight"
+													side="bottom"
+												>
+													{bookmark ? (
+														<p>Remove from bookmarks</p>
+													) : isLoading ? (
+														<span></span>
+													) : (
+														<p>Add to bookmarks</p>
+													)}
+												</TooltipContent>
+											</Tooltip>
+										</TooltipProvider>
+									</CardItem>
+								)}
 							</div>
 						</CardItem>
 					) : scenario.published ? (
