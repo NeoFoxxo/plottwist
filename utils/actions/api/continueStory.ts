@@ -1,6 +1,7 @@
 "use server"
 import { extractStoryFromAI } from "../../extractStoryFromAI"
 import { AIResponse } from "../../supabase/types/AIResponse"
+import { incrementStoryPartCount } from "../database/incrementStoryPartCount"
 import updateStory from "../database/updateStory"
 
 export async function continueStory({
@@ -45,6 +46,7 @@ export async function continueStory({
 			choices: choices!!,
 			previousStoryId,
 		})
+		await incrementStoryPartCount(previousStoryId)
 		return { scenario, currentPart: story }
 	} catch (error) {
 		throw new Error(String(error))
