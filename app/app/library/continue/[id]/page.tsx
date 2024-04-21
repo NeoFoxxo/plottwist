@@ -2,9 +2,21 @@ import NotFound from "@/app/not-found"
 import ContinueStory from "@/components/ContinueStory"
 import { getStory } from "@/utils/actions/database/getStory"
 import { createClient } from "@/utils/supabase/server"
+import { Metadata } from "next"
 import { redirect } from "next/navigation"
 
-export default async function Continue({ params }: { params: { id: string } }) {
+type ContinueProps = {
+	params: { id: string }
+}
+
+export const generateMetadata = ({ params }: ContinueProps): Metadata => {
+	return {
+		title: `Continue Story ${params.id}`,
+		description: `Continue your comprehensive journey`
+	}
+}
+
+export default async function Continue({ params }: ContinueProps) {
 	const supabase = createClient()
 
 	const {
@@ -25,7 +37,7 @@ export default async function Continue({ params }: { params: { id: string } }) {
 	if (scenario?.user_id != user_id) return <NotFound />
 
 	return (
-		<main className="flex flex-col flex-1 my-4 md:p-10 justify-start items-center w-full md:w-fit">
+		<main className="flex flex-col items-center justify-start flex-1 w-full my-4 md:p-10 md:w-fit">
 			<ContinueStory scenarioData={scenario!!} />
 		</main>
 	)

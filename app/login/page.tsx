@@ -2,12 +2,20 @@ import { siteurl } from "@/utils/siteurl"
 import { createClient } from "@/utils/supabase/server"
 import { redirect } from "next/navigation"
 import { SubmitButton } from "./submit-button"
+import { Metadata } from "next"
+
+type LoginProps = {
+	searchParams: { message: string }
+}
+
+export const metadata: Metadata = {
+	title: "Login",
+	description: "Either create or log in to an account"
+}
 
 export default function Login({
 	searchParams,
-}: {
-	searchParams: { message: string }
-}) {
+}: LoginProps) {
 	async function signIn(formData: FormData) {
 		"use server"
 
@@ -31,8 +39,8 @@ export default function Login({
 	}
 
 	return (
-		<div className="pt-40 flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2">
-			<form className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground">
+		<div className="flex flex-col justify-center flex-1 w-full gap-2 px-8 pt-40 sm:max-w-md">
+			<form className="flex flex-col justify-center flex-1 w-full gap-2 animate-in text-foreground">
 				<div className="mb-5">
 					<h1 className="text-2xl font-bold">Sign in</h1>
 					<h2>Simply provide your email to continue to Plot Twist</h2>
@@ -41,7 +49,7 @@ export default function Login({
 					Email
 				</label>
 				<input
-					className="rounded-md px-4 py-2 bg-inherit border mb-6"
+					className="px-4 py-2 mb-6 border rounded-md bg-inherit"
 					name="email"
 					type="email"
 					placeholder="you@example.com"
@@ -50,13 +58,13 @@ export default function Login({
 				<SubmitButton
 					formAction={signIn}
 					style={{ border: "solid 1px rgba(255,255,255,0.300)" }}
-					className="bg-black/30 hover:bg-gray-400/30 transition-all rounded-md px-4 py-2 text-foreground mb-2"
+					className="px-4 py-2 mb-2 transition-all rounded-md bg-black/30 hover:bg-gray-400/30 text-foreground"
 					pendingText="Signing In..."
 				>
 					Sign In
 				</SubmitButton>
 				{searchParams?.message && (
-					<p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
+					<p className="p-4 mt-4 text-center bg-foreground/10 text-foreground">
 						{searchParams.message}
 					</p>
 				)}

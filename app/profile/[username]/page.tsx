@@ -5,12 +5,24 @@ import { getUserStories } from "@/utils/actions/database/getUserStories"
 import { getUserTotalBookmarks } from "@/utils/actions/database/getUserTotalBookmarks"
 import getUserInfoByName from "@/utils/actions/database/getUserinfoByName"
 import { createClient } from "@/utils/supabase/server"
+import { Metadata } from "next"
+
+type ProfileProps = {
+	params: {
+		username: string
+	}
+}
+
+export const generateMetadata = ({ params }: ProfileProps): Metadata => {
+	return {
+		title: `@${params.username}`,
+		description: `Here you can see all of ${params.username} public info`
+	}
+}
 
 export default async function Profile({
 	params,
-}: {
-	params: { username: string }
-}) {
+}: ProfileProps) {
 	const supabase = createClient()
 	const {
 		data: { user },

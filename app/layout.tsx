@@ -4,12 +4,14 @@ import { siteurl } from "@/utils/siteurl"
 import { createClient } from "@/utils/supabase/server"
 import { GeistSans } from "geist/font/sans"
 import "./globals.css"
-import Head from "next/head"
 
 export const metadata = {
 	metadataBase: new URL(siteurl),
-	title: "plottwist.",
-	description: "Choose your story.",
+	title: {
+		default: "Plottwist",
+		template: "%s | Plottwist"
+	},
+	description: "Plottwist. Stories for you.",
 }
 
 export default async function RootLayout({

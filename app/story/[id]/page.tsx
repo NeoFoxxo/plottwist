@@ -36,15 +36,25 @@ import getUserInfo from "@/utils/actions/database/getUserinfo"
 import { createClient } from "@/utils/supabase/server"
 import { truncateString } from "@/utils/truncateString"
 import { CalendarDays, MessageSquareText } from "lucide-react"
+import { Metadata } from "next"
 import Link from "next/link"
+
+type StoryProps = {
+	params: { id: string }
+	searchParams: { isReview: boolean }
+}
+
+export const generateMetadata = ({ params }: StoryProps): Metadata => {
+	return {
+		title: `Story ${params.id}`,
+		description: `See what its all about`
+	}
+}
 
 export default async function StoryDetails({
 	params,
 	searchParams,
-}: {
-	params: { id: string }
-	searchParams: { isReview: boolean }
-}) {
+}: StoryProps) {
 	const supabase = createClient()
 	const {
 		data: { user },
@@ -308,9 +318,8 @@ export default async function StoryDetails({
 											<div className="flex justify-between">
 												<div className="flex flex-row gap-2">
 													<Link
-														href={`/profile/${
-															(await getUserInfo(rev.user_id)).data.name
-														}`}
+														href={`/profile/${(await getUserInfo(rev.user_id)).data.name
+															}`}
 														className="flex gap-2"
 													>
 														<img

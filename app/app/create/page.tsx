@@ -1,13 +1,21 @@
 import CreatePrompt from "@/components/CreatePrompt"
 import { getStoryPrompt } from "@/utils/actions/database/getStoryPrompt"
 import { createClient } from "@/utils/supabase/server"
+import { Metadata } from "next"
 import { redirect } from "next/navigation"
+
+type CreateProps = {
+	searchParams: { remix: number }
+}
+
+export const metadata: Metadata = {
+	title: "Create",
+	description: "Imagine. Create. Enjoy."
+}
 
 export default async function Create({
 	searchParams,
-}: {
-	searchParams: { remix: number }
-}) {
+}: CreateProps) {
 	const remixId = searchParams.remix
 
 	const supabase = createClient()

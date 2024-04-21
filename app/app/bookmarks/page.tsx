@@ -2,7 +2,13 @@ import BookmarksCard from "@/components/BookmarksCard";
 import { getBookmarks } from "@/utils/actions/database/getBookmarks";
 import getUserInfo from "@/utils/actions/database/getUserinfo";
 import { createClient } from "@/utils/supabase/server";
+import { Metadata } from "next";
 import { redirect } from "next/navigation";
+
+export const metadata: Metadata = {
+  title: "Bookmarks",
+  description: "All of your saved stories"
+}
 
 export default async function Bookmarks() {
   const supabase = createClient();
@@ -17,7 +23,7 @@ export default async function Bookmarks() {
 
   if (!scenarios[0])
     return (
-      <div className="w-full flex flex-col gap-10 justify-center items-center">
+      <div className="flex flex-col items-center justify-center w-full gap-10">
         <h2
           style={{ textShadow: "0em 0em 0.6em white" }}
           className="text-3xl font-bold"
@@ -29,15 +35,15 @@ export default async function Bookmarks() {
     );
 
   return (
-    <div className="w-full flex flex-col gap-10 justify-center items-center">
+    <div className="flex flex-col items-center justify-center w-full gap-10">
       <h2
         style={{ textShadow: "0em 0em 0.6em white" }}
         className="text-3xl font-bold"
       >
         Bookmarks
       </h2>
-      <section className="w-full flex flex-wrap gap-10 items-center justify-center">
-        <div className="w-full flex flex-wrap justify-start items start"></div>
+      <section className="flex flex-wrap items-center justify-center w-full gap-10">
+        <div className="flex flex-wrap justify-start w-full items start"></div>
         {scenarios.map(async (scenario) => (
           <BookmarksCard
             key={scenario.id}
