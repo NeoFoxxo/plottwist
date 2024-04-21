@@ -19,7 +19,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 type BOOKMARK_INPUT_TYPES = {
 	scenario: {
 		created_at: string
-		follow_count: number
+		story_part_count: number
 		id: number
 		prompt: string | null
 		story: string | null
@@ -96,8 +96,11 @@ export default function BookmarksCard({
 
 	const r = Math.floor(Math.random() * shadowcolor.length)
 
-	const dateObj = new Date(data.data.created_at as string);
-	const date = dateObj.toLocaleString('en-US', { month: 'long', year: 'numeric' })
+	const dateObj = new Date(data.data.created_at as string)
+	const date = dateObj.toLocaleString("en-US", {
+		month: "long",
+		year: "numeric",
+	})
 
 	return (
 		<CardContainer className="inter-var h-[10rem] p-4 my-7">
@@ -108,7 +111,10 @@ export default function BookmarksCard({
 					<div className="flex flex-row mb-2">
 						<HoverCard>
 							<HoverCardTrigger asChild>
-								<Link href={`/profile/${data.data.name}`} className="flex items-center">
+								<Link
+									href={`/profile/${data.data.name}`}
+									className="flex items-center"
+								>
 									<img
 										alt="User profile"
 										width={0}
@@ -116,13 +122,15 @@ export default function BookmarksCard({
 										className="rounded-full w-7 h-7"
 										src={data.data!!.image!!}
 									></img>
-									<p className="flex ml-2 text-sm hover:underline">{data.data.name}
+									<p className="flex ml-2 text-sm hover:underline">
+										{data.data.name}
 										{data.data.admin && (
 											<img
 												src="/icons/admin.png"
-												className="w-3.5 h-3.5 flex ml-[0.4rem] my-auto">
-											</img>
-										)}</p>
+												className="w-3.5 h-3.5 flex ml-[0.4rem] my-auto"
+											></img>
+										)}
+									</p>
 								</Link>
 							</HoverCardTrigger>
 							<HoverCardContent className="ml-36">
@@ -133,7 +141,9 @@ export default function BookmarksCard({
 											<AvatarFallback>VC</AvatarFallback>
 										</Avatar>
 										<div className="pt-1.5 space-y-1">
-											<h4 className="text-sm font-semibold">@{data.data.name}</h4>
+											<h4 className="text-sm font-semibold">
+												@{data.data.name}
+											</h4>
 											<p className="text-sm">
 												{truncateString(data.data.bio as string, 60)}
 											</p>
@@ -148,8 +158,8 @@ export default function BookmarksCard({
 									{data.data.admin && (
 										<img
 											src="/icons/admin.png"
-											className="w-3.5 h-3.5 flex ml-[0.4rem] mb-auto">
-										</img>
+											className="w-3.5 h-3.5 flex ml-[0.4rem] mb-auto"
+										></img>
 									)}
 								</div>
 							</HoverCardContent>

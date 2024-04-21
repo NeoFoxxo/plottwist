@@ -1,10 +1,10 @@
 import NotFound from "@/app/not-found"
 import ContinueStory from "@/components/ContinueStory"
-import { getStory, getStoryReturnType } from "@/utils/actions/database/getStory"
+import { getStory } from "@/utils/actions/database/getStory"
 import { createClient } from "@/utils/supabase/server"
 import { redirect } from "next/navigation"
 
-export default async function Create({ params }: { params: { id: string } }) {
+export default async function Continue({ params }: { params: { id: string } }) {
 	const supabase = createClient()
 
 	const {

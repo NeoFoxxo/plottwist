@@ -4,7 +4,7 @@ export interface getStoryReturnType {
 	choices: string[] | null
 	created_at: string
 	finished: boolean | null
-	follow_count: number
+	story_part_count: number
 	id: number
 	prompt: string | null
 	published: boolean | null

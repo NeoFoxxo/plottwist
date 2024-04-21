@@ -2,6 +2,7 @@ import NotFound from "@/app/not-found"
 import UserProfile from "@/components/UserProfile"
 import { getStars } from "@/utils/actions/database/getStars"
 import { getUserStories } from "@/utils/actions/database/getUserStories"
+import { getUserTotalBookmarks } from "@/utils/actions/database/getUserTotalBookmarks"
 import getUserInfoByName from "@/utils/actions/database/getUserinfoByName"
 import { createClient } from "@/utils/supabase/server"
 
@@ -29,7 +30,7 @@ export default async function Profile({
 		return <NotFound />
 	}
 
-	const userStories: any = await getUserStories(userInfo.profile.user_id);
+	const userStories: any = await getUserStories(userInfo.profile.user_id)
 
 	let hasStarred: boolean
 
@@ -42,15 +43,19 @@ export default async function Profile({
 		})
 	}
 
+	const userTotalBookmarks = await getUserTotalBookmarks(
+		userInfo.profile.user_id
+	)
+
 	return (
 		<div className="flex flex-col items-center flex-1 w-full m-4 text-2xl">
 			<UserProfile
 				storyCount={userInfo.storyCount}
 				profileData={userInfo.profile}
-				date={userInfo.date}
 				userId={user_id}
 				hasStarred={hasStarred}
 				stories={userStories}
+				userTotalBookmarks={userTotalBookmarks}
 			/>
 		</div>
 	)

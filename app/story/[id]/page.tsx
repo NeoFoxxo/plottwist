@@ -1,94 +1,109 @@
-import NotFound from "@/app/not-found";
-import AnimateStory from "@/components/AnimateStory";
-import BookmarkedButton from "@/components/BookmarkedButton";
-import CreateReview from "@/components/CreateReview";
-import DeleteReview from "@/components/DeleteReview";
-import RemixButton from "@/components/RemixButton";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { buttonVariants } from "@/components/ui/button";
+import NotFound from "@/app/not-found"
+import AnimateStory from "@/components/AnimateStory"
+import BookmarkedButton from "@/components/BookmarkedButton"
+import CreateReview from "@/components/CreateReview"
+import DeleteReview from "@/components/DeleteReview"
+import RemixButton from "@/components/RemixButton"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { buttonVariants } from "@/components/ui/button"
 import {
 	Dialog,
 	DialogContent,
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
-} from "@/components/ui/dialog";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+} from "@/components/ui/dialog"
+import {
+	HoverCard,
+	HoverCardContent,
+	HoverCardTrigger,
+} from "@/components/ui/hover-card"
 import {
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
 	TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { TracingBeam } from "@/components/ui/tracing-beam";
-import { cn } from "@/lib/utils";
-import { getBookmarksId } from "@/utils/actions/database/getBookmarksId";
-import { getReviews } from "@/utils/actions/database/getReviews";
-import getSession from "@/utils/actions/database/getSession";
-import { getStory, getStoryReturnType } from "@/utils/actions/database/getStory";
-import getStoryBookmarkCount from "@/utils/actions/database/getStoryBookmarkCount";
-import getUserInfo from "@/utils/actions/database/getUserinfo";
-import { createClient } from "@/utils/supabase/server";
-import { truncateString } from "@/utils/truncateString";
-import { CalendarDays, MessageSquareText } from "lucide-react";
-import Link from "next/link";
+} from "@/components/ui/tooltip"
+import { TracingBeam } from "@/components/ui/tracing-beam"
+import { cn } from "@/lib/utils"
+import { getBookmarksId } from "@/utils/actions/database/getBookmarksId"
+import { getReviews } from "@/utils/actions/database/getReviews"
+import getSession from "@/utils/actions/database/getSession"
+import { getStory, getStoryReturnType } from "@/utils/actions/database/getStory"
+import getStoryBookmarkCount from "@/utils/actions/database/getStoryBookmarkCount"
+import { getUserTotalBookmarks } from "@/utils/actions/database/getUserTotalBookmarks"
+import getUserInfo from "@/utils/actions/database/getUserinfo"
+import { createClient } from "@/utils/supabase/server"
+import { truncateString } from "@/utils/truncateString"
+import { CalendarDays, MessageSquareText } from "lucide-react"
+import Link from "next/link"
 
 export default async function StoryDetails({
 	params,
 	searchParams,
 }: {
-	params: { id: string };
-	searchParams: { isReview: boolean };
+	params: { id: string }
+	searchParams: { isReview: boolean }
 }) {
-	const supabase = createClient();
+	const supabase = createClient()
 	const {
 		data: { user },
-	} = await supabase.auth.getUser();
+	} = await supabase.auth.getUser()
 
-	let user_id = user?.id;
-	if (!user_id) user_id = "no user";
+	let user_id = user?.id
+	if (!user_id) user_id = "no user"
 
-	let story: getStoryReturnType | null;
+	let story: getStoryReturnType | null
 
 	try {
-		story = await getStory(params.id);
+		story = await getStory(params.id)
 	} catch (error) {
-		return <NotFound />;
+		return <NotFound />
 	}
 
-	let author = await getUserInfo(story?.user_id!!);
+	let author = await getUserInfo(story?.user_id!!)
 
 	// if the story is private and the current user is not the author, 404 since its nun of their business
 	if (story?.published === false && author.data.user_id != user_id)
-		return <NotFound />;
+		return <NotFound />
 
-	const bookmarks = await getBookmarksId(user_id);
-	const bookmarkCount = await getStoryBookmarkCount(story!!.id);
-	const isBookmarked = bookmarks.includes(story!!?.id) ? true : false;
+	const bookmarks = await getBookmarksId(user_id)
+	const bookmarkCount = await getStoryBookmarkCount(story!!.id)
+	const isBookmarked = story && bookmarks.includes(story.id) ? true : false
 
-	const accountInfo = [author.stories!!, author.data.star_count, bookmarkCount];
+	const userTotalBookmarks = story?.user_id
+		? await getUserTotalBookmarks(story.user_id)
+		: 0
 
-	const icons = ["/icons/book.png", "/icons/star.png", "/icons/bookmark.png"];
+	const accountInfo = [
+		author.stories!!,
+		author.data.star_count,
+		userTotalBookmarks,
+	]
+
+	const icons = ["/icons/book.png", "/icons/star.png", "/icons/bookmark.png"]
 
 	const reviews = await getReviews({
 		storyId: Number(params.id),
 		commentsCount: 20,
-	});
+	})
 
-	const currentUser = await getSession();
-
+	const currentUser = await getSession()
 	function simplifyNumber(number: number) {
 		if (number >= 1000000) {
-			return (number / 1000000).toFixed(1) + "M";
+			return (number / 1000000).toFixed(1) + "M"
 		} else if (number >= 1000) {
-			return (number / 1000).toFixed(1) + "K";
+			return (number / 1000).toFixed(1) + "K"
 		} else {
-			return number;
+			return number
 		}
 	}
 
-	const dateObj = new Date(author.data.created_at as string);
-	const date = dateObj.toLocaleString('en-US', { month: 'long', year: 'numeric' })
+	const dateObj = new Date(author.data.created_at as string)
+	const date = dateObj.toLocaleString("en-US", {
+		month: "long",
+		year: "numeric",
+	})
 
 	return (
 		<main className="flex flex-col w-full gap-2 py-8 mx-auto my-12">
@@ -110,7 +125,10 @@ export default async function StoryDetails({
 					<div className="flex flex-row mb-2">
 						<HoverCard>
 							<HoverCardTrigger asChild>
-								<Link href={`/profile/${author.data.name}`} className="flex items-center gap-x-2">
+								<Link
+									href={`/profile/${author.data.name}`}
+									className="flex items-center gap-x-2"
+								>
 									<img
 										alt="User profile"
 										width={0}
@@ -119,12 +137,13 @@ export default async function StoryDetails({
 										src={author.data.image as string}
 									></img>
 									<div className="flex flex-col items-start gap-1">
-										<p className="flex text-sm hover:underline">{author.data.name}
+										<p className="flex text-sm hover:underline">
+											{author.data.name}
 											{author.data.admin && (
 												<img
 													src="/icons/admin.png"
-													className="w-3.5 h-3.5 flex ml-[0.4rem] my-auto">
-												</img>
+													className="w-3.5 h-3.5 flex ml-[0.4rem] my-auto"
+												></img>
 											)}
 										</p>
 										<div className="flex flex-row text-start">
@@ -159,7 +178,9 @@ export default async function StoryDetails({
 											<AvatarFallback>VC</AvatarFallback>
 										</Avatar>
 										<div className="pt-1.5 space-y-1">
-											<h4 className="text-sm font-semibold">@{author.data.name}</h4>
+											<h4 className="text-sm font-semibold">
+												@{author.data.name}
+											</h4>
 											<p className="text-sm">
 												{truncateString(author.data.bio as string, 60)}
 											</p>
@@ -174,8 +195,8 @@ export default async function StoryDetails({
 									{author.data.admin && (
 										<img
 											src="/icons/admin.png"
-											className="w-3.5 h-3.5 flex ml-[0.4rem] mb-auto">
-										</img>
+											className="w-3.5 h-3.5 flex ml-[0.4rem] mb-auto"
+										></img>
 									)}
 								</div>
 							</HoverCardContent>
@@ -209,7 +230,10 @@ export default async function StoryDetails({
 											<Dialog defaultOpen={searchParams.isReview}>
 												<DialogTrigger asChild>
 													<Link
-														className={cn(buttonVariants({ variant: "outline", }), "flex gap-2.5 px-8")}
+														className={cn(
+															buttonVariants({ variant: "outline" }),
+															"flex gap-2.5 px-8"
+														)}
 														href={""}
 													>
 														<MessageSquareText className="size-4"></MessageSquareText>
@@ -283,13 +307,22 @@ export default async function StoryDetails({
 										<div className="my-2">
 											<div className="flex justify-between">
 												<div className="flex flex-row gap-2">
-													<Link href={`/profile/${(await getUserInfo(rev.user_id)).data.name}`} className="flex gap-2">
+													<Link
+														href={`/profile/${
+															(await getUserInfo(rev.user_id)).data.name
+														}`}
+														className="flex gap-2"
+													>
 														<img
 															className="w-6 h-6 rounded-full"
 															width={0}
 															height={0}
-															src={(await getUserInfo(rev.user_id)).data!!
-																.image!! || "/icons/pfp1.png"} alt={"User profile"} />
+															src={
+																(await getUserInfo(rev.user_id)).data!!
+																	.image!! || "/icons/pfp1.png"
+															}
+															alt={"User profile"}
+														/>
 
 														<h2
 															style={{
@@ -320,6 +353,6 @@ export default async function StoryDetails({
 					</div>
 				</div>
 			</div>
-		</main >
-	);
+		</main>
+	)
 }
