@@ -30,7 +30,7 @@ import { truncateString } from "@/utils/truncateString"
 type SCENARIO_TYPES = {
 	scenario: {
 		created_at: string
-		follow_count: number
+		story_part_count: number
 		id: number
 		prompt: string | null
 		story: string | null
@@ -87,29 +87,27 @@ export function LibraryCard({ scenario }: SCENARIO_TYPES) {
 			<CardBody
 				className={`transition-all bg-gray-50 relative group/card shadow-2xl dark:bg-black/50 ${bordercolor[r]} ${shadowcolor[r]} hover:border-white w-auto h-auto max-md:h-auto my-auto sm:w-[25rem] max-w-[25rem] rounded-xl p-7 m-10 border flex flex-col`}
 			>
-				{
-					finished ? (
-						<CardItem
-							href={`/story/${scenario.id}`}
-							as={Link}
-							style={{ cursor: "pointer" }}
-							translateZ="50"
-							className="text-xl font-bold text-neutral-600 dark:text-white"
-						>
-							{title}
-						</CardItem>
-					) : (
-						<CardItem
-							href={`/app/library/continue/${scenario.id}`}
-							as={Link}
-							style={{ cursor: "pointer" }}
-							translateZ="50"
-							className="text-xl font-bold text-neutral-600 dark:text-white"
-						>
-							{title}
-						</CardItem>
-					)
-				}
+				{finished ? (
+					<CardItem
+						href={`/story/${scenario.id}`}
+						as={Link}
+						style={{ cursor: "pointer" }}
+						translateZ="50"
+						className="text-xl font-bold text-neutral-600 dark:text-white"
+					>
+						{title}
+					</CardItem>
+				) : (
+					<CardItem
+						href={`/app/library/continue/${scenario.id}`}
+						as={Link}
+						style={{ cursor: "pointer" }}
+						translateZ="50"
+						className="text-xl font-bold text-neutral-600 dark:text-white"
+					>
+						{title}
+					</CardItem>
+				)}
 				<CardItem
 					as="p"
 					translateZ="60"
