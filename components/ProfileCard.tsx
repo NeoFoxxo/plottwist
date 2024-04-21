@@ -1,19 +1,9 @@
 "use client"
 
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipProvider,
-	TooltipTrigger,
-} from "@/components/ui/tooltip"
-import { addBookmark } from "@/utils/actions/database/addBookmark"
-import unPublish from "@/utils/actions/database/privateStory"
-import publish from "@/utils/actions/database/publishStory"
-import { Bookmark, Globe, Loader2, Lock, MessageSquareText } from "lucide-react"
+import { Loader2 } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card"
-import { removeBookmark } from "@/utils/actions/database/removeBookmark"
 import { truncateString } from "@/utils/truncateString"
 
 type SCENARIO_TYPES = {
