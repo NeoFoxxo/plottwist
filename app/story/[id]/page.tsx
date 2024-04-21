@@ -62,9 +62,10 @@ export default async function StoryDetails({
 
 	const bookmarks = await getBookmarksId(user_id)
 	const bookmarkCount = await getStoryBookmarkCount(story!!.id)
-	const isBookmarked = bookmarks.includes(story!!?.id) ? true : false
+	const isBookmarked = story && bookmarks.includes(story.id) ? true : false
 
-	const userTotalBookmarks = await getUserTotalBookmarks(story.user_id!!)
+	const userTotalBookmarks =
+		story?.user_id && (await getUserTotalBookmarks(story.user_id)) ? true : 0
 
 	const accountInfo = [
 		author.stories!!,

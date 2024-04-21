@@ -225,7 +225,7 @@ export type Database = {
 					title: string
 					prompt: string
 					story: string
-					follow_count: number
+					story_part_count: number
 					created_at: string
 					choices: string[]
 					published: boolean
