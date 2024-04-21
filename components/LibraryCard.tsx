@@ -87,15 +87,29 @@ export function LibraryCard({ scenario }: SCENARIO_TYPES) {
 			<CardBody
 				className={`transition-all bg-gray-50 relative group/card shadow-2xl dark:bg-black/50 ${bordercolor[r]} ${shadowcolor[r]} hover:border-white w-auto h-auto max-md:h-auto my-auto sm:w-[25rem] max-w-[25rem] rounded-xl p-7 m-10 border flex flex-col`}
 			>
-				<CardItem
-					href={`/story/${scenario.id}`}
-					as={Link}
-					style={{ cursor: "pointer" }}
-					translateZ="50"
-					className="text-xl font-bold text-neutral-600 dark:text-white"
-				>
-					{title}
-				</CardItem>
+				{
+					finished ? (
+						<CardItem
+							href={`/story/${scenario.id}`}
+							as={Link}
+							style={{ cursor: "pointer" }}
+							translateZ="50"
+							className="text-xl font-bold text-neutral-600 dark:text-white"
+						>
+							{title}
+						</CardItem>
+					) : (
+						<CardItem
+							href={`/app/library/continue/${scenario.id}`}
+							as={Link}
+							style={{ cursor: "pointer" }}
+							translateZ="50"
+							className="text-xl font-bold text-neutral-600 dark:text-white"
+						>
+							{title}
+						</CardItem>
+					)
+				}
 				<CardItem
 					as="p"
 					translateZ="60"
@@ -219,15 +233,27 @@ export function LibraryCard({ scenario }: SCENARIO_TYPES) {
 								</>
 							)}
 							<AlertDialog>
-								<AlertDialogTrigger asChild>
-									<Button variant={"ghost"} className="px-2.5">
-										{isLoading2 ? (
-											<Loader2 className="animate-spin" size={18} />
-										) : (
-											<Trash size={18} />
-										)}
-									</Button>
-								</AlertDialogTrigger>
+								<TooltipProvider delayDuration={300}>
+									<Tooltip>
+										<TooltipTrigger>
+											<AlertDialogTrigger asChild>
+												<Button variant={"ghost"} className="px-2.5">
+													{isLoading2 ? (
+														<Loader2 className="animate-spin" size={18} />
+													) : (
+														<Trash size={18} />
+													)}
+												</Button>
+											</AlertDialogTrigger>
+										</TooltipTrigger>
+										<TooltipContent
+											className="p-0 pt-1 m-0 border-none outline-none font-mono bg-transparent text-xs font-extralight"
+											side="bottom"
+										>
+											<p>Delete</p>
+										</TooltipContent>
+									</Tooltip>
+								</TooltipProvider>
 								<AlertDialogContent>
 									<AlertDialogHeader>
 										<AlertDialogTitle>
