@@ -1,6 +1,4 @@
-import BookmarksCard from "@/components/BookmarksCard";
 import { PaginateBookmarks } from "@/components/PaginationBookmarks";
-import { getBookmarks } from "@/utils/actions/database/getBookmarks";
 import getUserInfo from "@/utils/actions/database/getUserinfo";
 import { createClient } from "@/utils/supabase/server";
 import { Metadata } from "next";
@@ -20,20 +18,7 @@ export default async function Bookmarks() {
   const user_id = user?.id;
   if (!user_id) redirect("/login");
 
-  const scenarios = await getBookmarks(user_id);
-
-  if (!scenarios[0])
-    return (
-      <div className="flex flex-col items-center justify-center w-full gap-10">
-        <h2
-          style={{ textShadow: "0em 0em 0.6em white" }}
-          className="text-3xl font-bold"
-        >
-          Bookmarks
-        </h2>
-        <p>You have no bookmarks, try saving something from the dashboard!</p>
-      </div>
-    );
+  const userInfo = await getUserInfo(user_id);
 
   return (
     <div className="flex flex-col items-center justify-center w-full gap-10">
@@ -43,7 +28,7 @@ export default async function Bookmarks() {
       >
         Bookmarks
       </h2>
-      <PaginateBookmarks userId={user_id} />
+      <PaginateBookmarks userId={user_id} userInfo={userInfo} />
     </div>
   );
 }
