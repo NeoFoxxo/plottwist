@@ -182,6 +182,12 @@ export default function UserProfile({
 					</CardBody>
 				</CardContainer>
 			</div>
+			<h4
+				style={{ textShadow: "0em 0em 0.6em white" }}
+				className="text-3xl font-bold text-center"
+			>
+				Stories
+			</h4>
 			{stories.map((story: story) => (
 				<ProfileCard scenario={story}></ProfileCard>
 			))}
