@@ -9,13 +9,15 @@ export default async function DashboardDesktop({
 	recentStories,
 	userData,
 	bookmark,
-	storyCount,
+	recentStoriesCount,
+	mostPopularCount,
 }: {
 	mostPopular: story[]
 	recentStories: story[]
 	userData: any
 	bookmark: number[]
-	storyCount: number
+	recentStoriesCount: number
+	mostPopularCount: number
 }) {
 	// fetch all data at once so that we dont have any undefined errors
 	const { mostPopularData, recentStoriesData } = await getScenarioData(
@@ -45,7 +47,10 @@ export default async function DashboardDesktop({
 								commentCount={data.commentCount}
 							/>
 						))}
-						<ShowMoreButton storyCount={storyCount} />
+						<ShowMoreButton
+							storyCount={mostPopularCount}
+							section="mostPopular"
+						/>
 						<div className="pb-20"></div>
 					</div>
 				</ScrollArea>
@@ -70,7 +75,10 @@ export default async function DashboardDesktop({
 								commentCount={data.commentCount}
 							/>
 						))}
-						<ShowMoreButton storyCount={storyCount} />
+						<ShowMoreButton
+							storyCount={recentStoriesCount}
+							section="recentStories"
+						/>
 						<div className="pb-20"></div>
 					</div>
 				</ScrollArea>
