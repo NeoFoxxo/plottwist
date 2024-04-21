@@ -201,7 +201,7 @@ export default function CreatePrompt({
 					<div className="flex gap-1">
 						{
 							!pending && (
-								storyPartCount >= 1 && storyPartCount < 8 && (
+								storyPartCount >= 2 && storyPartCount < 8 && (
 									<Button onClick={() => { setFinal(!final); }} >{final ? (<p className='flex mx-auto'>Set as last choice</p>) : 'Set as last choice'}</Button>
 								)
 							)
