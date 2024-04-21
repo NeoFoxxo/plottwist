@@ -3,12 +3,18 @@ import DashboardMobile from "@/components/DashboardMobile"
 import { getBookmarksId } from "@/utils/actions/database/getBookmarksId"
 import { getScenarios } from "@/utils/actions/database/getScenarios"
 import { createClient } from "@/utils/supabase/server"
+import { Metadata } from "next"
 
-export default async function Dashboard({
-	searchParams,
-}: {
+type DashboardProps = {
 	searchParams: { mostPopularCount: string; recentStoryCount: string }
-}) {
+}
+
+export const metadata: Metadata = {
+	title: `Dashboard`,
+	description: `Discover the most popular and recently published interactive stories on Plot Twist, a unique platform to create interactive stories where your choices shape the narrative. Join Plot Twist today and unlock your storytelling potential.`,
+}
+
+export default async function Dashboard({ searchParams }: DashboardProps) {
 	const supabase = createClient()
 
 	let { data, error } = await supabase.auth.getUser()

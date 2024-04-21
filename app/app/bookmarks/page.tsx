@@ -5,18 +5,18 @@ import { Metadata } from "next";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "Bookmarks",
-  description: "All of your saved stories"
+	title: "Bookmarks",
+	description: "View your bookmarked stories on Plot Twist",
 }
 
 export default async function Bookmarks() {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+	const supabase = createClient()
+	const {
+		data: { user },
+	} = await supabase.auth.getUser()
 
-  const user_id = user?.id;
-  if (!user_id) redirect("/login");
+	const user_id = user?.id
+	if (!user_id) redirect("/login")
 
   const userInfo = await getUserInfo(user_id);
 
@@ -31,4 +31,3 @@ export default async function Bookmarks() {
       <PaginateBookmarks userId={user_id} userInfo={userInfo} />
     </div>
   );
-}
