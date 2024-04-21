@@ -1,13 +1,17 @@
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/utils/supabase/client";
 
-export default async function getPinnedStories(user_id: string) {
+export default async function getPinnedStories(
+  user_id: string,
+  currentSlice: number
+) {
   const supabase = createClient();
 
   let { data: userStories, error } = await supabase
     .from("scenarios")
     .select("*")
     .order("pinned", { ascending: false })
-    .eq("user_id", user_id);
+    .eq("user_id", user_id)
+    .range(currentSlice, currentSlice + 1);
 
   const sortedStories = userStories?.sort((a, b) => {
     if (a.pinned === b.pinned) {

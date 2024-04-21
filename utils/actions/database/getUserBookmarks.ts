@@ -14,16 +14,18 @@ export interface getStoryReturnType {
   user_id: string | null;
 }
 
-export async function getUserStories(user_id: string, currentSlice: number) {
+export async function getUserBookmarks(user_id: string, currentSlice: number) {
   const supabase = createClient();
 
-  let { data: story, error } = await supabase
-    .from("scenarios")
-    .select("*")
-    .eq("user_id", user_id)
-    .eq("published", "true")
-    .range(currentSlice, currentSlice + 1);
+  let { data: bookmarks, error } = await supabase.rpc(
+    "get_bookmark_pagination_rpc",
+    {
+      b_user_id: user_id,
+      page_no: currentSlice,
+      page_size: 2,
+    }
+  );
 
-  if (error) throw new Error("Getting the story failed!");
-  return story;
+  if (error) throw new Error("Getting bookmarks failed!");
+  return bookmarks;
 }
