@@ -100,7 +100,6 @@ export default function CreatePrompt({
 	}
 
 	async function generateFromChoice(choice: string, finish: boolean) {
-		console.log(finish)
 		setStoryPartCount((storyPartCount) => storyPartCount + 1)
 		setErrorMessage("")
 		if (finish == true) {
@@ -110,7 +109,7 @@ export default function CreatePrompt({
 				previousStoryId: scenario?.id!!,
 				currentStory: scenario?.story!!,
 			})
-			setStoryPartCount(9);
+			setStoryPartCount(9)
 			return
 		}
 		if (storyPartCount >= 8) {
@@ -199,18 +198,22 @@ export default function CreatePrompt({
 						))}
 					</article>
 					<div className="flex gap-1">
-						{
-							!pending && (
-								storyPartCount >= 2 && storyPartCount < 8 && (
-									<Button onClick={() => { setFinal(!final); }} >{final ? (<p className='flex mx-auto'>Set as last choice</p>) : 'Set as last choice'}</Button>
-								)
-							)
-						}
-						{
-							final && storyPartCount < 9 && (
-								<Check className="p-0 ml-1 my-auto" />
-							)
-						}
+						{!pending && storyPartCount >= 2 && storyPartCount < 8 && (
+							<Button
+								onClick={() => {
+									setFinal(!final)
+								}}
+							>
+								{final ? (
+									<p className="flex mx-auto">Set as last choice</p>
+								) : (
+									"Set as last choice"
+								)}
+							</Button>
+						)}
+						{final && storyPartCount < 9 && (
+							<Check className="p-0 ml-1 my-auto" />
+						)}
 					</div>
 					{storyPartCount === 1 ? (
 						<>
@@ -247,26 +250,26 @@ export default function CreatePrompt({
 							</>
 						) : (
 							<>
-								{
-									!pending && (
-										<>
-											<h4 className="font-semibold">Make your choice:</h4>
-											{scenario!!.choices!!.map((choice, index) => {
-												return (
-													<>
-														<div
-															key={index}
-															onClick={async () => await generateFromChoice(choice, final)}
-															className="px-4 py-2 rounded-md cursor-pointer bg-neutral-800 hover:bg-neutral-900 w-fit"
-														>
-															{choice}
-														</div>
-													</>
-												)
-											})}
-										</>
-									)
-								}
+								{!pending && (
+									<>
+										<h4 className="font-semibold">Make your choice:</h4>
+										{scenario!!.choices!!.map((choice, index) => {
+											return (
+												<>
+													<div
+														key={index}
+														onClick={async () =>
+															await generateFromChoice(choice, final)
+														}
+														className="px-4 py-2 rounded-md cursor-pointer bg-neutral-800 hover:bg-neutral-900 w-fit"
+													>
+														{choice}
+													</div>
+												</>
+											)
+										})}
+									</>
+								)}
 							</>
 						)}
 						{errorMessage && (
