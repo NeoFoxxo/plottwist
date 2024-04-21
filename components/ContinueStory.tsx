@@ -4,18 +4,19 @@ import { StoryReturnTypes } from "@/utils/actions/database/insertStory"
 import { useContinuePrompt } from "@/utils/mutations/useContinuePrompt"
 import { useFinishPrompt } from "@/utils/mutations/useFinishPrompt"
 import { useRegeneratePrompt } from "@/utils/mutations/useRegeneratePrompt"
-import { Bot, Loader2 } from "lucide-react"
+import { Check, Loader2 } from "lucide-react"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { Button } from "./ui/button"
 import { TextGenerateEffect } from "./ui/text-generate-effect"
+import { redirect } from "next/navigation"
 
 export type CONTINUE_STORY_TYPES = {
 	scenarioData: {
 		choices: string[] | null
 		created_at: string
 		finished: boolean | null
-		follow_count: number
+		story_part_count: number
 		id: number
 		prompt: string | null
 		published: boolean | null
@@ -31,10 +32,18 @@ export default function ContinueStory({ scenarioData }: CONTINUE_STORY_TYPES) {
 	const [scenario, setScenario] = useState<StoryReturnTypes | null>(
 		scenarioData
 	)
+
+	useEffect(() => {
+		if (scenarioData.finished == true) return redirect("/app/library/")
+	})
+
 	const [prompt, setPrompt] = useState(scenarioData.prompt)
 	const [regenerateCount, setRegenerateCount] = useState(0)
-	const [storyPartCount, setStoryPartCount] = useState(0)
+	const [storyPartCount, setStoryPartCount] = useState(
+		scenarioData.story_part_count
+	)
 	const [storyParts, setStoryParts] = useState([scenarioData.story!!])
+	const [final, setFinal] = useState(false)
 
 	const regeneratePromptRequest = useRegeneratePrompt({
 		setScenario,
@@ -75,9 +84,19 @@ export default function ContinueStory({ scenarioData }: CONTINUE_STORY_TYPES) {
 		})
 	}
 
-	async function generateFromChoice(choice: string) {
+	async function generateFromChoice(choice: string, finish: boolean) {
 		setStoryPartCount((storyPartCount) => storyPartCount + 1)
 		setErrorMessage("")
+		if (finish == true) {
+			finishRequest.mutate({
+				title: scenario?.title!,
+				prompt: `${scenario?.story!!} ${choice}`,
+				previousStoryId: scenario?.id!!,
+				currentStory: scenario?.story!!,
+			})
+			setStoryPartCount(9)
+			return
+		}
 		if (storyPartCount >= 8) {
 			finishRequest.mutate({
 				title: scenario?.title!,
@@ -110,21 +129,26 @@ export default function ContinueStory({ scenarioData }: CONTINUE_STORY_TYPES) {
 					/>
 				))}
 			</article>
-
-			{storyPartCount === 0 ? (
-				<Button
-					onClick={regenerate}
-					className="flex items-center justify-center gap-2 font-semibold"
-				>
-					{pending ? <Loader2 className="animate-spin" /> : <Bot />}
-					Regenerate
-				</Button>
-			) : (
-				pending && (
-					<h5 className="flex items-center justify-center gap-2 font-semibold">
-						Selecting Choice <Loader2 className="animate-spin" />
-					</h5>
-				)
+			<div className="flex gap-1">
+				{!pending && storyPartCount >= 1 && storyPartCount < 8 && (
+					<Button
+						onClick={() => {
+							setFinal(!final)
+						}}
+					>
+						{final ? (
+							<p className="flex mx-auto">Set as last choice</p>
+						) : (
+							"Set as last choice"
+						)}
+					</Button>
+				)}
+				{final && storyPartCount < 9 && <Check className="p-0 ml-1 my-auto" />}
+			</div>
+			{pending && (
+				<h5 className="flex items-center justify-center gap-2 font-semibold">
+					Selecting Choice <Loader2 className="animate-spin" />
+				</h5>
 			)}
 			<div className="flex flex-col flex-wrap gap-2">
 				{storyPartCount >= 9 ? (
@@ -141,20 +165,24 @@ export default function ContinueStory({ scenarioData }: CONTINUE_STORY_TYPES) {
 						)}
 					</>
 				) : (
-					<>
-						<h4 className="font-semibold">Make your choice:</h4>
-						{scenario!!.choices!!.map((choice, index) => {
-							return (
-								<div
-									key={index}
-									onClick={async () => await generateFromChoice(choice)}
-									className="px-4 py-2 rounded-md cursor-pointer bg-neutral-800 hover:bg-neutral-900 w-fit"
-								>
-									{choice}
-								</div>
-							)
-						})}
-					</>
+					!pending && (
+						<>
+							<h4 className="font-semibold">Make your choice:</h4>
+							{scenario!!.choices!!.map((choice, index) => {
+								return (
+									<div
+										key={index}
+										onClick={async () =>
+											await generateFromChoice(choice, final)
+										}
+										className="px-4 py-2 rounded-md cursor-pointer bg-neutral-800 hover:bg-neutral-900 w-fit"
+									>
+										{choice}
+									</div>
+								)
+							})}
+						</>
+					)
 				)}
 				{errorMessage && (
 					<p style={{ color: "rgba(255,50,105,0.600)" }}>{errorMessage}</p>

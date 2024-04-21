@@ -1,57 +1,68 @@
-import DashboardDesktop from "@/components/DashboardDesktop";
-import DashboardMobile from "@/components/DashboardMobile";
-import { getBookmarksId } from "@/utils/actions/database/getBookmarksId";
-import { getScenarios } from "@/utils/actions/database/getScenarios";
-import { createClient } from "@/utils/supabase/server";
+import DashboardDesktop from "@/components/DashboardDesktop"
+import DashboardMobile from "@/components/DashboardMobile"
+import { getBookmarksId } from "@/utils/actions/database/getBookmarksId"
+import { getScenarios } from "@/utils/actions/database/getScenarios"
+import { createClient } from "@/utils/supabase/server"
 
 export default async function Dashboard({
-  searchParams,
+	searchParams,
 }: {
-  searchParams: { stories: number };
+	searchParams: { mostPopularCount: string; recentStoryCount: string }
 }) {
-  const supabase = createClient();
+	const supabase = createClient()
 
-  let { data, error } = await supabase.auth.getUser();
+	let { data, error } = await supabase.auth.getUser()
 
-  // if user is not logged in provide a fake id so that it does not crash
-  // the id is used for the "your story" functionality
-  if (error) {
-    data = {
-      //@ts-expect-error
-      user: {
-        id: "no user",
-      },
-    };
-  }
+	// if user is not logged in provide a fake id so that it does not crash
+	// the id is used for the "your story" functionality
+	if (error) {
+		data = {
+			//@ts-expect-error
+			user: {
+				id: "no user",
+			},
+		}
+	}
 
-  const bookmark = await getBookmarksId(data?.user?.id!!);
+	const bookmark = await getBookmarksId(data?.user?.id!!)
 
-  //@ts-expect-error
-  let storyCount = parseInt(searchParams.stories); // make sure its an int
+	// make sure its an int
+	let mostPopularCount = parseInt(searchParams.mostPopularCount)
+	let recentStoriesCount = parseInt(searchParams.recentStoryCount)
 
-  if (!storyCount) {
-    storyCount = 10;
-  }
-  const { mostPopular, recentStories } = await getScenarios({ storyCount });
+	if (!mostPopularCount || mostPopularCount < 10) {
+		mostPopularCount = 10
+	}
 
-  return (
-    <div>
-      <div className="md:hidden">
-        <DashboardMobile
-          mostPopular={mostPopular}
-          recentStories={recentStories}
-          userData={data}
-          bookmark={bookmark}
-          storyCount={storyCount}
-        />
-      </div>
-      <DashboardDesktop
-        mostPopular={mostPopular}
-        recentStories={recentStories}
-        userData={data}
-        bookmark={bookmark}
-        storyCount={storyCount}
-      />
-    </div>
-  );
+	if (!recentStoriesCount || recentStoriesCount < 10) {
+		recentStoriesCount = 10
+	}
+
+	const { mostPopular, recentStories } = await getScenarios({
+		mostPopularCount,
+		recentStoriesCount,
+	})
+
+	return (
+		<div>
+			<div className="md:hidden">
+				<DashboardMobile
+					mostPopular={mostPopular}
+					recentStories={recentStories}
+					userData={data}
+					bookmark={bookmark}
+					mostPopularCount={mostPopularCount}
+					recentStoriesCount={recentStoriesCount}
+				/>
+			</div>
+			<DashboardDesktop
+				mostPopular={mostPopular}
+				recentStories={recentStories}
+				userData={data}
+				bookmark={bookmark}
+				mostPopularCount={mostPopularCount}
+				recentStoriesCount={recentStoriesCount}
+			/>
+		</div>
+	)
 }

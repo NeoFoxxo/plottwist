@@ -36,7 +36,8 @@ export default async function Bookmarks() {
       >
         Bookmarks
       </h2>
-      <section className="w-full flex flex-wrap gap-10 justify-start">
+      <section className="w-full flex flex-wrap gap-10 items-center justify-center">
+        <div className="w-full flex flex-wrap justify-start items start"></div>
         {scenarios.map(async (scenario) => (
           <BookmarksCard
             key={scenario.id}
