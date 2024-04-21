@@ -3,12 +3,20 @@ import DashboardMobile from "@/components/DashboardMobile"
 import { getBookmarksId } from "@/utils/actions/database/getBookmarksId"
 import { getScenarios } from "@/utils/actions/database/getScenarios"
 import { createClient } from "@/utils/supabase/server"
+import { Metadata } from "next"
+
+type DashboardProps = {
+	searchParams: { mostPopularCount: string; recentStoryCount: string }
+}
+
+export const generateMetadata: Metadata = {
+	title: `Dashboard`,
+	description: `Here you can see all of the stories our platform has`
+}
 
 export default async function Dashboard({
 	searchParams,
-}: {
-	searchParams: { mostPopularCount: string; recentStoryCount: string }
-}) {
+}: DashboardProps) {
 	const supabase = createClient()
 
 	let { data, error } = await supabase.auth.getUser()
