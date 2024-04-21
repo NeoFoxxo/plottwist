@@ -30,7 +30,7 @@ type SCENARIO_TYPES = {
 		choices: string[] | null
 		created_at: string
 		finished: boolean | null
-		follow_count: number
+		story_part_count: number
 		id: number
 		prompt: string | null
 		published: boolean | null
@@ -53,12 +53,12 @@ type SCENARIO_TYPES = {
 		}
 	}
 	currentUser:
-	| {
-		user: any
-	}
-	| {
-		user: null
-	}
+		| {
+				user: any
+		  }
+		| {
+				user: null
+		  }
 	bookmarkCount: number
 	commentCount: number
 }
@@ -119,8 +119,11 @@ export function ScenarioCard({
 		}
 	}
 
-	const dateObj = new Date(data.data.created_at as string);
-	const date = dateObj.toLocaleString('en-US', { month: 'long', year: 'numeric' })
+	const dateObj = new Date(data.data.created_at as string)
+	const date = dateObj.toLocaleString("en-US", {
+		month: "long",
+		year: "numeric",
+	})
 
 	return (
 		<CardContainer className="p-4 inter-var">
@@ -132,7 +135,10 @@ export function ScenarioCard({
 						<div className="flex flex-row mb-2">
 							<HoverCard>
 								<HoverCardTrigger asChild>
-									<Link href={`/profile/${data.data.name}`} className="flex items-center">
+									<Link
+										href={`/profile/${data.data.name}`}
+										className="flex items-center"
+									>
 										<img
 											alt="User profile"
 											width={0}
@@ -140,13 +146,15 @@ export function ScenarioCard({
 											className="rounded-full w-7 h-7"
 											src={data.data!!.image!!}
 										></img>
-										<p className="flex ml-2 text-sm hover:underline">{data.data.name}
+										<p className="flex ml-2 text-sm hover:underline">
+											{data.data.name}
 											{data.data.admin && (
 												<img
 													src="/icons/admin.png"
-													className="w-3.5 h-3.5 flex ml-[0.4rem] my-auto">
-												</img>
-											)}</p>
+													className="w-3.5 h-3.5 flex ml-[0.4rem] my-auto"
+												></img>
+											)}
+										</p>
 									</Link>
 								</HoverCardTrigger>
 								<HoverCardContent className="ml-36">
@@ -157,7 +165,9 @@ export function ScenarioCard({
 												<AvatarFallback>VC</AvatarFallback>
 											</Avatar>
 											<div className="pt-1.5 space-y-1">
-												<h4 className="text-sm font-semibold">@{data.data.name}</h4>
+												<h4 className="text-sm font-semibold">
+													@{data.data.name}
+												</h4>
 												<p className="text-sm">
 													{truncateString(data.data.bio as string, 60)}
 												</p>
@@ -172,8 +182,8 @@ export function ScenarioCard({
 										{data.data.admin && (
 											<img
 												src="/icons/admin.png"
-												className="w-3.5 h-3.5 flex ml-[0.4rem] mb-auto">
-											</img>
+												className="w-3.5 h-3.5 flex ml-[0.4rem] mb-auto"
+											></img>
 										)}
 									</div>
 								</HoverCardContent>

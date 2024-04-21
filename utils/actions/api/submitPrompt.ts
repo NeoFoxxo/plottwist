@@ -2,6 +2,7 @@
 import { extractStoryFromAI } from "../../extractStoryFromAI"
 import { AIResponse } from "../../supabase/types/AIResponse"
 import { getMaxStories } from "../database/getMaxStories"
+import { incrementStoryPartCount } from "../database/incrementStoryPartCount"
 import insertStory from "../database/insertStory"
 
 export async function submitPrompt({ prompt }: { prompt: string }) {
@@ -41,6 +42,7 @@ export async function submitPrompt({ prompt }: { prompt: string }) {
 			choices: choices!!,
 			prompt,
 		})
+		await incrementStoryPartCount(scenario.id)
 		return { scenario, currentPart: story }
 	} catch (error) {
 		throw new Error(String(error))
