@@ -7,6 +7,7 @@ import StarButton from "./StarButton"
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card"
 import { Textarea } from "./ui/textarea"
 import { ProfileCard } from "./ProfileCard"
+import { simplifyNumber } from "@/utils/simplifyNumber"
 
 interface UserProfileProps {
 	profileData: {
@@ -37,16 +38,6 @@ export default function UserProfile({
 	userTotalBookmarks,
 }: UserProfileProps) {
 	const { name, image, email, bio, links, admin, user_id } = profileData
-
-	function simplifyNumber(number: number) {
-		if (number >= 1000000) {
-			return (number / 1000000).toFixed(1) + "M"
-		} else if (number >= 1000) {
-			return (number / 1000).toFixed(1) + "K"
-		} else {
-			return number
-		}
-	}
 
 	const accountInfo = [
 		simplifyNumber(storyCount!!),

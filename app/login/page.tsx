@@ -10,19 +10,18 @@ type LoginProps = {
 
 export const metadata: Metadata = {
 	title: "Login",
-	description: "Either create or log in to an account"
+	description:
+		"Login or Create your Plot Twist account to create interactive stories where your choices shape the narrative. Explore stories created by the community or share your own. Join Plot Twist today and unlock your storytelling potential.",
 }
 
-export default function Login({
-	searchParams,
-}: LoginProps) {
+export default function Login({ searchParams }: LoginProps) {
 	async function signIn(formData: FormData) {
 		"use server"
 
 		const email = formData.get("email") as string
 		const supabase = createClient()
 
-		const { data, error } = await supabase.auth.signInWithOtp({
+		const { error } = await supabase.auth.signInWithOtp({
 			email: email,
 			options: {
 				emailRedirectTo: `${siteurl}/api/auth/callback`,
