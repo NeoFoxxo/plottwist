@@ -21,20 +21,20 @@ interface UserProfileProps {
 		user_id: string
 		star_count: number
 	}
-	date: string
 	storyCount: number | null
 	userId: string | undefined
 	hasStarred: boolean
 	stories: story[]
+	userTotalBookmarks: number
 }
 
 export default function UserProfile({
 	profileData,
-	date,
 	hasStarred,
 	storyCount,
 	userId,
-	stories
+	stories,
+	userTotalBookmarks,
 }: UserProfileProps) {
 	const { name, image, email, bio, links, admin, user_id } = profileData
 
@@ -51,7 +51,7 @@ export default function UserProfile({
 	const accountInfo = [
 		simplifyNumber(storyCount!!),
 		simplifyNumber(profileData.star_count),
-		simplifyNumber(0),
+		simplifyNumber(userTotalBookmarks),
 	]
 	const texts = ["Stories", "Stars", "Bookmarks"]
 	const linkRegex = /^https?:\/\//
@@ -126,7 +126,7 @@ export default function UserProfile({
 									</div>
 								</CardItem>
 							))}
-							{userId !== user_id && (
+							{userId !== user_id && userId != "no user" && (
 								<StarButton
 									hasStarred={hasStarred}
 									authorId={profileData.user_id!!}
@@ -183,7 +183,7 @@ export default function UserProfile({
 				</CardContainer>
 			</div>
 			{stories.map((story: story) => (
-				<ProfileCard scenario={story} ></ProfileCard>
+				<ProfileCard scenario={story}></ProfileCard>
 			))}
 		</div>
 	)

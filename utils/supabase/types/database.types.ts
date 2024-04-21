@@ -269,7 +269,7 @@ export type Database = {
 				}
 				Returns: number
 			}
-			get_user_bookmarks_rpc: {
+			get_user_total_bookmarks: {
 				Args: {
 					profile_user_id: string
 				}
