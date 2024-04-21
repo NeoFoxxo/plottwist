@@ -1,7 +1,6 @@
 import NotFound from "@/app/not-found"
 import UserProfile from "@/components/UserProfile"
 import { getStars } from "@/utils/actions/database/getStars"
-import { getUserStories } from "@/utils/actions/database/getUserStories"
 import { getUserTotalBookmarks } from "@/utils/actions/database/getUserTotalBookmarks"
 import getUserInfoByName from "@/utils/actions/database/getUserinfoByName"
 import { createClient } from "@/utils/supabase/server"
@@ -42,8 +41,6 @@ export default async function Profile({
 		return <NotFound />
 	}
 
-	const userStories: any = await getUserStories(userInfo.profile.user_id)
-
 	let hasStarred: boolean
 
 	if (user_id === "no user") {
@@ -66,7 +63,6 @@ export default async function Profile({
 				profileData={userInfo.profile}
 				userId={user_id}
 				hasStarred={hasStarred}
-				stories={userStories}
 				userTotalBookmarks={userTotalBookmarks}
 			/>
 		</div>

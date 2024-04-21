@@ -1,12 +1,12 @@
 "use client"
-import { story } from "@/components/DashboardMobile"
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import EditProfileModal from "./EditProfileModal"
+import { PaginateStories } from "./PaginationStories"
 import StarButton from "./StarButton"
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card"
 import { Textarea } from "./ui/textarea"
-import { ProfileCard } from "./ProfileCard"
+import { userInfo } from "os"
 
 interface UserProfileProps {
 	profileData: {
@@ -24,7 +24,6 @@ interface UserProfileProps {
 	storyCount: number | null
 	userId: string | undefined
 	hasStarred: boolean
-	stories: story[]
 	userTotalBookmarks: number
 }
 
@@ -33,7 +32,6 @@ export default function UserProfile({
 	hasStarred,
 	storyCount,
 	userId,
-	stories,
 	userTotalBookmarks,
 }: UserProfileProps) {
 	const { name, image, email, bio, links, admin, user_id } = profileData
@@ -68,9 +66,9 @@ export default function UserProfile({
 
 	return (
 		<div className="overflow-hidden">
-			<div className="container flex items-start justify-center w-full gap-4 max-lg:flex-col">
-				<CardContainer className="py-0 md:py-10 inter-var">
-					<CardBody className="w-auto bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black/30 dark:border-white/[0.2] border-black/[0.1] h-auto rounded-xl p-9 border ">
+			<div className="container flex items-start justify-center w-full h-full gap-4 pt-20 max-lg:flex-col">
+				<CardContainer className="mb-auto inter-var">
+					<CardBody className="w-auto bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black/30 dark:border-white/[0.2] border-black/[0.1] h-auto rounded-xl p-9 border">
 						<div className="flex items-center justify-start gap-6">
 							<CardItem translateZ="50">
 								<img
@@ -99,7 +97,7 @@ export default function UserProfile({
 											width={25}
 											height={25}
 											alt="admin icon"
-											className="w-5 h-5 ml-2 my-auto"
+											className="w-5 h-5 my-auto ml-2"
 										/>
 									)}
 								</div>
@@ -136,7 +134,7 @@ export default function UserProfile({
 						</div>
 					</CardBody>
 				</CardContainer>
-				<CardContainer className="py-0 md:py-10 inter-var flex w-full">
+				<CardContainer className="flex w-full py-0 pb-5 inter-var">
 					<CardBody className="flex flex-1 flex-col gap-4 w-full h-auto bg-gray-50 relative dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black/30 dark:border-white/[0.2] border-black/[0.1] rounded-xl p-7 border">
 						<CardItem translateZ={"60"} className="w-full">
 							<h3 className="text-[1.2rem] md:text-xl font-bold pb-1">
@@ -182,15 +180,15 @@ export default function UserProfile({
 					</CardBody>
 				</CardContainer>
 			</div>
-			<h4
-				style={{ textShadow: "0em 0em 0.6em white" }}
-				className="text-3xl font-bold text-center"
-			>
-				Stories
-			</h4>
-			{stories.map((story: story) => (
-				<ProfileCard scenario={story}></ProfileCard>
-			))}
+			<div className="flex flex-col w-full px-3">
+				<h4
+					style={{ textShadow: "0em 0em 0.6em white" }}
+					className="pb-3 pl-5 text-3xl font-bold text-center py-9"
+				>
+					Stories
+				</h4>
+				<PaginateStories userId={profileData.user_id as string} />
+			</div>
 		</div>
 	)
 }
