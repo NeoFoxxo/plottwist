@@ -225,7 +225,7 @@ export type Database = {
 					title: string
 					prompt: string
 					story: string
-					story_part_count: number
+					follow_count: number
 					created_at: string
 					choices: string[]
 					published: boolean
@@ -245,9 +245,33 @@ export type Database = {
 				}
 				Returns: number
 			}
+			get_mostpopular: {
+				Args: {
+					story_count: number
+				}
+				Returns: {
+					choices: string[] | null
+					created_at: string
+					finished: boolean | null
+					id: number
+					pinned: boolean | null
+					prompt: string | null
+					published: boolean | null
+					story: string | null
+					story_part_count: number
+					title: string
+					user_id: string
+				}[]
+			}
 			get_story_bookmark_count: {
 				Args: {
 					scenarioid: number
+				}
+				Returns: number
+			}
+			get_user_bookmarks_rpc: {
+				Args: {
+					profile_user_id: string
 				}
 				Returns: number
 			}
