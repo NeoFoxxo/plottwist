@@ -4,7 +4,7 @@ import { StoryReturnTypes } from "@/utils/actions/database/insertStory"
 import { useContinuePrompt } from "@/utils/mutations/useContinuePrompt"
 import { useFinishPrompt } from "@/utils/mutations/useFinishPrompt"
 import { useRegeneratePrompt } from "@/utils/mutations/useRegeneratePrompt"
-import { Bot, Loader2 } from "lucide-react"
+import { Bot, Check, Loader2 } from "lucide-react"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { Button } from "./ui/button"
@@ -35,6 +35,7 @@ export default function ContinueStory({ scenarioData }: CONTINUE_STORY_TYPES) {
 	const [regenerateCount, setRegenerateCount] = useState(0)
 	const [storyPartCount, setStoryPartCount] = useState(0)
 	const [storyParts, setStoryParts] = useState([scenarioData.story!!])
+	const [final, setFinal] = useState(false);
 
 	const regeneratePromptRequest = useRegeneratePrompt({
 		setScenario,
@@ -75,9 +76,19 @@ export default function ContinueStory({ scenarioData }: CONTINUE_STORY_TYPES) {
 		})
 	}
 
-	async function generateFromChoice(choice: string) {
+	async function generateFromChoice(choice: string, finish: boolean) {
 		setStoryPartCount((storyPartCount) => storyPartCount + 1)
 		setErrorMessage("")
+		if (finish == true) {
+			finishRequest.mutate({
+				title: scenario?.title!,
+				prompt: `${scenario?.story!!} ${choice}`,
+				previousStoryId: scenario?.id!!,
+				currentStory: scenario?.story!!,
+			})
+			setStoryPartCount(9);
+			return
+		}
 		if (storyPartCount >= 8) {
 			finishRequest.mutate({
 				title: scenario?.title!,
@@ -110,7 +121,20 @@ export default function ContinueStory({ scenarioData }: CONTINUE_STORY_TYPES) {
 					/>
 				))}
 			</article>
-
+			<div className="flex gap-1">
+				{
+					!pending && (
+						storyPartCount >= 1 && storyPartCount < 8 && (
+							<Button onClick={() => { setFinal(!final); }} >{final ? (<p className='flex mx-auto'>Set as last choice</p>) : 'Set as last choice'}</Button>
+						)
+					)
+				}
+				{
+					final && storyPartCount < 9 && (
+						<Check className="p-0 ml-1 my-auto" />
+					)
+				}
+			</div>
 			{pending && (
 				<h5 className="flex items-center justify-center gap-2 font-semibold">
 					Selecting Choice <Loader2 className="animate-spin" />
@@ -138,7 +162,7 @@ export default function ContinueStory({ scenarioData }: CONTINUE_STORY_TYPES) {
 								return (
 									<div
 										key={index}
-										onClick={async () => await generateFromChoice(choice)}
+										onClick={async () => await generateFromChoice(choice, final)}
 										className="px-4 py-2 rounded-md cursor-pointer bg-neutral-800 hover:bg-neutral-900 w-fit"
 									>
 										{choice}
