@@ -8,9 +8,10 @@ export interface ExtractStoryProps {
 export function extractStoryFromAI({ aiResponse, stage }: ExtractStoryProps) {
 	const story = aiResponse.response.story
 	if (!story) {
-		throw new Error("Story data is undefined, please try again")
+		throw new Error(
+			"API request limits exceeded, please try again in a few minutes"
+		)
 	}
-
 
 	if (stage === "finish") {
 		return { story }
@@ -18,10 +19,15 @@ export function extractStoryFromAI({ aiResponse, stage }: ExtractStoryProps) {
 
 	let choices: string[]
 	try {
-		if (aiResponse.choices.choices.length !== 3) throw new Error("Choice data is undefined, please try again")
+		if (aiResponse.choices.choices.length !== 3)
+			throw new Error(
+				"API request limits exceeded, please try again in a few minutes"
+			)
 		choices = aiResponse.choices.choices.map((singleChoice) => singleChoice)
 	} catch (error) {
-		throw new Error("Choice data is undefined, please try again")
+		throw new Error(
+			"API request limits exceeded, please try again in a few minutes"
+		)
 	}
 
 	if (stage === "start") {
@@ -30,7 +36,9 @@ export function extractStoryFromAI({ aiResponse, stage }: ExtractStoryProps) {
 			// @ts-expect-error
 			title = aiResponse.title.short_title
 		} else if (!title) {
-			throw new Error("Title is undefined, please try again")
+			throw new Error(
+				"API request limits exceeded, please try again in a few minutes"
+			)
 		}
 		return { story, choices, title }
 	}

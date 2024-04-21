@@ -31,8 +31,10 @@ import { getReviews } from "@/utils/actions/database/getReviews"
 import getSession from "@/utils/actions/database/getSession"
 import { getStory, getStoryReturnType } from "@/utils/actions/database/getStory"
 import getStoryBookmarkCount from "@/utils/actions/database/getStoryBookmarkCount"
+import { getStoryTitle } from "@/utils/actions/database/getStoryTitle"
 import { getUserTotalBookmarks } from "@/utils/actions/database/getUserTotalBookmarks"
 import getUserInfo from "@/utils/actions/database/getUserinfo"
+import { simplifyNumber } from "@/utils/simplifyNumber"
 import { createClient } from "@/utils/supabase/server"
 import { truncateString } from "@/utils/truncateString"
 import { CalendarDays, MessageSquareText } from "lucide-react"
@@ -43,11 +45,20 @@ type StoryProps = {
 	params: { id: string }
 	searchParams: { isReview: boolean }
 }
-
-export const generateMetadata = ({ params }: StoryProps): Metadata => {
-	return {
-		title: `Story ${params.id}`,
-		description: `See what its all about`
+export async function generateMetadata({
+	params,
+}: StoryProps): Promise<Metadata> {
+	try {
+		const storyTitle = await getStoryTitle(params.id)
+		return {
+			title: `${storyTitle}`,
+			description: `Discover "${storyTitle}", an interactive story on Plot Twist. Experience this interactive story where you control the narrative. Explore more interactive stories on Plot Twist today.`,
+			keywords: `${storyTitle}, Plot Twist, interactive stories, AI, storytelling, user-generated content, narratives, creative writing, artificial intelligence, digital storytelling`,
+		}
+	} catch (error) {
+		return {
+			title: `Story Not Found`,
+		}
 	}
 }
 
@@ -99,15 +110,6 @@ export default async function StoryDetails({
 	})
 
 	const currentUser = await getSession()
-	function simplifyNumber(number: number) {
-		if (number >= 1000000) {
-			return (number / 1000000).toFixed(1) + "M"
-		} else if (number >= 1000) {
-			return (number / 1000).toFixed(1) + "K"
-		} else {
-			return number
-		}
-	}
 
 	const dateObj = new Date(author.data.created_at as string)
 	const date = dateObj.toLocaleString("en-US", {
@@ -318,8 +320,9 @@ export default async function StoryDetails({
 											<div className="flex justify-between">
 												<div className="flex flex-row gap-2">
 													<Link
-														href={`/profile/${(await getUserInfo(rev.user_id)).data.name
-															}`}
+														href={`/profile/${
+															(await getUserInfo(rev.user_id)).data.name
+														}`}
 														className="flex gap-2"
 													>
 														<img

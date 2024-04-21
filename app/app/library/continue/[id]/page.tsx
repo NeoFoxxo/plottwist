@@ -1,6 +1,7 @@
 import NotFound from "@/app/not-found"
 import ContinueStory from "@/components/ContinueStory"
 import { getStory } from "@/utils/actions/database/getStory"
+import { getStoryTitle } from "@/utils/actions/database/getStoryTitle"
 import { createClient } from "@/utils/supabase/server"
 import { Metadata } from "next"
 import { redirect } from "next/navigation"
@@ -9,13 +10,21 @@ type ContinueProps = {
 	params: { id: string }
 }
 
-export const generateMetadata = ({ params }: ContinueProps): Metadata => {
-	return {
-		title: `Continue Story ${params.id}`,
-		description: `Continue your comprehensive journey`
+export async function generateMetadata({
+	params,
+}: ContinueProps): Promise<Metadata> {
+	try {
+		const storyTitle = await getStoryTitle(params.id)
+		return {
+			title: `Continue creating ${storyTitle}`,
+			description: `Continue creating your story "${storyTitle}" on Plot Twist.`,
+		}
+	} catch (error) {
+		return {
+			title: `Story Not Found`,
+		}
 	}
 }
-
 export default async function Continue({ params }: ContinueProps) {
 	const supabase = createClient()
 

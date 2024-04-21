@@ -8,10 +8,13 @@ import "./globals.css"
 export const metadata = {
 	metadataBase: new URL(siteurl),
 	title: {
-		default: "Plottwist",
-		template: "%s | Plottwist"
+		default: "plottwist. | Create Interactive Stories",
+		template: "%s | plottwist.",
 	},
-	description: "Plottwist. Stories for you.",
+	description:
+		"Discover Plot Twist, a unique platform to create interactive stories where your choices shape the narrative. Explore stories created by the community or share your own. Join Plot Twist today and unlock your storytelling potential.",
+	keywords:
+		"Plot Twist, interactive stories, AI, storytelling, user-generated content, narratives, creative writing, artificial intelligence, digital storytelling",
 }
 
 export default async function RootLayout({
