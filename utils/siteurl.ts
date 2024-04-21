@@ -1,3 +1,4 @@
-export const siteurl = process.env.NEXT_PUBLIC_VERCEL_URL
-  ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-  : "http://localhost:3000";
+const production = process.env.NODE_ENV === "production"
+export const SITE_URL = production
+	? "https://plottwist.vercel.app"
+	: "http://localhost:3000"
