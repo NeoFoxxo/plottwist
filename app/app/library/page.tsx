@@ -1,4 +1,5 @@
 import { LibraryCard } from "@/components/LibraryCard";
+import { PaginationOnLibrary } from "@/components/PaginationOnLibrary";
 import getPinnedStories from "@/utils/actions/database/getPinnedStories";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
@@ -12,8 +13,6 @@ export default async function Library() {
   const user_id = user?.id;
   if (!user_id) redirect("/login");
 
-  const userStories = await getPinnedStories(user_id);
-
   return (
     <main className="flex flex-col items-center justify-start w-full my-4 md:p-5 md:w-fit">
       <h1
@@ -22,17 +21,7 @@ export default async function Library() {
       >
         Your Stories
       </h1>
-      <div className="flex flex-wrap justify-start items-start py-0 md:py-10">
-        {userStories?.length ? (
-          userStories?.map((story) => (
-            <div className="!max-w-[26rem] md:!h-80" key={story.id}>
-              <LibraryCard key={story.id} scenario={story} />
-            </div>
-          ))
-        ) : (
-          <div className="text-xl pt-7">No stories created</div>
-        )}
-      </div>
+      <PaginationOnLibrary userId={user_id} />
     </main>
   );
 }
