@@ -9,13 +9,12 @@ type CreateProps = {
 }
 
 export const metadata: Metadata = {
-	title: "Create",
-	description: "Imagine. Create. Enjoy."
+	title: "Create An Interactive Story",
+	description:
+		"Create an interactive story where your choices shape the narrative. Join Plot Twist today and unlock your storytelling potential.",
 }
 
-export default async function Create({
-	searchParams,
-}: CreateProps) {
+export default async function Create({ searchParams }: CreateProps) {
 	const remixId = searchParams.remix
 
 	const supabase = createClient()

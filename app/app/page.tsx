@@ -9,14 +9,12 @@ type DashboardProps = {
 	searchParams: { mostPopularCount: string; recentStoryCount: string }
 }
 
-export const generateMetadata: Metadata = {
+export const metadata: Metadata = {
 	title: `Dashboard`,
-	description: `Here you can see all of the stories our platform has`
+	description: `Discover the most popular and recently published interactive stories on Plot Twist, a unique platform to create interactive stories where your choices shape the narrative. Join Plot Twist today and unlock your storytelling potential.`,
 }
 
-export default async function Dashboard({
-	searchParams,
-}: DashboardProps) {
+export default async function Dashboard({ searchParams }: DashboardProps) {
 	const supabase = createClient()
 
 	let { data, error } = await supabase.auth.getUser()

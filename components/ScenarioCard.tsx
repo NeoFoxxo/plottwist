@@ -24,6 +24,7 @@ import { removeBookmark } from "@/utils/actions/database/removeBookmark"
 import { truncateString } from "@/utils/truncateString"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "./ui/hover-card"
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
+import { simplifyNumber } from "@/utils/simplifyNumber"
 
 type SCENARIO_TYPES = {
 	scenario: {
@@ -106,16 +107,6 @@ export function ScenarioCard({
 			setFakeBmrkCount((fakeBmrkCount) => fakeBmrkCount + 1)
 			setisBookmarked(true)
 			await addBookmark(scenario.id)
-		}
-	}
-
-	function simplifyNumber(number: number) {
-		if (number >= 1000000) {
-			return (number / 1000000).toFixed(1) + "M"
-		} else if (number >= 1000) {
-			return (number / 1000).toFixed(1) + "K"
-		} else {
-			return number
 		}
 	}
 

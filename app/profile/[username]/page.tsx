@@ -13,16 +13,16 @@ type ProfileProps = {
 	}
 }
 
-export const generateMetadata = ({ params }: ProfileProps): Metadata => {
+export async function generateMetadata({
+	params,
+}: ProfileProps): Promise<Metadata> {
 	return {
-		title: `@${params.username}`,
-		description: `Here you can see all of ${params.username} public info`
+		title: `${params.username}'s Profile`,
+		description: `Explore interactive stories created by ${params.username} on Plot Twist, a unique platform to create interactive stories where your choices shape the narrative. Join Plot Twist today and unlock your storytelling potential.`,
 	}
 }
 
-export default async function Profile({
-	params,
-}: ProfileProps) {
+export default async function Profile({ params }: ProfileProps) {
 	const supabase = createClient()
 	const {
 		data: { user },

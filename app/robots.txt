@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /api/
+Disallow: /app/bookmarks
+Disallow: /create
+Disallow: /app/library/
+
+Sitemap: https://www.dawstats.com/sitemap.xml
