@@ -1,6 +1,7 @@
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { getMaxStories } from "@/utils/actions/database/getMaxStories";
+import { createClient } from "@/utils/supabase/server";
 import { Bookmark, LayoutDashboard, LibraryBig, SquarePen } from "lucide-react";
 import Link from "next/link";
 import StoryLimitCard from "./StoryLimitCard";
@@ -30,6 +31,11 @@ export const links = [
 
 export async function Sidebar() {
   const storiesData = await getMaxStories();
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   return (
     <div className="group transition-all ease-in-out delay-150 w-[70px] hover:w-80 bg-zinc-950 z-10 fixed top-16 left-0 flex flex-col justify-between h-[100vh] px-3 max-lg:hidden border-r border-[rgba(255,255,255,0.15)] duration-300">
@@ -50,7 +56,7 @@ export async function Sidebar() {
           </Link>
         ))}
       </nav>
-      {storiesData.userId && (
+      {storiesData.userId && user?.aud === "authenticated" && (
         <div className="transition-all overflow-hidden mb-auto mt-10 group-hover:my-auto">
           <StoryLimitCard
             stories={storiesData!!.storyCount!!}
