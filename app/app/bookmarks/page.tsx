@@ -1,4 +1,5 @@
 import BookmarksCard from "@/components/BookmarksCard";
+import { PaginateBookmarks } from "@/components/PaginationBookmarks";
 import { getBookmarks } from "@/utils/actions/database/getBookmarks";
 import getUserInfo from "@/utils/actions/database/getUserinfo";
 import { createClient } from "@/utils/supabase/server";
@@ -42,16 +43,7 @@ export default async function Bookmarks() {
       >
         Bookmarks
       </h2>
-      <section className="flex flex-wrap items-center justify-center w-full gap-10">
-        <div className="flex flex-wrap justify-start w-full items start"></div>
-        {scenarios.map(async (scenario) => (
-          <BookmarksCard
-            key={scenario.id}
-            data={await getUserInfo(scenario.user_id)}
-            scenario={scenario}
-          />
-        ))}
-      </section>
+      <PaginateBookmarks userId={user_id} />
     </div>
   );
 }
