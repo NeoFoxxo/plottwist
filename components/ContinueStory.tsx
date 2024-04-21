@@ -9,6 +9,7 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 import { Button } from "./ui/button"
 import { TextGenerateEffect } from "./ui/text-generate-effect"
+import { redirect } from "next/navigation"
 
 export type CONTINUE_STORY_TYPES = {
 	scenarioData: {
@@ -31,6 +32,11 @@ export default function ContinueStory({ scenarioData }: CONTINUE_STORY_TYPES) {
 	const [scenario, setScenario] = useState<StoryReturnTypes | null>(
 		scenarioData
 	)
+
+	useEffect(() => {
+		if (scenarioData.finished == true) return redirect('/app/library/')
+	})
+
 	const [prompt, setPrompt] = useState(scenarioData.prompt)
 	const [regenerateCount, setRegenerateCount] = useState(0)
 	const [storyPartCount, setStoryPartCount] = useState(0)
