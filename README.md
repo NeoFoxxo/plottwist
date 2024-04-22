@@ -124,7 +124,7 @@ We welcome open-source contributions to **Plottwist project** ! If you would lik
 
 ## License 📝
 
-This project is licensed under the [MIT License](LICENSE). Feel free to use, modify, and distribute the code as per the terms of the license.
+This project is licensed under the [GPL 3 License](LICENSE). Feel free to use, modify, and distribute the code as per the terms of the license.
 
 ## Contact 💬
 
