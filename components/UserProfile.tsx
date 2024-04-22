@@ -7,6 +7,7 @@ import StarButton from "./StarButton"
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card"
 import { Textarea } from "./ui/textarea"
 import { userInfo } from "os"
+import { simplifyNumber } from "@/utils/simplifyNumber"
 
 interface UserProfileProps {
 	profileData: {
@@ -171,12 +172,6 @@ export default function UserProfile({
 				</CardContainer>
 			</div>
 			<div className="flex flex-col w-full px-3">
-				<h4
-					style={{ textShadow: "0em 0em 0.6em white" }}
-					className="pb-3 pl-5 text-3xl font-bold text-center py-9"
-				>
-					Stories
-				</h4>
 				<PaginateStories userId={profileData.user_id as string} />
 			</div>
 		</div>
