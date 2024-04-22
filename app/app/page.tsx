@@ -61,14 +61,16 @@ export default async function Dashboard({ searchParams }: DashboardProps) {
 					recentStoriesCount={recentStoriesCount}
 				/>
 			</div>
-			<DashboardDesktop
-				mostPopular={mostPopular}
-				recentStories={recentStories}
-				userData={data}
-				bookmark={bookmark}
-				mostPopularCount={mostPopularCount}
-				recentStoriesCount={recentStoriesCount}
-			/>
+			<div className="hidden md:block">
+				<DashboardDesktop
+					mostPopular={mostPopular}
+					recentStories={recentStories}
+					userData={data}
+					bookmark={bookmark}
+					mostPopularCount={mostPopularCount}
+					recentStoriesCount={recentStoriesCount}
+				/>
+			</div>
 		</div>
 	)
 }
