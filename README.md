@@ -1,4 +1,4 @@
-# Plot Twist <img src="./public/icons/logo.png" alt="drawing" width="24"/>
+# Plot Twist <img src="./public/icons/logo.png" alt="drawing" width="36"/>
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/NeoFoxxo/plottwist/tree/main)
 
