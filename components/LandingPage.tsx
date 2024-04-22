@@ -163,7 +163,15 @@ export function LandingPage() {
 					}}
 				>
 					<div className="max-w-5xl px-8 mx-auto">
-						<h2 className="pb-6 text-5xl font-bold text-center">Our tools</h2>
+						<div className="justify-center pt-2">
+							<h2 className="pb-3 text-xl font-bold">Meet our team!</h2>
+							<div className="ml-[-1rem] flex flex-row justify-center">
+								<AnimatedTooltip items={people} />
+							</div>
+						</div>
+						<h2 className="pb-6 pt-10 text-5xl font-bold text-center">
+							Our tools
+						</h2>
 						<div className="pb-8">
 							<h4 className="pt-2 text-lg text-center">
 								App made for the Supabase{" "}
@@ -195,31 +203,6 @@ export function LandingPage() {
 						<HoverEffect items={projects} />
 					</div>
 				</motion.footer>
-			</HeroHighlight>
-			<HeroHighlight>
-				<motion.h2
-					initial={{
-						opacity: 0,
-						y: 0,
-					}}
-					animate={{
-						opacity: 1,
-						y: [40, 0, 0],
-					}}
-					transition={{
-						duration: 0.5,
-						ease: [0.4, 0.0, 0.2, 1],
-					}}
-					className="mt-[-5rem]"
-				>
-					{" "}
-					<div className="justify-center pt-2">
-						<h2 className="pb-2">Meet our team!</h2>
-						<div className="ml-[-1rem] flex flex-row">
-							<AnimatedTooltip items={people} />
-						</div>
-					</div>
-				</motion.h2>
 			</HeroHighlight>
 		</div>
 	)
