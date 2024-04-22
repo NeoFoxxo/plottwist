@@ -35,7 +35,7 @@ export default function UserProfile({
 	userId,
 	userTotalBookmarks,
 }: UserProfileProps) {
-	const { name, image, email, bio, links, admin, user_id } = profileData
+	const { name, image, bio, links, admin, user_id } = profileData
 
 	const accountInfo = [
 		simplifyNumber(storyCount!!),
@@ -92,9 +92,6 @@ export default function UserProfile({
 										/>
 									)}
 								</div>
-								<p className="text-sm md:text-[1.15rem] text-gray-500">
-									{email}
-								</p>
 							</CardItem>
 						</div>
 						<div className="flex gap-3 pt-3.5 justify-between">
