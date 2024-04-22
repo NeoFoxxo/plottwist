@@ -45,28 +45,6 @@ export default async function DashboardMobile({
 					<TabsTrigger value="popular">Most Popular</TabsTrigger>
 					<TabsTrigger value="new">New Stories</TabsTrigger>
 				</TabsList>
-				<TabsContent value="new">
-					<ScrollArea className="w-full mt-2">
-						<div className="flex flex-col top-0 h-[80vh]">
-							{mostPopularData?.map((data, index) => (
-								<ScenarioCard
-									key={mostPopular[index].id}
-									currentUser={userData}
-									data={data.userInfo}
-									scenario={mostPopular[index]}
-									bookmark={bookmark.includes(mostPopular[index].id)}
-									bookmarkCount={data.bookmarkCount}
-									commentCount={data.commentCount}
-								/>
-							))}
-							<ShowMoreButton
-								storyCount={mostPopularCount}
-								section="mostPopular"
-							/>
-							<div className="pb-20"></div>
-						</div>
-					</ScrollArea>
-				</TabsContent>
 				<TabsContent value="popular">
 					<ScrollArea className="w-full mt-2">
 						<div className="py-5 top-0 h-[80vh]">
@@ -84,6 +62,28 @@ export default async function DashboardMobile({
 							<ShowMoreButton
 								storyCount={recentStoriesCount}
 								section="recentStories"
+							/>
+							<div className="pb-20"></div>
+						</div>
+					</ScrollArea>
+				</TabsContent>
+				<TabsContent value="new">
+					<ScrollArea className="w-full mt-2">
+						<div className="flex flex-col top-0 h-[80vh]">
+							{mostPopularData?.map((data, index) => (
+								<ScenarioCard
+									key={mostPopular[index].id}
+									currentUser={userData}
+									data={data.userInfo}
+									scenario={mostPopular[index]}
+									bookmark={bookmark.includes(mostPopular[index].id)}
+									bookmarkCount={data.bookmarkCount}
+									commentCount={data.commentCount}
+								/>
+							))}
+							<ShowMoreButton
+								storyCount={mostPopularCount}
+								section="mostPopular"
 							/>
 							<div className="pb-20"></div>
 						</div>
