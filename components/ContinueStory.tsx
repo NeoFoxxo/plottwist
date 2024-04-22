@@ -44,7 +44,7 @@ export default function ContinueStory({ scenarioData }: CONTINUE_STORY_TYPES) {
 	)
 	const [storyParts, setStoryParts] = useState([scenarioData.story!!])
 	const [final, setFinal] = useState(false)
-
+	const [currentStoryPartCount, setCurrentStoryPartCount] = useState(0)
 	const regeneratePromptRequest = useRegeneratePrompt({
 		setScenario,
 		setStoryParts,
@@ -86,11 +86,18 @@ export default function ContinueStory({ scenarioData }: CONTINUE_STORY_TYPES) {
 
 	async function generateFromChoice(choice: string, finish: boolean) {
 		setStoryPartCount((storyPartCount) => storyPartCount + 1)
+		setCurrentStoryPartCount(
+			(currentStoryPartCount) => currentStoryPartCount + 1
+		)
 		setErrorMessage("")
 		if (finish == true) {
 			finishRequest.mutate({
 				title: scenario?.title!,
-				prompt: `${scenario?.story!!} ${choice}`,
+				prompt: `${
+					storyParts[currentStoryPartCount]
+						? storyParts[currentStoryPartCount]
+						: storyParts[0]
+				} ${choice}`,
 				previousStoryId: scenario?.id!!,
 				currentStory: scenario?.story!!,
 			})
@@ -100,14 +107,22 @@ export default function ContinueStory({ scenarioData }: CONTINUE_STORY_TYPES) {
 		if (storyPartCount >= 8) {
 			finishRequest.mutate({
 				title: scenario?.title!,
-				prompt: `${scenario?.story!!} ${choice}`,
+				prompt: `${
+					storyParts[currentStoryPartCount]
+						? storyParts[currentStoryPartCount]
+						: storyParts[0]
+				} ${choice}`,
 				previousStoryId: scenario?.id!!,
 				currentStory: scenario?.story!!,
 			})
 		} else {
 			continueRequest.mutate({
 				title: scenario?.title!,
-				prompt: `${scenario?.story!!} ${choice}`,
+				prompt: `${
+					storyParts[currentStoryPartCount]
+						? storyParts[currentStoryPartCount]
+						: storyParts[0]
+				} ${choice}`,
 				previousStoryId: scenario?.id!!,
 				currentStory: scenario?.story!!,
 			})

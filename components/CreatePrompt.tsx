@@ -101,11 +101,16 @@ export default function CreatePrompt({
 
 	async function generateFromChoice(choice: string, finish: boolean) {
 		setStoryPartCount((storyPartCount) => storyPartCount + 1)
+		console.log(storyParts[storyPartCount])
 		setErrorMessage("")
 		if (finish == true) {
 			finishRequest.mutate({
 				title: scenario?.title!,
-				prompt: `${scenario?.story!!} ${choice}`,
+				prompt: `${
+					storyParts[storyPartCount]
+						? storyParts[storyPartCount]
+						: storyParts[0]
+				} ${choice}`,
 				previousStoryId: scenario?.id!!,
 				currentStory: scenario?.story!!,
 			})
@@ -115,14 +120,22 @@ export default function CreatePrompt({
 		if (storyPartCount >= 8) {
 			finishRequest.mutate({
 				title: scenario?.title!,
-				prompt: `${scenario?.story!!} ${choice}`,
+				prompt: `${
+					storyParts[storyPartCount]
+						? storyParts[storyPartCount]
+						: storyParts[0]
+				} ${choice}`,
 				previousStoryId: scenario?.id!!,
 				currentStory: scenario?.story!!,
 			})
 		} else {
 			continueRequest.mutate({
 				title: scenario?.title!,
-				prompt: `${scenario?.story!!} ${choice}`,
+				prompt: `${
+					storyParts[storyPartCount]
+						? storyParts[storyPartCount]
+						: storyParts[0]
+				} ${choice}`,
 				previousStoryId: scenario?.id!!,
 				currentStory: scenario?.story!!,
 			})
