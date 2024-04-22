@@ -4,6 +4,7 @@ import { siteurl } from "@/utils/siteurl"
 import { createClient } from "@/utils/supabase/server"
 import { GeistSans } from "geist/font/sans"
 import "./globals.css"
+import { Toaster } from "@/components/ui/toaster"
 
 export const metadata = {
 	metadataBase: new URL(siteurl),
@@ -58,6 +59,7 @@ export default async function RootLayout({
 							userId={user?.id}
 						/>
 						<div>{children}</div>
+						<Toaster />
 					</ThemeProvider>
 				</main>
 			</body>
