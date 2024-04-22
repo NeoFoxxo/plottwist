@@ -9,6 +9,9 @@ Choose your own adventure story generator built for the Supabase hackathon
 Plot Twist is a fullstack application developed using NextJS, SmythOS and Supabase. You can create your own unique story and make choices based on the story outcome. This leverages AI to get unique and interesting choices for the user to choose, so that the outcome of the story is different everytime. You tell your own story and share it to the outer world. There are many things you could do with the story created by other users. You can remix other's stories or comment on them. You can also regenerate story that was not to your liking and save them.
 
 ![vercel](https://img.shields.io/github/deployments/NeoFoxxo/plottwist/production?label=vercel&logo=vercel&logoColor=white)
+
+![main page](https://github.com/NeoFoxxo/plottwist/assets/76598208/a3edc721-cee0-4ca7-917c-44b560646e56)
+
 ![ts](https://badgen.net/badge/Built%20With/TypeScript/blue)
 
 <p align="left">
