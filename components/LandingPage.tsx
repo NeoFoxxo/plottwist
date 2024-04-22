@@ -164,7 +164,7 @@ export function LandingPage() {
 				>
 					<div className="max-w-5xl px-8 mx-auto">
 						<div className="justify-center pt-2">
-							<h2 className="pb-2">Meet our team!</h2>
+							<h2 className="pb-3 text-xl font-bold">Meet our team!</h2>
 							<div className="ml-[-1rem] flex flex-row justify-center">
 								<AnimatedTooltip items={people} />
 							</div>
