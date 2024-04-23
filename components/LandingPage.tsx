@@ -39,7 +39,7 @@ export function LandingPage() {
 			title: "SmythOS",
 			description:
 				"No-code tool for creating APIs that can intergrate with AI and other data sources.",
-			link: "https://smythos.com",
+			link: "https://smythos.com/?fpr=bonndubz75",
 		},
 		{
 			title: "Supabase",
